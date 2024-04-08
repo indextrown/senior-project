@@ -2,8 +2,7 @@
 2024 동아대학교 컴퓨터공학과 3조 졸업작품
 
 ## 프로젝트 목적
-현대 영상 처리 기술은 다양한 분야에서 중요한 역할을 하고 있으며, 특히 다중 태스크를 수행할 수 있는 다기능 네트워크 개발은 필수적임.
- 이러한 네트워크는 영상에서 객체를 인식하고 분류하는 것부터 시작해, 보다 복잡한 영상 분석 작업을 수행할 수 있어야 함. 
-이 프로젝트의 목적은 이러한 다기능 네트워크를 개발하여 영상 처리 분야의 발전에 기여하는 것임.
 
-<img width="453" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/437a736d-bf3c-4418-923e-02dcfaa0824f">
+<!-- <img width="453" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/437a736d-bf3c-4418-923e-02dcfaa0824f"> -->
+
+[text](Documents)
