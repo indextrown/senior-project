@@ -50,3 +50,7 @@ HTML 파서이다.
 
 #### 결론
 크롤링 하려는 대상 사이트[팬던십]가 js 동작이 거의 없고, 초기 HTML 내용만으로 파싱이 가능하다고 판단하였기 떄문에 requests와 beautifulsoup4로 크롤링 진행하였다. 
+![image](https://github.com/indextrown/senior-project/assets/69367698/ca7e1970-6015-4e1b-9eaf-c32e20870552)
+
+
+
