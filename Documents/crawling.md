@@ -52,7 +52,7 @@ print(bs)
 ```
 
 #### 원인 
-//사진
+![IMG_DBE09C12B644-1](https://github.com/indextrown/senior-project/assets/69367698/2d2d397b-d8da-4973-86e3-9ae60b996970)
 
 1) 클라이언트가 서버에게 요청(URL)을 보낸다
 2) 서버는 요청에 대한 resource를 응답으로 전송한다. Resource에는 HTML, CSS, JavaScript, 그리고 이미지 등이 포함될 수 있다.
