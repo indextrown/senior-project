@@ -34,6 +34,39 @@ HTML 파서이다.
 - 이를 해결하는 방법으로 Selenium을 사용한다. 
 
 
+#### 예시  
+웹 브라우저가 보여주는 HTML에는 분명히 존재하는 태그를 가져올 수 없다. 
+```python
+import requests
+from bs4 import BeautifulSoup
+
+#reponse는 객체이다
+response = requests.get("https://www.naver.com")
+bs = BeautifulSoup(response.text, 'html.parser')
+
+
+# html = response.text# 속성
+print(bs)
+
+
+```
+
+#### 원인 
+//사진
+
+1) 클라이언트가 서버에게 요청(URL)을 보낸다
+2) 서버는 요청에 대한 resource를 응답으로 전송한다. Resource에는 HTML, CSS, JavaScript, 그리고 이미지 등이 포함될 수 있다.
+3) 웹 브라우저(클라이언트)는 HTML 문서를 DOM 트리 형태로 변환하고 CSS 파일을 CSSOM으로 변환하고 JavaScript를 실행한다.
+4) DOM 트리와 CSSOM 트리를 합쳐 렌더 트리를 만든다(파싱). 그리고 레이아웃을 결정(렌더링)한다. 5) 레이아웃은 트리의 각 노드가 브라우저의 어디에, 어떤 크기로 배치될 지를 정하는 것이다.
+6) 브라우저 화면에 렌더 트리의 각 노드를 그려준다.  
+
+위의 코드에서는 BeautifulSoup 객체를 사용해 서버에 요청을 보낸뒤 그 resource를 받아와서 JavaScript 코드를 실행하지는 않는다. 그래서 JavaScript에 의해 클라이언트에서 동적으로 추가된 태그에는 접근하지 못한 것이다.  
+
+#### 해결
+Selenium과 WebDriver를 사용하면 된다.  
+WebDriver가 JavaScript를 실행한 뒤에 Selenium으로 HTML에 접근하면 브라우저에 보여지는 그대로의 컨텐츠에 접근할 수 있게 된다.  
+  
+
 #### Selenium 사용이 유리한 경우
 - 웹페이지가 JavaScript로 동작한다.
 - 내가 요청할 웹페이지가 몇 개 안된다.
