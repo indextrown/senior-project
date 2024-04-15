@@ -35,13 +35,15 @@ HTML 파서이다.
 
 
 #### 예시  
-웹 브라우저가 보여주는 HTML에는 분명히 존재하는 태그를 가져올 수 없다. 
+웹 브라우저가 보여주는 HTML에는 분명히 존재하는 태그를 가져올 수 없다.   
+<img width="952" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/376ea532-895b-4e9a-aa4b-ca61e3ab5f40">
+
 ```python
 import requests
 from bs4 import BeautifulSoup
 
 #reponse는 객체이다
-response = requests.get("https://www.naver.com")
+response = requests.get("https://twitter.com/search?q=생일카페&src=typed_query")
 html = response.text
 soup = BeautifulSoup(html, 'html.parser')
 
