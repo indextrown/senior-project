@@ -36,7 +36,7 @@ HTML 파서이다.
 
 #### 예시  
 웹 브라우저가 보여주는 HTML에는 분명히 존재하는 태그를 가져올 수 없다.   
-<img width="952" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/376ea532-895b-4e9a-aa4b-ca61e3ab5f40">
+<img width="952" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/1ecde472-f9b4-4b71-8271-95380128b8fa">
 
 ```python
 import requests
