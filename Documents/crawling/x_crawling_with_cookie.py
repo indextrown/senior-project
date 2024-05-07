@@ -39,10 +39,10 @@ def open_Driver():
     # 정보 표시줄을 비활성화. 정보 표시줄은 Chrome 브라우저 상단에 나타나는 알림이나 메시지를 의미. 이 옵션을 사용하여 이러한 알림이 나타나지 않도록 설정.
     options.add_argument('--disable-infobars')
 
-    # 확장 프로그램을 비활성화합니다. Chrome에서 확장 프로그램을 사용하지 않도록 설정
+    # 확장 프로그램을 비활성화. Chrome에서 확장 프로그램을 사용하지 않도록 설정
     options.add_argument('--disable-extensions')
 
-    #  자동화된 기능을 비활성화. 이 옵션은 Chrome이 자동화된 환경에서 실행되는 것을 감지하는 것을 방지.
+    #  자동화된 기능을 비활성화. 이 옵션은 Chrome이 자동화된 환경에서 실행되는 것을 감지하는 것을 방지
     options.add_argument('--disable-blink-features=AutomationControlled')
 
     # 자동화를 비활성화. 이 옵션은 Chrome이 자동화 도구에 의해 제어되는 것으로 감지되는 것을 방지
