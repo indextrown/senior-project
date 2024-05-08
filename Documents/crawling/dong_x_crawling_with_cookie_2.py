@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
+from urllib.parse import urlparse
 
 #import requests
 import time
@@ -158,19 +159,22 @@ def search_x(driver, search):
             except:
                 continue
             
-            # 프로필 url
-            profile_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div > div > a").get_attribute('href')
-            
-            # 게시글 url
-            title_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a").get_attribute('href')
-            
-            # mytesttime
-            mytesttime = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").get_attribute('datetime')
-            #print("mytesttime: ", mytesttime)
+            try:
+                # 프로필 url
+                profile_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div > div > a").get_attribute('href')
+                
+                # 게시글 url
+                title_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a").get_attribute('href')
+                
+                # mytesttime
+                mytesttime = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").get_attribute('datetime')
+                #print("mytesttime: ", mytesttime)
 
-            mytesttime2 = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").text
-            #print("mytesttime: ", mytesttime2)
-            
+                mytesttime2 = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").text
+                #print("mytesttime: ", mytesttime2)
+            except:
+                continue
+
             # 게시글 시간
             #title_time = info[-1]
             title_time = mytesttime2
@@ -195,21 +199,25 @@ def search_x(driver, search):
                 ongoing = False
                 break
 
+
+            url_gap = extract_last_part(title_url)
+            # print("nickname: ",nickname)
+            # print("user_id: ", user_id)
+            # print("profile_url: ", profile_url)
+            # print("title_url: ", title_url)
+            # print("gap: ", url_gap)
+            # print("게시물내용", cclear_new_title)
+            # print("게시시간: ", mytesttime)
             
-            print("nickname: ",nickname)
-            print("user_id: ", user_id)
-            print("profile_url: ", profile_url)
-            print("title_url: ", title_url)
-            print("게시물내용", cclear_new_title)
-            print("게시시간: ", mytesttime)
-            print("현재시간 - 게시시간: ", int_title_time)
-            print()
+            # print("현재시간 - 게시시간: ", int_title_time)
+            # print()
             
 
             fiveth_elements = [item[4] for item in old_titles]
+            #print(fiveth_elements)
 
-            if cclear_new_title not in fiveth_elements:
-                old_titles.append([nickname, user_id, profile_url, title_url, cclear_new_title, mytesttime, int_title_time])
+            if url_gap not in fiveth_elements:
+                old_titles.append([nickname, user_id, profile_url, title_url, url_gap, cclear_new_title, mytesttime, int_title_time])
 
         # scroll_count 횟수만큼 내리겠다
         driver.execute_script(scroll_script)
@@ -230,6 +238,29 @@ def extract_time(s):
         elif unit == 's':
             return f"{number}초"
     return "적절한 시간 단위가 포함된 문자열이 아닙니다."
+
+
+def extract_last_part(url):
+    # URL을 '/'로 분리
+    parts = url.split('/')
+    # 맨 마지막 부분 반환
+    last_part = parts[-1] if parts[-1] != '' else parts[-2]  # 마지막이 빈 문자열인 경우를 대비
+    return last_part
+
+# def find_unique_parts(url1, url2):
+#     # URL 파싱
+#     parsed_url1 = urlparse(url1)
+#     parsed_url2 = urlparse(url2)
+    
+#     # 경로 분리
+#     path1 = parsed_url1.path
+#     path2 = parsed_url2.path
+    
+#     # 고유 부분 추출
+#     unique_path1 = path1.replace(path2, '') if path2.startswith(path1) else path1
+#     unique_path2 = path2.replace(path1, '') if path1.startswith(path2) else path2
+    
+#     return unique_path1, unique_path2
 
 def main():
     try:
@@ -284,13 +315,23 @@ def main2():
     crawling_list = search_x(driver, "생일카페")
 
     # print("############################################################")
-    # for contents in crawling_list:
-    #     print("닉네임: ", contents[0])
-    #     print("계정명: ", contents[1])
-    #     print("게시글: ", contents[2])
-    #     # print("게시글: ",''.join(contents[2]))
-    #     print()
-    #     print()
+    for contents in crawling_list:
+        # print("닉네임: ", contents[0])
+        # print("계정명: ", contents[1])
+        # print("게시글: ", contents[2])
+        # # print("게시글: ",''.join(contents[2]))
+        # print()
+        print()
+        print("닉네임: ",contents[0])
+        print("유저id: ", contents[1])
+        print("프로필url: ", contents[2])
+        print("게시물_url: ", contents[3])
+        print("게시물고유코드: ", contents[4])
+        print("게시물내용", contents[5])
+        print("게시시간: ", contents[6])
+        
+        print("현재시간 - 게시시간: ", contents[7])
+        print()
 
 
     driver.quit()
@@ -299,5 +340,5 @@ def main2():
     
 
 if __name__ == '__main__':
-    main()
+    main2()
 
