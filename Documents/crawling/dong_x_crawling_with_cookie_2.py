@@ -1,0 +1,303 @@
+# my lib
+import install_import as myimport
+# 라이브러리 자동 설치
+package_manager = myimport.PackageManager()
+package_manager.check_and_install_modules()
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
+
+#import requests
+import time
+import pickle
+import sys
+import re
+
+
+# 봇 감지 전처리
+def open_Driver():
+    options = Options()
+
+    #options.add_experimental_option("detach", True)
+    options.add_argument("--headless")  # 헤드리스 모드로 실행
+
+    # Windows 10 운영 체제에서 Chrome 브라우저를 사용하는 것처럼 보이는 사용자 에이전트가 설정
+    options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+    
+    # 언어 설정을 한국어로 지정. 이는 웹 페이지가 한국어로 표시
+    options.add_argument('lang=ko_KR')   
+    
+    # 브라우저 창의 크기를 지정. 여기서는 너비 430px, 높이 932px로 설정
+    options.add_argument('--window-size=932,932') 
+    
+    # GPU 가속을 비활성화. GPU 가속이 활성화되어 있으면, Chrome이 GPU를 사용하여 그래픽을 렌더링하려고 시도할 수 있기때문. 일부 환경에서는 GPU 가속이 문제를 일으킬 수 있으므로 이 옵션을 사용하여 비활성화
+    options.add_argument('--disable-gpu')
+
+    # 정보 표시줄을 비활성화. 정보 표시줄은 Chrome 브라우저 상단에 나타나는 알림이나 메시지를 의미. 이 옵션을 사용하여 이러한 알림이 나타나지 않도록 설정.
+    options.add_argument('--disable-infobars')
+
+    # 확장 프로그램을 비활성화. Chrome에서 확장 프로그램을 사용하지 않도록 설정
+    options.add_argument('--disable-extensions')
+
+    #  자동화된 기능을 비활성화. 이 옵션은 Chrome이 자동화된 환경에서 실행되는 것을 감지하는 것을 방지
+    options.add_argument('--disable-blink-features=AutomationControlled')
+
+    # 자동화를 비활성화. 이 옵션은 Chrome이 자동화 도구에 의해 제어되는 것으로 감지되는 것을 방지
+    options.add_argument('--disable-automation')
+
+    # service = Service(executable_path=ChromeDriverManager().install())
+    # driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    return driver
+
+
+# x 쿠키 저장 함수
+def save_cookie_x(driver):
+    url = 'https://www.twitter.com/'
+    driver.get(url)
+
+    # 30초 이내 로그인
+    time.sleep(30)
+    pickle.dump(driver.get_cookies(), open('x_cookies.pkl', 'wb')) 
+
+    driver.quit()
+
+# 셀레니움에서 쿠키 정상 동작 확인
+def check_login_selenium_x(driver):
+    url = 'https://www.twitter.com'
+    driver.get(url)
+
+    cookies = pickle.load(open('x_cookies.pkl', 'rb'))
+    for cookie in cookies:
+        driver.add_cookie(cookie)
+    
+    driver.refresh()
+    driver.implicitly_wait(15)
+    time.sleep(1)
+
+
+    #print("로그인 확인중")
+    cur_url = driver.current_url
+    # print("현재 URL 마지막 경로: ", cur_url)
+    # print("현재 URL 마지막 경로: ", cur_url[-4:])
+
+    
+    if (cur_url[-4:] == "home"):
+        print("로그인 성공")
+    else:
+        print("로그인 실패로 프로그램 종료합니다.")
+        sys.exit()
+        
+
+
+
+# x 프로필 정보 가져오기
+def get_profile_x(driver):
+    driver.implicitly_wait(15)
+    profiles = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > header > div > div > div > div:nth-child(1) > div.css-175oi2r.r-15zivkp.r-1bymd8e.r-13qz1uu.r-1awozwy > nav > a")
+    profiles[-1].click()
+
+
+    driver.implicitly_wait(15)
+    profile_name = driver.find_element(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div:nth-child(3) > div > div > div > div.css-175oi2r.r-ymttw5.r-ttdzmv.r-1ifxtd0 > div.css-175oi2r.r-6gpygo.r-14gqq1x > div.css-175oi2r.r-1wbh5a2.r-dnmrzs.r-1ny4l3l > div > div.css-175oi2r.r-1wbh5a2.r-dnmrzs.r-1ny4l3l > div > div > span > span:nth-child(1)").text
+    profile_id = driver.find_element(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div:nth-child(3) > div > div > div > div.css-175oi2r.r-ymttw5.r-ttdzmv.r-1ifxtd0 > div.css-175oi2r.r-6gpygo.r-14gqq1x > div.css-175oi2r.r-1wbh5a2.r-dnmrzs.r-1ny4l3l > div > div.css-175oi2r.r-1awozwy.r-18u37iz.r-1wbh5a2 > div > div > div > span").text
+    print(f"profile_name: {profile_name}")
+    print(f"profile_id: {profile_id}")
+    driver.quit()
+
+def search_x(driver, search):
+    driver.get(f"https://twitter.com/search?q={search}&src=typed_query&f=live")
+    driver.implicitly_wait(15)
+    time.sleep(3)
+
+    # 스크롤을 조금씩 내리는 JavaScript 코드
+    scroll_script = """
+        var currentPosition = window.pageYOffset;
+        var targetPosition = currentPosition + 500;
+        var scrollInterval = setInterval(function() {
+            if (currentPosition >= targetPosition) {
+                clearInterval(scrollInterval);
+            } else {
+                window.scrollBy(0, 50);
+                currentPosition += 50;
+            }
+        }, 100);
+    """
+    # 스크롤 횟수
+    scroll_count = 0    
+
+    
+    # 이중리스트, 각 요소는[nickname, user_id, cclear_new_title]
+    # 이전의 요소와 비교하기 위한 리스트임 같으면 안들어감
+    old_titles = []
+
+    # 현재시간으로부터 60분까지의 게시물만 가져온다 -> 1시간 주기로 반복 돌릴 예정  
+    # title_time = 0
+    ongoing = True 
+
+    while ongoing:
+        # if scroll_count == 10: break
+        #if title_time > 30: break
+
+        titles = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div:nth-child(3) > section > div > div > div")
+        
+        for title in titles:
+            #li = title.find_elements(By.CSS_SELECTOR, "div > div > article > div > div > div:nth-child(2) > div:nth-child(2) > div")
+            try:
+                li = title.find_elements(By.CSS_SELECTOR, "div > div > article > div > div > div:nth-child(2) > div:nth-child(2) > div")
+            except:
+                continue
+
+            try:
+                info = li[0].text.split("\n")
+            except:
+                continue
+            
+            # 프로필 url
+            profile_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div > div > a").get_attribute('href')
+            
+            # 게시글 url
+            title_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a").get_attribute('href')
+            
+            # mytesttime
+            mytesttime = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").get_attribute('datetime')
+            #print("mytesttime: ", mytesttime)
+
+            mytesttime2 = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").text
+            #print("mytesttime: ", mytesttime2)
+            
+            # 게시글 시간
+            #title_time = info[-1]
+            title_time = mytesttime2
+
+
+            # 닉네임
+            nickname = info[0]
+
+            # 유저id
+            user_id = info[1]
+            
+            # 게시글
+            new_title = li[1].text
+            clear_new_title = new_title.split()
+            cclear_new_title = ' '.join(clear_new_title)
+
+            # 시간
+            int_title_time = extract_time(title_time)
+            
+            # 현재시간으로부터 30분까지의 내용만 추출하고 종료하겠다. 
+            if int_title_time[-1] == "분" and int(int_title_time[:-1]) > 30:
+                ongoing = False
+                break
+
+            
+            print("nickname: ",nickname)
+            print("user_id: ", user_id)
+            print("profile_url: ", profile_url)
+            print("title_url: ", title_url)
+            print("게시물내용", cclear_new_title)
+            print("게시시간: ", mytesttime)
+            print("현재시간 - 게시시간: ", int_title_time)
+            print()
+            
+
+            fiveth_elements = [item[4] for item in old_titles]
+
+            if cclear_new_title not in fiveth_elements:
+                old_titles.append([nickname, user_id, profile_url, title_url, cclear_new_title, mytesttime, int_title_time])
+
+        # scroll_count 횟수만큼 내리겠다
+        driver.execute_script(scroll_script)
+        scroll_count += 1
+        time.sleep(1.2) 
+    return old_titles
+
+def extract_time(s):
+    # 숫자와 그 뒤에 오는 문자(m 또는 s)를 찾습니다.
+    match = re.search(r"(\d+)(m|s)", s)
+    if match:
+        number = int(match.group(1))  # 숫자 추출
+        unit = match.group(2)         # 단위 추출 (m 또는 s)
+
+        # 단위에 따라 출력문을 결정합니다.
+        if unit == 'm':
+            return f"{number}분"
+        elif unit == 's':
+            return f"{number}초"
+    return "적절한 시간 단위가 포함된 문자열이 아닙니다."
+
+def main():
+    try:
+        # 봇 감지 전처리
+        driver = open_Driver()
+
+        # 1. 최초 한번만 실행, 이후 주석 처리
+        #save_cookie(driver)
+
+        # x login
+        check_login_selenium_x(driver)
+
+        # x profile
+        #get_profile_x(driver)
+
+        # search
+        print("생일카페 검색중...")
+        crawling_list = search_x(driver, "생일카페")
+
+        # print("############################################################")
+        # for contents in crawling_list:
+        #     print("닉네임: ", contents[0])
+        #     print("계정명: ", contents[1])
+        #     print("게시글: ", contents[2])
+        #     # print("게시글: ",''.join(contents[2]))
+        #     print()
+        #     print()
+
+    except Exception as e:
+        print(e)
+        driver.quit()
+        print("강제종료")
+    finally:
+        driver.quit()
+        print("정상종료")
+    
+def main2():
+    # 봇 감지 전처리
+    driver = open_Driver()
+
+    # 1. 최초 한번만 실행, 이후 주석 처리
+    #save_cookie(driver)
+
+    # x login
+    check_login_selenium_x(driver)
+
+    # x profile
+    #get_profile_x(driver)
+
+    # search
+    print("생일카페 검색중...")
+    crawling_list = search_x(driver, "생일카페")
+
+    # print("############################################################")
+    # for contents in crawling_list:
+    #     print("닉네임: ", contents[0])
+    #     print("계정명: ", contents[1])
+    #     print("게시글: ", contents[2])
+    #     # print("게시글: ",''.join(contents[2]))
+    #     print()
+    #     print()
+
+
+    driver.quit()
+
+    print("정상종료")
+    
+
+if __name__ == '__main__':
+    main()
+

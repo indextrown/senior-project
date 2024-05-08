@@ -22,7 +22,7 @@ def open_Driver():
     options = Options()
 
     #options.add_experimental_option("detach", True)
-    options.add_argument("--headless")  # 헤드리스 모드로 실행
+    #options.add_argument("--headless")  # 헤드리스 모드로 실행
 
     # Windows 10 운영 체제에서 Chrome 브라우저를 사용하는 것처럼 보이는 사용자 에이전트가 설정
     options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
@@ -116,13 +116,13 @@ def main():
         driver = open_Driver()
 
         # 1. 최초 한번만 실행, 이후 주석 처리
-        #save_cookie(driver)
+        save_cookie_x(driver)
 
         # x login
-        check_login_selenium_x(driver)
+        #check_login_selenium_x(driver)
 
         # x profile
-        get_profile_x(driver)
+        #get_profile_x(driver)
     except:
         driver.quit()
         print("강제종료")
