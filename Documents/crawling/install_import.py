@@ -1,8 +1,8 @@
 import importlib
 import platform
 import subprocess
-import selenium
-print(selenium.__version__)
+# import selenium
+# print(selenium.__version__)
 class PackageManager:
     def __init__(self):
         self.required_modules = [

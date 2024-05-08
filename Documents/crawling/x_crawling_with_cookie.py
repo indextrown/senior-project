@@ -11,10 +11,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 
-import requests
+#import requests
 import time
 import pickle
-
+import sys
 
 
 # 봇 감지 전처리
@@ -31,7 +31,7 @@ def open_Driver():
     options.add_argument('lang=ko_KR')   
     
     # 브라우저 창의 크기를 지정. 여기서는 너비 430px, 높이 932px로 설정
-    options.add_argument('--window-size=430,932') 
+    options.add_argument('--window-size=932,932') 
     
     # GPU 가속을 비활성화. GPU 가속이 활성화되어 있으면, Chrome이 GPU를 사용하여 그래픽을 렌더링하려고 시도할 수 있기때문. 일부 환경에서는 GPU 가속이 문제를 일으킬 수 있으므로 이 옵션을 사용하여 비활성화
     options.add_argument('--disable-gpu')
@@ -51,7 +51,6 @@ def open_Driver():
     # service = Service(executable_path=ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
 
     return driver
 
@@ -78,6 +77,23 @@ def check_login_selenium_x(driver):
     
     driver.refresh()
     driver.implicitly_wait(15)
+    time.sleep(1)
+
+
+    print("로그인 확인중")
+    cur_url = driver.current_url
+    # print("현재 URL 마지막 경로: ", cur_url)
+    # print("현재 URL 마지막 경로: ", cur_url[-4:])
+
+    
+    if (cur_url[-4:] == "home"):
+        print("로그인 성공")
+    else:
+        print("로그인 실패로 프로그램 종료합니다.")
+        sys.exit()
+        
+
+
 
 # x 프로필 정보 가져오기
 def get_profile_x(driver):
@@ -95,17 +111,24 @@ def get_profile_x(driver):
 
 
 def main():
-    # 봇 감지 전처리
-    driver = open_Driver()
+    try:
+        # 봇 감지 전처리
+        driver = open_Driver()
 
-    # 1. 최초 한번만 실행, 이후 주석 처리
-    #save_cookie(driver)
+        # 1. 최초 한번만 실행, 이후 주석 처리
+        #save_cookie(driver)
 
-    # x login
-    check_login_selenium_x(driver)
+        # x login
+        check_login_selenium_x(driver)
 
-    # x profile
-    get_profile_x(driver)
+        # x profile
+        get_profile_x(driver)
+    except:
+        driver.quit()
+        print("강제종료")
+    finally:
+        driver.quit()
+        print("정상종료")
     
 
 if __name__ == '__main__':
