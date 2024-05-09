@@ -7,6 +7,7 @@
 - Selenium
 - Beautifulsoup4
 
+
 ### Requests
 파이썬에서 동작하는 작고 빠른 브라우저 웹서버로부터 초기 HTML만 받고  
 추가 CSS/JavaScript 처리 하지 못한다. 거의 모든 플랫폼에서 구동 가능하다.  
