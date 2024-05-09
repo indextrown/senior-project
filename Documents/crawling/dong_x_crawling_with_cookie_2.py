@@ -50,8 +50,6 @@ def open_Driver():
     # 자동화를 비활성화. 이 옵션은 Chrome이 자동화 도구에 의해 제어되는 것으로 감지되는 것을 방지
     options.add_argument('--disable-automation')
 
-    # service = Service(executable_path=ChromeDriverManager().install())
-    # driver = webdriver.Chrome(service=service, options=options)
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     return driver
@@ -151,29 +149,55 @@ def search_x(driver, search):
             #li = title.find_elements(By.CSS_SELECTOR, "div > div > article > div > div > div:nth-child(2) > div:nth-child(2) > div")
             try:
                 li = title.find_elements(By.CSS_SELECTOR, "div > div > article > div > div > div:nth-child(2) > div:nth-child(2) > div")
-            except:
-                continue
-
-            try:
                 info = li[0].text.split("\n")
-            except:
-                continue
-            
-            try:
+
                 # 프로필 url
                 profile_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div > div > a").get_attribute('href')
                 
                 # 게시글 url
                 title_url = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a").get_attribute('href')
                 
-                # mytesttime
+                # 게시시간
                 mytesttime = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").get_attribute('datetime')
                 #print("mytesttime: ", mytesttime)
 
+                # 현재시간 - 게시시간
                 mytesttime2 = li[0].find_element(By.CSS_SELECTOR, "div > div > div > div > div:nth-child(2) > div > div:nth-child(3) > a > time").text
                 #print("mytesttime: ", mytesttime2)
             except:
                 continue
+
+            # # 현재 탭의 핸들 저장
+            # original_tab = driver.current_window_handle
+
+            # # 새 탭을 열지 여부를 결정하기 위해 현재 열린 탭의 수 확인
+            # if len(driver.window_handles) == 1:  # 현재 하나의 탭만 열려 있는 경우
+            #     # 새 탭 열기
+            #     driver.execute_script("window.open('');")
+
+            # # 새 탭으로 전환 (새 탭이 이미 있었다면 그 탭으로, 새로 열었다면 새 탭으로 전환)
+            # new_tab = [tab for tab in driver.window_handles if tab != original_tab][0]
+            # driver.switch_to.window(new_tab)
+
+            # # 새 탭에서 원하는 페이지 열기
+            # driver.get(profile_url)
+            # driver.implicitly_wait(15)
+            # time.sleep(1)
+
+            # # 자기소개
+            # try:
+            #     introduce = driver.find_element(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div.css-175oi2r.r-kemksi.r-1kqtdi0.r-13l2t4g.r-1ljd8xs.r-1phboty.r-16y2uox.r-184en5c.r-61z16t.r-11wrixw.r-1jgb5lz.r-13qz1uu.r-1ye8kvj > div > div:nth-child(3) > div > div > div > div.css-175oi2r.r-ymttw5.r-ttdzmv.r-1ifxtd0").text.split()
+            #     introduce = ' '.join(introduce)
+            # except:
+            #     introduce = None
+
+            # # input()
+
+            # # 새 탭 닫기
+            # driver.close()
+
+            # # 원래 탭으로 돌아오기
+            # driver.switch_to.window(original_tab)
 
             # 게시글 시간
             #title_time = info[-1]
@@ -214,11 +238,68 @@ def search_x(driver, search):
             
 
             fiveth_elements = [item[4] for item in old_titles]
-            #print(fiveth_elements)
+            #####
+            try:
+                # 현재 탭의 핸들 저장
+                original_tab = driver.current_window_handle
 
+                # 새 탭을 열지 여부를 결정하기 위해 현재 열린 탭의 수 확인
+                if len(driver.window_handles) == 1:  # 현재 하나의 탭만 열려 있는 경우
+                    # 새 탭 열기
+                    driver.execute_script("window.open('');")
+
+                # 새 탭으로 전환 (새 탭이 이미 있었다면 그 탭으로, 새로 열었다면 새 탭으로 전환)
+                new_tab = [tab for tab in driver.window_handles if tab != original_tab][0]
+                driver.switch_to.window(new_tab)
+
+                # 새 탭에서 원하는 페이지 열기
+                driver.get(profile_url)
+                driver.implicitly_wait(15)
+                time.sleep(1)
+                # print(driver.page_source)
+                # input()
+
+
+                 # 자기소개
+                info = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div:nth-child(3) > div > div > div > div > div:nth-child(n+2)")
+            
+                # 각 요소의 텍스트를 하나의 문자열로 결합
+                # all_text = "".join([element.text for element in info])
+                # 각 요소의 텍스트를 공백으로 분리하고 다시 합치기
+                introduce = " ".join([" ".join(element.text.split()) for element in info])
+
+                # 자기소개
+                # try:
+                #     introduce = driver.find_element(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div.css-175oi2r.r-kemksi.r-1kqtdi0.r-13l2t4g.r-1ljd8xs.r-1phboty.r-16y2uox.r-184en5c.r-61z16t.r-11wrixw.r-1jgb5lz.r-13qz1uu.r-1ye8kvj > div > div:nth-child(3) > div > div > div > div.css-175oi2r.r-ymttw5.r-ttdzmv.r-1ifxtd0").text.split()
+                #     introduce = ' '.join(introduce)
+                # except:
+                #     introduce = None
+
+                # 새 탭 닫기
+                driver.close()
+
+                # 원래 탭으로 돌아오기
+                driver.switch_to.window(original_tab)
+            except:
+                # 새 탭 닫기
+                driver.close()
+
+                # 원래 탭으로 돌아오기
+                driver.switch_to.window(original_tab)
+
+            ####
             if url_gap not in fiveth_elements:
-                old_titles.append([nickname, user_id, profile_url, title_url, url_gap, cclear_new_title, mytesttime, int_title_time])
-
+                old_titles.append([nickname, user_id, profile_url, title_url, url_gap, cclear_new_title, mytesttime, int_title_time, introduce])
+                print("nickname: ",nickname)
+                print("user_id: ", user_id)
+                print("profile_url: ", profile_url)
+                print("title_url: ", title_url)
+                print("gap: ", url_gap)
+                print("게시물내용: ", cclear_new_title)
+                print("게시시간: ", mytesttime)
+                print("현재시간 - 게시시간: ", int_title_time)
+                print("자기소개: ", introduce)
+                print()
         # scroll_count 횟수만큼 내리겠다
         driver.execute_script(scroll_script)
         scroll_count += 1
@@ -247,20 +328,6 @@ def extract_last_part(url):
     last_part = parts[-1] if parts[-1] != '' else parts[-2]  # 마지막이 빈 문자열인 경우를 대비
     return last_part
 
-# def find_unique_parts(url1, url2):
-#     # URL 파싱
-#     parsed_url1 = urlparse(url1)
-#     parsed_url2 = urlparse(url2)
-    
-#     # 경로 분리
-#     path1 = parsed_url1.path
-#     path2 = parsed_url2.path
-    
-#     # 고유 부분 추출
-#     unique_path1 = path1.replace(path2, '') if path2.startswith(path1) else path1
-#     unique_path2 = path2.replace(path1, '') if path1.startswith(path2) else path2
-    
-#     return unique_path1, unique_path2
 
 def main():
     try:
@@ -321,16 +388,16 @@ def main2():
         # print("게시글: ", contents[2])
         # # print("게시글: ",''.join(contents[2]))
         # print()
-        print()
+
         print("닉네임: ",contents[0])
         print("유저id: ", contents[1])
         print("프로필url: ", contents[2])
         print("게시물_url: ", contents[3])
         print("게시물고유코드: ", contents[4])
-        print("게시물내용", contents[5])
+        print("게시물내용: ", contents[5])
         print("게시시간: ", contents[6])
-        
         print("현재시간 - 게시시간: ", contents[7])
+        print("자기소개: ", contents[8])
         print()
 
 
@@ -342,3 +409,29 @@ def main2():
 if __name__ == '__main__':
     main2()
 
+
+
+
+
+
+
+
+
+
+
+
+
+# def find_unique_parts(url1, url2):
+#     # URL 파싱
+#     parsed_url1 = urlparse(url1)
+#     parsed_url2 = urlparse(url2)
+    
+#     # 경로 분리
+#     path1 = parsed_url1.path
+#     path2 = parsed_url2.path
+    
+#     # 고유 부분 추출
+#     unique_path1 = path1.replace(path2, '') if path2.startswith(path1) else path1
+#     unique_path2 = path2.replace(path1, '') if path1.startswith(path2) else path2
+    
+#     return unique_path1, unique_path2
