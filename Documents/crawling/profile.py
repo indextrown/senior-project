@@ -54,18 +54,6 @@ def open_Driver():
 
     return driver
 
-
-# x 쿠키 저장 함수
-def save_cookie_x(driver):
-    url = 'https://www.twitter.com/'
-    driver.get(url)
-
-    # 30초 이내 로그인
-    time.sleep(30)
-    pickle.dump(driver.get_cookies(), open('x_cookies.pkl', 'wb')) 
-
-    driver.quit()
-
 # 셀레니움에서 쿠키 정상 동작 확인
 def check_login_selenium_x(driver):
     url = 'https://www.twitter.com'
@@ -167,10 +155,7 @@ def search_x(driver, search):
             except:
                 continue
 
-            # 게시글 시간
-            #title_time = info[-1]
             title_time = mytesttime2
-
 
             # 닉네임
             nickname = info[0]
@@ -206,52 +191,9 @@ def search_x(driver, search):
             
 
             fiveth_elements = [item[4] for item in old_titles]
+            #####
+            introduce = pages_info(driver, profile_url)
 
-            ############### 자기소개부분 ###############
-            # try:
-            #     # 현재 탭의 핸들 저장
-            #     original_tab = driver.current_window_handle
-
-            #     # 새 탭을 열지 여부를 결정하기 위해 현재 열린 탭의 수 확인
-            #     if len(driver.window_handles) == 1:  # 현재 하나의 탭만 열려 있는 경우
-            #         # 새 탭 열기
-            #         driver.execute_script("window.open('');")
-
-            #     # 새 탭으로 전환 (새 탭이 이미 있었다면 그 탭으로, 새로 열었다면 새 탭으로 전환)
-            #     new_tab = [tab for tab in driver.window_handles if tab != original_tab][0]
-            #     driver.switch_to.window(new_tab)
-
-            #     # 새 탭에서 원하는 페이지 열기
-            #     driver.get(profile_url)
-            #     driver.implicitly_wait(15)
-            #     time.sleep(1)
-            #     # print(driver.page_source)
-            #     # input()
-
-            #     try:
-            #         # 자기소개
-            #         info = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div:nth-child(3) > div > div > div > div > div:nth-child(n+2)")
-                
-            #         # 각 요소의 텍스트를 하나의 문자열로 결합
-            #         # all_text = "".join([element.text for element in info])
-            #         # 각 요소의 텍스트를 공백으로 분리하고 다시 합치기
-            #         introduce = " ".join([" ".join(element.text.split()) for element in info])
-            #     except:
-            #         introduce = "NULL"
-            #     finally:
-            #         # 새 탭 닫기
-            #         driver.close()
-
-            #         # 원래 탭으로 돌아오기
-            #         driver.switch_to.window(original_tab)
-            # except:
-            #     # 새 탭 닫기
-            #     driver.close()
-
-            #     # 원래 탭으로 돌아오기
-            #     driver.switch_to.window(original_tab)
-            ############### 자기소개부분 ###############
-            introduce = "NULL"
             ####
             if url_gap not in fiveth_elements:
                 old_titles.append([nickname, user_id, profile_url, title_url, url_gap, cclear_new_title, mytesttime, int_title_time, introduce])
@@ -264,8 +206,8 @@ def search_x(driver, search):
                 print("게시시간: ", mytesttime)
                 print("현재시간 - 게시시간: ", int_title_time)
                 print("자기소개: ", introduce)
+                input()
                 print()
-
         # scroll_count 횟수만큼 내리겠다
         driver.execute_script(scroll_script)
         scroll_count += 1
@@ -294,6 +236,64 @@ def extract_last_part(url):
     last_part = parts[-1] if parts[-1] != '' else parts[-2]  # 마지막이 빈 문자열인 경우를 대비
     return last_part
 
+def pages_info(driver, profile_url):
+    try:
+        # 현재 탭의 핸들 저장
+        original_tab = driver.current_window_handle
+
+        # 새 탭을 열지 여부를 결정하기 위해 현재 열린 탭의 수 확인
+        if len(driver.window_handles) == 1:  # 현재 하나의 탭만 열려 있는 경우
+            # 새 탭 열기
+            driver.execute_script("window.open('');")
+
+        # 새 탭으로 전환 (새 탭이 이미 있었다면 그 탭으로, 새로 열었다면 새 탭으로 전환)
+        new_tab = [tab for tab in driver.window_handles if tab != original_tab][0]
+        driver.switch_to.window(new_tab)
+
+        # 새 탭에서 원하는 페이지 열기
+        driver.get(profile_url)
+        driver.implicitly_wait(15)
+        time.sleep(1)
+
+        # 자기소개
+        info = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div:nth-child(3) > div > div > div > div > div:nth-child(n+2)")
+    
+        # 각 요소의 텍스트를 하나의 문자열로 결합
+        # all_text = "".join([element.text for element in info])
+        # 각 요소의 텍스트를 공백으로 분리하고 다시 합치기
+        all_text = " ".join([" ".join(element.text.split()) for element in info])
+
+
+        # 결합된 텍스트 출력
+        print(all_text)
+
+        # 새 탭 닫기
+        driver.close()
+
+        # 원래 탭으로 돌아오기
+        driver.switch_to.window(original_tab)
+    except:
+        # 새 탭 닫기
+        driver.close()
+
+        # 원래 탭으로 돌아오기
+        driver.switch_to.window(original_tab)
+
+
+                
+    driver.get("https://twitter.com/fiveduck_kr")
+    driver.implicitly_wait(15)
+    info = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div > div > div:nth-child(3) > div > div > div > div > div:nth-child(n+2)")
+
+    # 각 요소의 텍스트를 하나의 문자열로 결합
+    # all_text = "".join([element.text for element in info])
+    # 각 요소의 텍스트를 공백으로 분리하고 다시 합치기
+    all_text = " ".join([" ".join(element.text.split()) for element in info])
+    return all_text
+
+
+    
+    
 
 def main():
     try:
@@ -314,17 +314,13 @@ def main():
         crawling_list = search_x(driver, "생일카페")
 
         # print("############################################################")
-        for contents in crawling_list:
-            print("닉네임: ",contents[0])
-            print("유저id: ", contents[1])
-            print("프로필url: ", contents[2])
-            print("게시물_url: ", contents[3])
-            print("게시물고유코드: ", contents[4])
-            print("게시물내용: ", contents[5])
-            print("게시시간: ", contents[6])
-            print("현재시간 - 게시시간: ", contents[7])
-            print("자기소개: ", contents[8])
-            print()
+        # for contents in crawling_list:
+        #     print("닉네임: ", contents[0])
+        #     print("계정명: ", contents[1])
+        #     print("게시글: ", contents[2])
+        #     # print("게시글: ",''.join(contents[2]))
+        #     print()
+        #     print()
 
     except Exception as e:
         print(e)
@@ -344,6 +340,8 @@ def main2():
     # x login
     check_login_selenium_x(driver)
 
+
+
     # x profile
     #get_profile_x(driver)
 
@@ -352,23 +350,23 @@ def main2():
     crawling_list = search_x(driver, "생일카페")
 
     # print("############################################################")
-    for contents in crawling_list:
-        # print("닉네임: ", contents[0])
-        # print("계정명: ", contents[1])
-        # print("게시글: ", contents[2])
-        # # print("게시글: ",''.join(contents[2]))
-        # print()
+    # for contents in crawling_list:
+    #     # print("닉네임: ", contents[0])
+    #     # print("계정명: ", contents[1])
+    #     # print("게시글: ", contents[2])
+    #     # # print("게시글: ",''.join(contents[2]))
+    #     # print()
 
-        print("닉네임: ",contents[0])
-        print("유저id: ", contents[1])
-        print("프로필url: ", contents[2])
-        print("게시물_url: ", contents[3])
-        print("게시물고유코드: ", contents[4])
-        print("게시물내용: ", contents[5])
-        print("게시시간: ", contents[6])
-        print("현재시간 - 게시시간: ", contents[7])
-        # print("자기소개: ", contents[8])
-        print()
+    #     print("닉네임: ",contents[0])
+    #     print("유저id: ", contents[1])
+    #     print("프로필url: ", contents[2])
+    #     print("게시물_url: ", contents[3])
+    #     print("게시물고유코드: ", contents[4])
+    #     print("게시물내용: ", contents[5])
+    #     print("게시시간: ", contents[6])
+    #     print("현재시간 - 게시시간: ", contents[7])
+    #     print("자기소개: ", contents[8])
+    #     print()
 
 
     driver.quit()
@@ -388,20 +386,3 @@ if __name__ == '__main__':
 
 
 
-
-
-
-# def find_unique_parts(url1, url2):
-#     # URL 파싱
-#     parsed_url1 = urlparse(url1)
-#     parsed_url2 = urlparse(url2)
-    
-#     # 경로 분리
-#     path1 = parsed_url1.path
-#     path2 = parsed_url2.path
-    
-#     # 고유 부분 추출
-#     unique_path1 = path1.replace(path2, '') if path2.startswith(path1) else path1
-#     unique_path2 = path2.replace(path1, '') if path1.startswith(path2) else path2
-    
-#     return unique_path1, unique_path2
