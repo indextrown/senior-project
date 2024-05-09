@@ -1,8 +1,9 @@
 import pymysql
 import json
 
-js_file = open()
-js_file = json(js_file)
+with open("data.json", "r") as file:
+    # JSON 데이터 읽기
+    js_data = json.load(file)
 
 # MySQL 서버에 연결
 conn = pymysql.connect(
@@ -13,3 +14,12 @@ conn = pymysql.connect(
 )
 cur = conn.cursor()
 
+for i in js_data:
+    try:
+        sql = ""
+        cur.execute(sql)
+    except:
+        continue;
+
+conn.commit()
+conn.close()
