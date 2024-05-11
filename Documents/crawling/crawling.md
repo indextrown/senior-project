@@ -88,7 +88,16 @@ WebDriver가 JavaScript를 실행한 뒤에 Selenium으로 HTML에 접근하면 
 ### 결론
 트위터를 먼저 진행하려고 하였으나 Selenium으로 접근하더라도 스크롤을 내릴 때마다 태그의 위치가 무작위로 바뀌어버림. 그래서 먼저 request로 접근할 수 있는 사이트를 선택하였다.
 크롤링 하려는 대상 사이트[팬던십]가 js 동작이 거의 없고, 초기 HTML 내용만으로 파싱이 가능하다고 판단하였기 떄문에 requests와 beautifulsoup4로 크롤링 진행하였다. 
-![image](https://github.com/indextrown/senior-project/assets/69367698/ca7e1970-6015-4e1b-9eaf-c32e20870552)
+![image](https://github.com/indextrown/senior-project/assets/69367698/ca7e1970-6015-4e1b-9eaf-c32e20870552)   
+
+
+### 중간고사 이후~
+크롤링 문제점 파악 및 방향성 결정.  
+팬던십 사이트는 사용자가 직접 생일카페 일정을 작성하여 데이터 수집은 용이하나 최신 정보 제공이 어려움.  
+
+이를 해결하기 위해 x크롤링을 시도하였음.  
+
+
 
 
 
