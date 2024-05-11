@@ -98,7 +98,7 @@ WebDriver가 JavaScript를 실행한 뒤에 Selenium으로 HTML에 접근하면 
 
 
 ### X 사이트 봇 탐지 우회
-<img width="175" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/33622c1c-55d9-4e3e-9fad-f99e605695c0">
+<img width="500" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/33622c1c-55d9-4e3e-9fad-f99e605695c0">
 
 계정이 봇으로 탐지되는 이유:  
 - 트위터에서 x로 바뀌면서 API 유료화 및 크롤링 금지 선언.  
