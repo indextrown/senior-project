@@ -94,8 +94,13 @@ WebDriver가 JavaScript를 실행한 뒤에 Selenium으로 HTML에 접근하면 
 ### 중간고사 이후~
 크롤링 문제점 파악 및 방향성 결정.  
 팬던십 사이트는 사용자가 직접 생일카페 일정을 작성하여 데이터 수집은 용이하나 최신 정보 제공이 어려움.  
+이를 해결하기 위해 x크롤링을 시도하였음.    
 
-이를 해결하기 위해 x크롤링을 시도하였음.  
+
+### X 사이트 봇 탐지 우회
+<img width="121" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/eb6f1e3c-b3a6-43b5-a7d0-6a740fb3bb2a">
+
+
 
 
 
