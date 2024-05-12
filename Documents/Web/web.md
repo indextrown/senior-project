@@ -13,6 +13,12 @@
   - Java
   - Spring Boot
 
+## 웹 플로우차트
+- ver_1
+
+  <img width="880" alt="웹 플로우차트_1" src="https://github.com/indextrown/senior-project/assets/162666567/69d81124-eec2-420e-89be-2da53bdeda4b">
+
+
 ## 프로젝트 구성
 1. **프론트엔드 개발**:
    - HTML, JavaScript, CSS를 사용하여 사용자 인터페이스를 개발합니다.
