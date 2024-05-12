@@ -106,7 +106,8 @@ WebDriver가 JavaScript를 실행한 뒤에 Selenium으로 HTML에 접근하면 
 
 ### [해결 아이디어]  
 로그인 과정을 거치지 않고    
-로그인 상태로 접근이 가능할까?     
+로그인 상태로 접근이 가능할까?    
+
 <img width="437" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/970b0000-75ce-4583-9857-064136b35db5">
 
 쿠키는 웹사이트가 사용자의 브라우저에 저장하는 작은 데이터 조각이다. 
