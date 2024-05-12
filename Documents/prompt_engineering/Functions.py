@@ -3,7 +3,6 @@
 
 {
   "name": "summary_bot",
-  "description": "요약처리기",
   "parameters": {
     "type": "object",
     "properties": {
@@ -16,10 +15,13 @@
       "작성자": {
         "type": "string"
       },
-      "날짜": {
+      "일정": {
         "type": "string"
       },
       "장소": {
+        "type": "string"
+      },
+      "게시글_url": {
         "type": "string"
       }
     },
@@ -27,8 +29,10 @@
       "순번",
       "가수",
       "작성자",
-      "날짜",
-      "장소"
+      "일정",
+      "장소",
+      "게시물_url"
     ]
-  }
+  },
+  "description": "요약처리기"
 }
