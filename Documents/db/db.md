@@ -1,0 +1,7 @@
+<span style="font-size: 20px">2024/05/09
+1. python to sql 시작  
+2. 샘플 데이터 추가
+
+<span style="font-size: 20px">2024/05/12
+1. MySQL 테이블 구조 변경  
+2. MySQL에 새로 들어오는 데이터에 대해 중복 필터링 및 기존 데이터와의 중복 필터링 후 추가하는 작업 완료
