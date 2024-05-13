@@ -9,6 +9,7 @@ t2.micro의 램은 1GB인데 실제로 사용 가능한 램은 280MB였어서 Me
   
 이를 해결하기 위해 스왑영역을 생성해서 해결하였다.  
 
+<img width="567" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/ed374e13-71a9-4000-9fb1-480e972a1ae5">
 
 ```bash
 free
@@ -41,7 +42,8 @@ sudo vi /etc/fstab
 ```bash
 /swapfile swap swap defaults 0 0
 ```   
-  
+<img width="571" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/3db67fc1-011b-4d14-b1b5-6570ac485400">
+
 ```bash
 free
 ```  
