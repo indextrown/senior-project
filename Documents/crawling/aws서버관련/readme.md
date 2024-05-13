@@ -23,11 +23,11 @@ sudo dd if=/dev/zero of=/swapfile bs=128M count=16
 ```bash
 sudo chmod 600 /swapfile
 ```  
-### Linux 스왑 영역을 설정합니다.
+### Linux 스왑 영역을 설정
 ```bash
 sudo mkswap /swapfile
 ```  
-### 스왑 공간에 스왑 파일을 추가하여 스왑 파일을 즉시 사용할 수 있도록 함.
+### 스왑 공간에 스왑 파일을 추가하여 스왑 파일을 즉시 사용할 수 있도록 함
 ```bash
 sudo swapon /swapfile
 ```
