@@ -9,6 +9,11 @@ t2.micro의 램은 1GB인데 실제로 사용 가능한 램은 280MB였어서 Me
   
 이를 해결하기 위해 스왑영역을 생성해서 해결하였다.  
 
+
+```bash
+free
+```    
+
 ```bash
 sudo dd if=/dev/zero of=/swapfile bs=128M count=16
 ```    
