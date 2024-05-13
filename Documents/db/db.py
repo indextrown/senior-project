@@ -65,10 +65,11 @@ def getfromTable(dic) -> dict: #테이블에서 데이터 중복 확인 후 중�
         for j in i.keys():
             if i[j] != "":
                 sql += keys[j] + " = \'" + i[j] + "\' AND "
-        sql = sql[:-5]
 
         if sql == "WHERE  ":
            raise "Input data's all values are None."
+        
+        sql = sql[:-5]
         cur.execute("SELECT * FROM Data " + sql + ";")
 
         row = cur.fetchone()
