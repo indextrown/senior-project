@@ -1,7 +1,45 @@
 ![image](https://github.com/indextrown/senior-project/assets/69367698/02a52316-37f7-40b6-be0b-fc439b421f0a)
 ### [긴급]AWS EC2 CPU 부하 문제 발생
 AWS EC2 서버에서 X 크롤링을 매 30분마다 자동으로 실행 중 새벽에 CPU 부하가 발생하였음.  
-크롬 드라이버가 정상 종료되지 않고 코드가 계속 실행되어 문제가 발생한 것으로 추정됨.  
+~~크롬 드라이버가 정상 종료되지 않고 코드가 계속 실행되어 문제가 발생한 것으로 추정됨.~~  
+-> 크롬 드라이버 문제가 아닌 aws ec2 Memory 부족 문제이다.  
+  
+
+t2.micro의 램은 1GB인데 실제로 사용 가능한 램은 280MB였어서 Memory 사용률 과다로 CPU 사용률이 100%가 된 것으로 판단되었다.   
+  
+이를 해결하기 위해 스왑영역을 생성해서 해결하였다.  
+
+```bash
+sudo dd if=/dev/zero of=/swapfile bs=128M count=16
+```    
+
+```bash
+sudo chmod 600 /swapfile
+```  
+  
+```bash
+sudo mkswap /swapfile
+```  
+
+```bash
+sudo swapon /swapfile
+```
+
+```bash
+sudo swapon -s  
+```    
+
+```bash
+sudo vi /etc/fstab
+```   
+
+```bash
+/swapfile swap swap defaults 0 0
+```   
+  
+```bash
+free
+```  
 
 
 ### [해결방안]  
