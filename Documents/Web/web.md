@@ -1,4 +1,4 @@
-# HTML, JavaScript, CSS, Java, Spring Boot를 사용한 웹 애플리케이션 프로젝트(생일 카페 중개 플랫폼)
+# 생일 카페 중개 플랫폼 웹 프로젝트
 
 ## 프로젝트 소개
 이 프로젝트는 HTML, JavaScript, CSS를 사용하여 프론트엔드를 구성하고, Java와 Spring Boot를 사용하여 백엔드를 구축하여 웹 애플리케이션을 개발하는 것을 목표로 한다.
