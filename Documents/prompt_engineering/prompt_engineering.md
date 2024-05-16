@@ -36,3 +36,16 @@
 
 　![image](https://github.com/indextrown/senior-project/assets/125960190/f4672022-70af-4075-8a8d-06c837bb34a7)    
 　　트위터 데이터만을 이용하여 출력해본 결과
+
+### 이슈 해결
+
+1. GPT 4o 공개 이후 사이트에서도 10줄 이상이 다시 잘 입력되는 모습을 보여줌
+
+2. GPT 4o 이후 여전히 필요없는 데이터도 많이 나오나 정제되는 데이터가 나오기 시작 한 것을 확인
+   ![트위터에서 데이터 하나 성공](https://github.com/indextrown/senior-project/assets/125960190/b7af2ef9-7655-4656-ae1d-b9294f9793d8)
+   
+   X 데이터에서 추출된 결과
+
+   이후 쓰레기 데이터를 정체 하기 위해 파이썬 코드를 이용 하여 데이터 정제를 시도
+   ![image](https://github.com/indextrown/senior-project/assets/125960190/72bff333-d374-44ba-80d0-36802b0b1dea)
+
