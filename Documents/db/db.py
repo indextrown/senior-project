@@ -43,15 +43,21 @@ def makeTable(name):  # 테이블 제작 함수
 def insertData(dic, name):  # 데이터 추가 쿼리
     if len(dic) == 0:  # 입력에 데이터가 없으면 그냥 끝
         return
-    sql = "INSERT INTO {} (celebrity, uploader, date, place, post_url) VALUES ".format(name)
+    # sql = "INSERT INTO {} (celebrity, uploader, date, place, post_url) VALUES ".format(name)
+    columns = ",".join(map(str, list(keys.values())))
+
+    columns_list = tuple(keys.keys())
+    data = ""
     for i in dic.values():
-        i = tuple(i.values())
-        sql += "("
-        for j in i:
-            sql += "\'" + j + "\',"
-        sql = sql[:-1]
-        sql += "),"
-    sql = sql[:-1] + ";"
+        row_data = ["NULL" for _ in range(len(keys))]
+        for j in i: #i의 key들을 순차적으로 갖고옴
+            if j in keys:
+                row_data[columns_list.index(j)] = 'NULL' if i[j] == None else "'" + i[j] + "'"
+
+        data += "(" + ",".join(map(str, row_data)) + "),"
+
+
+    sql = "INSERT INTO {} ({}) VALUES {};".format(name, columns, data[:-1])
 
     cur.execute(sql)
     conn.commit()
@@ -90,23 +96,21 @@ def getfromTable(dic) -> dict:  # 테이블에서 데이터 중복 확인 후 �
 
     return data
 
-
 def reset_auto_increment():
     makeTable("tmp")  # 기존 테이블의 내용을 백업할 테이블
     cur.execute("SELECT * FROM Data;")
     dic, data = dict(), cur.fetchall()  #
 
     for idx, value in enumerate(data):
-        dic[str(idx + 1)] = {_value: value[_idx + 1] for _idx, _value in enumerate(keys.values())}
+        dic[str(idx + 1)] = {_value: value[_idx + 1] for _idx, _value in enumerate(keys.keys())}
 
     insertData(dic, "tmp")
     cur.execute("DROP TABLE Data;")
     cur.execute("RENAME TABLE tmp TO Data;")
     conn.commit()
 
-
 # 새로 들어오는 데이터들
-with open("output_data2.json", "r") as file:
+with open("output_data.json", "r") as file:
     # JSON 데이터 읽기
     js_data = json.load(file)
 
