@@ -43,7 +43,6 @@ def makeTable(name):  # 테이블 제작 함수
 def insertData(dic, name):  # 데이터 추가 쿼리
     if len(dic) == 0:  # 입력에 데이터가 없으면 그냥 끝
         return
-    # sql = "INSERT INTO {} (celebrity, uploader, date, place, post_url) VALUES ".format(name)
     columns = ",".join(map(str, list(keys.values())))
 
     columns_list = tuple(keys.keys())
@@ -51,11 +50,12 @@ def insertData(dic, name):  # 데이터 추가 쿼리
     for i in dic.values():
         row_data = ["NULL" for _ in range(len(keys))]
         for j in i: #i의 key들을 순차적으로 갖고옴
-            if j in keys:
-                row_data[columns_list.index(j)] = 'NULL' if i[j] == None else "'" + i[j] + "'"
+            if i[j] != None: #None 처리 이유: reset_auto_increment()에서 NULL값을 None으로 가져와서
+                row_data[columns_list.index(j)] = "'" + i[j] + "'"
 
+        if row_data[0] == "NULL" or row_data[2] == "NULL" or row_data[3] == "NULL":
+            continue
         data += "(" + ",".join(map(str, row_data)) + "),"
-
 
     sql = "INSERT INTO {} ({}) VALUES {};".format(name, columns, data[:-1])
 
@@ -80,17 +80,16 @@ def getfromTable(dic) -> dict:  # 테이블에서 데이터 중복 확인 후 �
     for i in dic.values():
         sql = "WHERE  "
         for j in i.keys():
-            if i[j] != "":
-                sql += keys[j] + " = \'" + i[j] + "\' AND "
+            sql += keys[j] + " = \'" + i[j] + "\' AND "
 
         if sql == "WHERE  ":
             raise "Input data's all values are None."
 
-        sql = sql[:-5]
+        sql = sql[:-5] #맨 뒤에 AND가 공란 포함 5글자임
         cur.execute("SELECT * FROM Data " + sql + ";")
 
         row = cur.fetchone()
-        if row == None:  # 기존 테이블에 이미 자료가 있음
+        if row == None:  # 테이블에 자료 없음
             data[str(num)] = i
             num += 1
 
