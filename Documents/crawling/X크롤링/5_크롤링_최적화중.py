@@ -9,12 +9,19 @@ from selenium.webdriver.common.keys import Keys
 import time
 import sys
 import re
+<<<<<<< HEAD
 
 
 
 
 # 게시글 내부 금지어
 ban_list = ["판매", "양도", "구매", "대리"]
+=======
+import requests
+
+
+ban_list = ["다현, 플라워샵", "정대만", "럭키드로우", "오레오", "박지훈"]
+>>>>>>> f19b641 (서버최적화)
 
 # 전역 변수 선언
 driver = None
@@ -27,7 +34,11 @@ def open_Driver():
     options = Options()
 
     #options.add_experimental_option("detach", True)
+<<<<<<< HEAD
     #options.add_argument("--headless")  # 헤드리스 모드로 실행
+=======
+    options.add_argument("--headless")  # 헤드리스 모드로 실행
+>>>>>>> f19b641 (서버최적화)
 
     # Windows 10 운영 체제에서 Chrome 브라우저를 사용하는 것처럼 보이는 사용자 에이전트가 설정
     options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
@@ -69,11 +80,16 @@ def check_login_selenium_x():
 
     driver.refresh()
     driver.implicitly_wait(15)
+<<<<<<< HEAD
+=======
+    time.sleep(1)
+>>>>>>> f19b641 (서버최적화)
 
     cur_url = driver.current_url
 
     
     if (cur_url[-4:] == "home"):
+<<<<<<< HEAD
         #print("로그인 성공")
         return True;
     else:
@@ -81,6 +97,16 @@ def check_login_selenium_x():
         sys.exit()
         return False;
 
+=======
+        print("로그인 성공")
+        return True;
+    else:
+        print("로그인 실패로 프로그램 종료합니다.")
+        sys.exit()
+        return False;
+
+# url고유 번호
+>>>>>>> f19b641 (서버최적화)
 def extract_last_part(url):
     # URL을 '/'로 분리
     parts = url.split('/')
@@ -88,6 +114,10 @@ def extract_last_part(url):
     last_part = parts[-1] if parts[-1] != '' else parts[-2]  # 마지막이 빈 문자열인 경우를 대비
     return last_part
 
+<<<<<<< HEAD
+=======
+# 정규표현식 파싱
+>>>>>>> f19b641 (서버최적화)
 def extract_time(s):
     # 숫자와 그 뒤에 오는 문자(m 또는 s)를 찾습니다.
     match = re.search(r"(\d+)(m|s)", s)
@@ -238,6 +268,10 @@ def main():
             print("진행 시작")
             crawling_list = search_x("생일카페")
         
+<<<<<<< HEAD
+=======
+
+>>>>>>> f19b641 (서버최적화)
         # file i/o
         with open("output.txt", "a") as file:
             for contents in crawling_list:
@@ -249,9 +283,17 @@ def main():
         print(e)
         print("err")
     finally:
+<<<<<<< HEAD
         driver.quit()
 
 if __name__ == "__main__":
+=======
+        print("종료")
+        driver.quit()
+
+if __name__ == "__main__":
+    # 코드 실행시 slack 알람 전송
+>>>>>>> f19b641 (서버최적화)
     main()
 
 
