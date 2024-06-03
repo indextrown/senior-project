@@ -8,8 +8,8 @@
 # | ORDER     | int          | NO   | PRI | NULL    | auto_increment |
 # | celebrity | varchar(20)  | YES  |     | NULL    |                |
 # | uploader  | varchar(30)  | YES  |     | NULL    |                |
-# | date      | varchar(50)  | YES  |     | NULL    |                |
-# | place     | varchar(50)  | YES  |     | NULL    |                |
+# | date      | varchar(100) | YES  |     | NULL    |                |
+# | place     | varchar(100  | YES  |     | NULL    |                |
 # | post_url  | varchar(100) | YES  |     | NULL    |                |
 # +-----------+--------------+------+-----+---------+----------------+
 
