@@ -37,6 +37,17 @@
 　![image](https://github.com/indextrown/senior-project/assets/125960190/f4672022-70af-4075-8a8d-06c837bb34a7)    
 　　트위터 데이터만을 이용하여 출력해본 결과
 
+3. 없는 데이터에 한해서 null값을 넣으라고 엔지니어링 하였지만 null, 공백, 추후 공지, 미상 다양하게 답변을 냄
+   ![image](https://github.com/indextrown/senior-project/assets/125960190/3de5d78f-01bb-4203-86d0-8782704fa1a1)   
+   null뿐만 아니라 ''으로 값이 나오는경우
+
+
+5. 코드를 작성 하였때 gpt 답변에 따라 코드가 정상적으로 실행될 떄도 있고 에러가 나는 경우가 발생
+    ![image](https://github.com/indextrown/senior-project/assets/125960190/7d68aa11-88db-4bc8-8912-e87de5e15fb3)   
+    코드가 에러가 난 모습
+    ![image](https://github.com/indextrown/senior-project/assets/125960190/700be61b-d263-4d54-a957-75429f913be6)
+    같은코드가 실행되는 모습
+
 ### 이슈 해결
 
 1. GPT 4o 공개 이후 사이트에서도 10줄 이상이 다시 잘 입력되는 모습을 보여줌
