@@ -135,6 +135,6 @@ makeTable("Data")
 data = pureData(js_data)  # 새로 들어오는 데이터 내에서 중복 제거
 data = getfromTable(data)  # 새로 들어오는 데이터가 테이블 내의 데이터와 중복되는것 제거
 insertData(data, "Data")  # 중복이 전혀 없는 데이터들만 테이블에 추가
-reset_auto_increment()
+#reset_auto_increment()
 
 conn.close()
