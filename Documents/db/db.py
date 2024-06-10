@@ -5,7 +5,7 @@
 # +-----------+--------------+------+-----+---------+----------------+
 # | Field     | Type         | Null | Key | Default | Extra          |
 # +-----------+--------------+------+-----+---------+----------------+
-# | ORDER     | int          | NO   | PRI | NULL    | auto_increment |
+# | NUMBER    | int          | NO   | PRI | NULL    | auto_increment |
 # | celebrity | varchar(20)  | YES  |     | NULL    |                |
 # | uploader  | varchar(30)  | YES  |     | NULL    |                |
 # | date      | varchar(100) | YES  |     | NULL    |                |
@@ -26,10 +26,9 @@ import pymysql
 import os
 import json
 
-
 def makeTable(name):  # 테이블 제작 함수
     sql = """CREATE TABLE IF NOT EXISTS {} (
-    `ORDER` INT AUTO_INCREMENT PRIMARY KEY,
+    NUMBER INT AUTO_INCREMENT PRIMARY KEY,
     celebrity VARCHAR(20),
     uploader VARCHAR(30),
     date varchar(100),
