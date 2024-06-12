@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>홈</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4285f4;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        h1 {
+            color: #4285f4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+<h1>Data List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ORDER</th>
+        <th>가수</th>
+        <th>작성자</th>
+        <th>일정</th>
+        <th>장소</th>
+        <th>게시글 URL</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data : ${dataList}">
+        <td th:text="${data.number}"></td>
+        <td th:text="${data.celebrity}"></td>
+        <td th:text="${data.uploader}"></td>
+        <td th:text="${data.date}"></td>
+        <td th:text="${data.place}"></td>
+        <td><a th:href="${data.postUrl}" th:text="${data.postUrl}" target="_blank"></a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
