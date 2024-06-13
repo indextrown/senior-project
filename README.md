@@ -26,9 +26,8 @@
 - **자연어 처리** : OpenAI
 - **DB** : Mysql
 - **Web** : Spring Boot
-  
-
 - **아이디어 회의** : Discord, Github
+
 
 <img width="453" alt="image" src="https://github.com/indextrown/senior-project/assets/69367698/18bbaf06-bc83-451c-99b8-8cc4f4a1cda9">
 
