@@ -5,7 +5,7 @@ client = openai.OpenAI(api_key = 'API KEY')
 
 msg = []
 
-f = open("1111.txt", 'r', encoding='UTF8')
+f = open("input.txt", 'r', encoding='UTF8')
 lines = f.readlines()
 for line in lines:
     line = line.strip()  # 줄 끝의 줄 바꿈 문자를 제거한다.
