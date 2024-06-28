@@ -79,7 +79,8 @@ def getfromTable(dic) -> dict:  # 테이블에서 데이터 중복 확인 후 �
     for i in dic.values():
         sql = "WHERE  "
         for j in i.keys():
-            sql += keys[j] + " = \'" + i[j] + "\' AND "
+            if j == "가수" or j == "일정" or j == "장소":  #해당 key들 일때만 필터링 하기 위해 sql문에 추가
+                sql += keys[j] + " = \'" + i[j] + "\' AND "
 
         if sql == "WHERE  ":
             raise "Input data's all values are None."
@@ -134,6 +135,6 @@ makeTable("Data")
 data = pureData(js_data)  # 새로 들어오는 데이터 내에서 중복 제거
 data = getfromTable(data)  # 새로 들어오는 데이터가 테이블 내의 데이터와 중복되는것 제거
 insertData(data, "Data")  # 중복이 전혀 없는 데이터들만 테이블에 추가
-#reset_auto_increment()
+#reset_auto_increment() #데이터가 삭제될 일이 없으면 호출하지 않아도 됨
 
 conn.close()
