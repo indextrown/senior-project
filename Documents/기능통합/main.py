@@ -1,6 +1,7 @@
 import crawling as c
 import openai
 import gpt as g
+import mysql as m
 
 
 if __name__ == "__main__":
@@ -19,5 +20,9 @@ if __name__ == "__main__":
     #gpt 실행 
     # 매개변수: 읽을 파일
     g.gpt_api("output_crawling.txt")
+
+    # mysql 실행
+    m.mySQL.mysql()
+
 
 
