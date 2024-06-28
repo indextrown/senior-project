@@ -24,5 +24,3 @@ if __name__ == "__main__":
     # mysql 실행
     m.mySQL.mysql()
 
-
-
