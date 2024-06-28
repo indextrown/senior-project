@@ -1,7 +1,7 @@
 import openai
 import json
 import re
-client = openai.OpenAI(api_key = 'api_key')
+client = openai.OpenAI(api_key = '=API_key')
 
 def gpt_api(file_path):
     msg = []
@@ -17,6 +17,7 @@ def gpt_api(file_path):
 
     completion = client.chat.completions.create(
         model="gpt-4o",
+        response_format={"type" : "json_object"},
         messages=[
             {
                 "role": "system",
