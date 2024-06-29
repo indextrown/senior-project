@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 창</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #4285f4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .login-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            border-color: #4285f4;
+        }
+        .login-container input[type="submit"] {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .login-container input[type="submit"]:hover {
+            background-color: #357ae8;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const id = document.forms["loginForm"]["id"].value;
+            const pw = document.forms["loginForm"]["pw"].value;
+            const errorMessage = document.getElementById("error-message");
+
+            if (id == "" || pw == "") {
+                errorMessage.textContent = "ID와 PW를 모두 입력해주세요.";
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+<div class="login-container">
+    <h2>로그인</h2>
+    <form name="loginForm" method="post" action="/login/check" onsubmit="return validateForm()">
+        <input type="text" id="id" name="id" placeholder="ID" required>
+        <input type="password" id="pw" name="pw" placeholder="PW" required>
+        <input type="submit" value="로그인">
+        <div id="error-message" class="error-message"></div>
+    </form>
+</div>
+<div class="footer">© 2024 Star Bridge</div>
+</body>
+</html>

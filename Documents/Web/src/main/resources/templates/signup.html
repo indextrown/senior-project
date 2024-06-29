@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        .signup-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .signup-container h2 {
+            margin-bottom: 20px;
+            color: #4285f4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .signup-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .signup-container input[type="text"],
+        .signup-container input[type="password"],
+        .signup-container input[type="email"] {
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .signup-container input[type="text"]:focus,
+        .signup-container input[type="password"]:focus,
+        .signup-container input[type="email"]:focus {
+            border-color: #4285f4;
+        }
+        .signup-container input[type="submit"] {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .signup-container input[type="submit"]:hover {
+            background-color: #357ae8;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+<div class="signup-container">
+    <h2>회원가입</h2>
+    <form method="post" action="/signup">
+        <input type="text" name="username" placeholder="사용자 이름" required>
+        <input type="email" name="email" placeholder="이메일" required>
+        <input type="password" name="password" placeholder="비밀번호" required>
+        <input type="password" name="confirm_password" placeholder="비밀번호 확인" required>
+        <input type="submit" value="가입하기">
+    </form>
+</div>
+<div class="footer">© 2024 Star Bridge</div>
+</body>
+</html>

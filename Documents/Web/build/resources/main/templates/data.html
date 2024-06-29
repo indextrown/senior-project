@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>홈</title>
+    <title>데이터 보기</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -35,14 +35,14 @@
         tr:hover {
             background-color: #f1f1f1;
         }
-        h1 {
+        h2 {
             color: #4285f4;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
-<h1>Data List</h1>
+<h2>데이터 보기</h2>
 <table>
     <thead>
     <tr>
@@ -56,12 +56,12 @@
     </thead>
     <tbody>
     <tr th:each="data : ${dataList}">
-        <td th:text="${data.number}"></td>
+        <td th:text="${data.NUMBER}"></td>
         <td th:text="${data.celebrity}"></td>
         <td th:text="${data.uploader}"></td>
         <td th:text="${data.date}"></td>
         <td th:text="${data.place}"></td>
-        <td><a th:href="${data.postUrl}" th:text="${data.postUrl}" target="_blank"></a></td>
+        <td><a th:href="${data.post_url}" th:text="${data.post_url}" target="_blank"></a></td>
     </tr>
     </tbody>
 </table>

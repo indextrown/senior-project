@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>검색 페이지</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/bridge.png') no-repeat center center/cover; /* 여기에 static 폴더의 이미지 경로를 넣으세요 */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            position: relative;
+        }
+        .header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .header a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #4285f4;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .header a:hover {
+            color: #357ae8;
+        }
+        .logo {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #357ae8;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 5px 10px;
+            background-color: #fff;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            transition: box-shadow 0.3s;
+        }
+        .search-bar:hover {
+            box-shadow: 0 2px 8px rgba(32, 33, 36, 0.35);
+        }
+        .search-bar input[type="text"] {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 24px;
+        }
+        .search-bar input[type="submit"] {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .search-bar input[type="submit"]:hover {
+            background-color: #357ae8;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="/login">로그인</a>
+    <a href="/signup">회원가입</a>
+</div>
+<div class="logo">Star Bridge</div>
+<div class="search-container">
+    <form method="get" action="/search" class="search-bar">
+        <input type="text" name="query" placeholder="생일카페 or 연예인명을 입력하세요">
+        <input type="submit" value="검색">
+    </form>
+</div>
+<div class="footer">© 2024 Star Bridge</div>
+</body>
+</html>
