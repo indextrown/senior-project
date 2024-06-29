@@ -86,17 +86,17 @@ The following is an example of the output:
             if isinstance(item, dict):
                 for key, value in item.items():
                     if isinstance(value, dict):
-                        if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음']:
+                        if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음']:
                             filtered_data[key] = value
     elif isinstance(json_data, dict):
         for key, value in json_data.items():
             if isinstance(value, dict):
-                if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음']:
+                if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음']:
                     filtered_data[key] = value
 
     # print(filtered_data)
 
-    file_path = 'output_gpt.txt'
+    file_path = 'output_gpt.json'
 
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(filtered_data, file, ensure_ascii=False, indent=4)
