@@ -33,6 +33,7 @@ Please print out the output data in the form of a list. \
 Make sure you print everything out. \
 Only put numbers in the date. \
 Please print out in json format. \
+Fix the date format to mm/dd~mm/dd
 The following is an example of the output:
 {
     "1": {
