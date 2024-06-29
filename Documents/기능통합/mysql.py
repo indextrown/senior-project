@@ -1,4 +1,4 @@
-# pip3 intsall mypysql
+# pip3 install mypysql
 # pip3 install cryptography
 
 # mysql> desc Data;
@@ -21,10 +21,13 @@
 #         "장소": "서울 해피벌스데이: 서울특별시 마포구 동교로 34길 82층"
 #         "게시물_url": "https://fandomship.com/bbs/link.php?bo_table=bts&wr_id=206&no=1&page=1"
 # }
+#
+# 중복에 관여하는 필터링은 (필터링) 키워드를 검색하면 됨
 
 import pymysql
 import os
 import json
+from copy import copy
 
 class mySQL:
     # MySQL 서버에 연결
@@ -44,6 +47,8 @@ class mySQL:
         "장소": "place",
         "게시글_url": "post_url"
     }
+
+    filter_keys = ["가수", "일정", "장소"] #해당 키들이 모두 같아야 중복으로 처리(필터링)
 
     @staticmethod
     def mysql():
@@ -105,8 +110,13 @@ class mySQL:
         num = 1
         data, tmp = {}, {}
         for i in dic.values():
-            if tuple(i.values()) not in tmp:  # O(1)
-                tmp[tuple(i.values())] = 0
+            _i = copy(i);
+            for j in mySQL.keys.keys():
+                if j not in mySQL.filter_keys:
+                    del _i[j] #중복에 비교되지 않는 데이터는 제거 후 비교(필터링)
+
+            if tuple(_i.values()) not in tmp:  # O(1)
+                tmp[tuple(_i.values())] = 0
                 data[num] = i
                 num += 1
         return data
@@ -118,7 +128,7 @@ class mySQL:
         for i in dic.values():
             sql = "WHERE  "
             for j in i.keys():
-                if j == "가수" or j == "일정" or j == "장소":  # 해당 key들 일때만 필터링 하기 위해 sql문에 추가
+                if j in mySQL.filter_keys: # 해당 key들 일때만 필터링 하기 위해 sql문에 추가(필터링)
                     sql += mySQL.keys[j] + " = \'" + i[j] + "\' AND "
 
             if sql == "WHERE  ":
@@ -140,7 +150,7 @@ class mySQL:
         dic, data = dict(), mySQL.cur.fetchall()
 
         for idx, value in enumerate(data):
-            dic[str(idx + 1)] = {_value: value[_idx + 1] for _idx, _value in enumerate(keys.keys())}
+            dic[str(idx + 1)] = {_value: value[_idx + 1] for _idx, _value in enumerate(mySQL.keys.keys())}
 
         mySQL.insertData(dic, "tmp")
         mySQL.cur.execute("DROP TABLE Data;")
@@ -154,5 +164,5 @@ class mySQL:
         pass
 
 
-# if __name__ == "__main__": #호출법
-#     mySQL.mysql()
+if __name__ == "__main__": #호출법
+    mySQL.mysql()
