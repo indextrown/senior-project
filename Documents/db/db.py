@@ -176,7 +176,7 @@ class mySQL:
             tmp += "\n\t\"{}\": {{".format(t)
             for j in i.keys():
                 tmp += "\n\t\t\"{}\": \"{}\",".format(j, i[j])
-            tmp = tmp[:-2] + "\n\t},"
+            tmp = tmp[:-1] + "\n\t},"
         res = "{" + tmp[:-1] + "\n}"
         if tmp == "":
             res = "{{\"{}\"".format(t) + ": {}}"
