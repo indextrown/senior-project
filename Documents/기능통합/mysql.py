@@ -29,6 +29,7 @@ import os
 import json
 from copy import copy
 
+
 class mySQL:
     # MySQL 서버에 연결
     os.system("mysql.server start")
@@ -48,7 +49,7 @@ class mySQL:
         "게시글_url": "post_url"
     }
 
-    filter_keys = ["가수", "일정", "장소"] #해당 키들이 모두 같아야 중복으로 처리(필터링)
+    filter_keys = ["가수", "일정", "장소"]  # 해당 키들이 모두 같아야 중복으로 처리(필터링)
 
     @staticmethod
     def mysql():
@@ -62,12 +63,12 @@ class mySQL:
         mySQL.makeTable("Data")
         data = mySQL.pureData(js_data)  # 새로 들어오는 데이터 내에서 중복 제거
         data = mySQL.getfromTable(data)  # 새로 들어오는 데이터가 테이블 내의 데이터와 중복되는것 제거
+        data = mySQL.filter_url_with_X(data) # 게시글url이 x가 아니면 필터링
         mySQL.insertData(data, "Data")  # 중복이 전혀 없는 데이터들만 테이블에 추가
         # reset_auto_increment() #데이터가 삭제될 일이 없으면 호출하지 않아도 됨
 
         mySQL.conn.close()
         print("mysql 진행 종료")
-
 
     @staticmethod
     def makeTable(name):  # 테이블 제작 함수
@@ -113,7 +114,7 @@ class mySQL:
             _i = copy(i);
             for j in mySQL.keys.keys():
                 if j not in mySQL.filter_keys:
-                    del _i[j] #중복에 비교되지 않는 데이터는 제거 후 비교(필터링)
+                    del _i[j]  # 중복에 비교되지 않는 데이터는 제거 후 비교(필터링)
 
             if tuple(_i.values()) not in tmp:  # O(1)
                 tmp[tuple(_i.values())] = 0
@@ -128,7 +129,7 @@ class mySQL:
         for i in dic.values():
             sql = "WHERE  "
             for j in i.keys():
-                if j in mySQL.filter_keys: # 해당 key들 일때만 필터링 하기 위해 sql문에 추가(필터링)
+                if j in mySQL.filter_keys:  # 해당 key들 일때만 필터링 하기 위해 sql문에 추가(필터링)
                     sql += mySQL.keys[j] + " = \'" + i[j] + "\' AND "
 
             if sql == "WHERE  ":
@@ -144,6 +145,14 @@ class mySQL:
         return data
 
     @staticmethod
+    def filter_url_with_X(data): #X가 아닌 url이면 거름
+        newdata = {}
+        for i in data:
+            if "https://x.com" in data[i]["게시글_url"]:
+                newdata[i] = data[i]
+        return newdata
+
+    @staticmethod
     def reset_auto_increment():
         mySQL.makeTable("tmp")  # 기존 테이블의 내용을 백업할 테이블
         mySQL.cur.execute("SELECT * FROM Data;")
@@ -157,12 +166,14 @@ class mySQL:
         mySQL.cur.execute("RENAME TABLE tmp TO Data;")
         mySQL.conn.commit()
 
-    def __init__(self): #생성자
+
+
+    def __init__(self):  # 생성자
         pass
 
-    def __del__(self): #소멸자
+    def __del__(self):  # 소멸자
         pass
 
 
-if __name__ == "__main__": #호출법
+if __name__ == "__main__":  # 호출법
     mySQL.mysql()
