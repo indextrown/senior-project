@@ -40,9 +40,23 @@ The following is an example of the output:
     "1": {
         "가수": "슈가",
         "작성자": "@2024sugadays",
-        "일정": "3/6~3/9",
+        "일정": "03/06~03/09",
         "장소": "카페 키드문: 서울 용산구 한강대로10길 11-68, 1층",
         "게시글_url": "https://fandomship.com/bbs/link.php?bo_table=bts&wr_id=206&no=1&page=1"
+    }
+    "2": {
+        "가수": "임영웅",
+        "작성자": "@timeslashcafe2",
+        "일정": "06/16~06/17",
+        "장소": "부산 타임슬래시",
+        "게시글_url": "https://x.com/timeslashcafe2/status/1797519845355126945"
+    },
+    "3": {
+        "가수": "AB6IX",
+        "작성자": "@cafe_ys_event",
+        "일정": "05/22~05/26",
+        "장소": "#더서초",
+        "게시글_url": "https://x.com/cafe_ys_event/status/1797519611828814030"
     }
 }"""
         },
