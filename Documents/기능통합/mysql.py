@@ -28,7 +28,7 @@ import pymysql
 import os
 import json
 from copy import copy
-
+from datetime import datetime
 
 class mySQL:
     # MySQL 서버에 연결
@@ -65,6 +65,7 @@ class mySQL:
         data = mySQL.getfromTable(data)  # 새로 들어오는 데이터가 테이블 내의 데이터와 중복되는것 제거
         data = mySQL.filter_url_with_X(data) # 게시글url이 x가 아니면 필터링
         mySQL.insertData(data, "Data")  # 중복이 전혀 없는 데이터들만 테이블에 추가
+        mySQL.Log(data)
         # reset_auto_increment() #데이터가 삭제될 일이 없으면 호출하지 않아도 됨
 
         mySQL.conn.close()
@@ -166,7 +167,20 @@ class mySQL:
         mySQL.cur.execute("RENAME TABLE tmp TO Data;")
         mySQL.conn.commit()
 
-
+    @staticmethod
+    def Log(data):
+        fout = open("DB_log.txt", "a")
+        t = datetime.now().strftime("%Y-%m-%d %H:%M")
+        tmp = ""
+        for i in data.values():
+            tmp += "\n\t\"{}\": {{".format(t)
+            for j in i.keys():
+                tmp += "\n\t\t\"{}\": \"{}\",".format(j, i[j])
+            tmp = tmp[:-2] + "\n\t},"
+        res = "{" + tmp[:-1] + "\n}"
+        if tmp == "":
+            res = "{{\"{}\"".format(t) + ": {}}"
+        fout.write("\n" + res + "\n")
 
     def __init__(self):  # 생성자
         pass
