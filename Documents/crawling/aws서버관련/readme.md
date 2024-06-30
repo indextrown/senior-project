@@ -49,6 +49,28 @@ sudo vi /etc/fstab
 free
 ```  
 
+#### [2024-06-30] aws 서버 시간 동기화
+
+### 설정된 대륙 확인
+```bash
+vim /etc/sysconfig/clock
+```
+
+### 대륙 선택
+```bash
+tzselect
+```
+
+### 환경변수 저장
+```bash
+vim /etc/profile
+TZ='Asia/Seoul'
+export TZ 추가
+```
+
+
+
+ 
 
 <!-- ### [해결방안]  
 크롤링 코드는 사이트 변경으로 주기적으로 코드 오류가 생길 수 있음.   
