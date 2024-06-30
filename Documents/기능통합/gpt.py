@@ -47,7 +47,7 @@ The following is an example of the output:
     "2": {
         "가수": "임영웅",
         "작성자": "@timeslashcafe2",
-        "일정": "06/16~06/17",
+        "일정": "06/09~06/12",
         "장소": "부산 타임슬래시",
         "게시글_url": "https://x.com/timeslashcafe2/status/1797519845355126945"
     },
