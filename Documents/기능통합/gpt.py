@@ -101,12 +101,12 @@ The following is an example of the output:
             if isinstance(item, dict):
                 for key, value in item.items():
                     if isinstance(value, dict):
-                        if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략']:
+                        if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상']:
                             filtered_data[key] = value
     elif isinstance(json_data, dict):
         for key, value in json_data.items():
             if isinstance(value, dict):
-                if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략']:
+                if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상']:
                     filtered_data[key] = value
                     
     date_pattern = re.compile(r'(\d{1,2})/(\d{1,2})~(\d{1,2})/(\d{1,2})')
