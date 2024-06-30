@@ -108,6 +108,17 @@ The following is an example of the output:
             if isinstance(value, dict):
                 if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략']:
                     filtered_data[key] = value
+                    
+    date_pattern = re.compile(r'(\d{1,2})/(\d{1,2})~(\d{1,2})/(\d{1,2})')
+
+    for key, value in filtered_data.items():
+        original_date = value.get('일정')
+        if original_date:
+            match = date_pattern.match(original_date)
+            if match:
+                month_start, day_start, month_end, day_end = match.groups()
+                formatted_date = f"{int(month_start):02}/{int(day_start):02}~{int(month_end):02}/{int(day_end):02}"
+                value['일정'] = formatted_date
 
     # print(filtered_data)
 
