@@ -172,12 +172,12 @@ class mySQL:
         fout = open("DB_log.txt", "a")
         t = datetime.now().strftime("%Y-%m-%d %H:%M")
         tmp = ""
-        for i in data.values():
-            tmp += "\n\t\"{}\": {{".format(t)
-            for j in i.keys():
-                tmp += "\n\t\t\"{}\": \"{}\",".format(j, i[j])
+        for idx, value in enumerate(data.values()):
+            tmp += "\n\t\"{}\": {{".format(idx)
+            for j in value.keys():
+                tmp += "\n\t\t\"{}\": \"{}\",".format(j, value[j])
             tmp = tmp[:-1] + "\n\t},"
-        res = "{" + tmp[:-1] + "\n}"
+        res = "{{\n\"{}\": {{".format(t) + tmp[:-1] + "\n}"
         if tmp == "":
             res = "{{\"{}\"".format(t) + ": {}}"
         fout.write("\n" + res + "\n")
