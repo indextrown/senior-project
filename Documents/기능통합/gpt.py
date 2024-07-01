@@ -19,6 +19,7 @@ def gpt_api(file_path):
 
     completion = client.chat.completions.create(
         model="gpt-4o",
+        temperature=0.4,
         response_format={"type" : "json_object"},
         messages=[
             {
@@ -43,11 +44,11 @@ The following is an example of the output:
         "일정": "03/06~03/09",
         "장소": "카페 키드문: 서울 용산구 한강대로10길 11-68, 1층",
         "게시글_url": "https://fandomship.com/bbs/link.php?bo_table=bts&wr_id=206&no=1&page=1"
-    }
+    },
     "2": {
         "가수": "임영웅",
         "작성자": "@timeslashcafe2",
-        "일정": "06/09~06/12",
+        "일정": "06/09",
         "장소": "부산 타임슬래시",
         "게시글_url": "https://x.com/timeslashcafe2/status/1797519845355126945"
     },
@@ -65,15 +66,24 @@ The following is an example of the output:
 )
 
     i = str(completion.choices[0].message)
-    #start_index = len("ChatCompletionMessage(content='```json\n")
-    #end_index = len("```', role='assistant', function_call=None, tool_calls=None)")
     start = i.find('{')
     end = i.rfind('}') + 1
     json_str = i[start:end]
-    # 원하는 부분을 추출
+    # 원하는 부분을 추출 및 오류가 발생하는 \, ' 제거
     json_str = json_str.replace('\\n', '').replace('\n', '').replace('\\t', '').replace('\t', '').replace('\\\\', '\\')
     json_str = json_str.replace(' "null"', ' null')
     json_str = re.sub(r'"(\w+)"\s+null', r'"\1": null', json_str)
+    json_str = json_str.replace("'", "")
+    json_str = json_str.replace("\\", "")
+    json_str = json_str.rstrip()
+    # 끝 부분에 }가 없는 경우에 대해서 처리
+    if json_str.endswith('}}'):
+        pass
+    elif json_str.endswith('}'):
+        json_str += '}'
+    else:
+        # If it does not end with }, add }}
+        json_str += '}}'
     # print(json_str)
 
     # json_str이 JSON 문자열인지 딕셔너리인지 확인
@@ -101,12 +111,12 @@ The following is an example of the output:
             if isinstance(item, dict):
                 for key, value in item.items():
                     if isinstance(value, dict):
-                        if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상']:
+                        if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후 공지', '미정', '알수 없음', '정보 없음', '생략', '미상'] and value['장소'] not in ['null', '', '추후 공지', '미정', '알수 없음', '정보 없음', '생략', '미상']:
                             filtered_data[key] = value
     elif isinstance(json_data, dict):
         for key, value in json_data.items():
             if isinstance(value, dict):
-                if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상'] and value['장소'] not in ['null', '', '추후공지', '미정', '알수 없음', '정보 없음', '생략', '미상']:
+                if value.get('일정') and value.get('장소') and value['일정'] not in ['null', '', '추후 공지', '미정', '알수 없음', '정보 없음', '생략', '미상'] and value['장소'] not in ['null', '', '추후 공지', '미정', '알수 없음', '정보 없음', '생략', '미상']:
                     filtered_data[key] = value
                     
     date_pattern = re.compile(r'(\d{1,2})/(\d{1,2})~(\d{1,2})/(\d{1,2})')
