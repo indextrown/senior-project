@@ -29,10 +29,20 @@ import os
 import json
 from copy import copy
 from datetime import datetime
+import platform
 
 class mySQL:
     # MySQL 서버에 연결
-    os.system("mysql.server start")
+    os_name = platform.system()
+
+    if os_name == "Windows":
+        os.system("net start MySQL")
+    elif os_name == "Darwin":
+        os.system("mysql.server start")
+    elif os_name == "Linux":
+        os.system("sudo systemctl start mysqld")
+    else:
+        pass
 
     conn = pymysql.connect(
         host="localhost",
