@@ -1,7 +1,7 @@
 # pip3 install mypysql
 # pip3 install cryptography
 
-# mysql> desc Data;
+# mysql> desc data;
 # +-----------+--------------+------+-----+---------+----------------+
 # | Field     | Type         | Null | Key | Default | Extra          |
 # +-----------+--------------+------+-----+---------+----------------+
@@ -38,7 +38,7 @@ class mySQL:
         host="localhost",
         user="root",
         password="1q2w3e4r!",
-        database="DB"
+        database="db"
     )
     cur = conn.cursor()
     keys = {
@@ -60,11 +60,11 @@ class mySQL:
 
         print("\nmysql 진행 시작")
 
-        mySQL.makeTable("Data")
+        mySQL.makeTable("data")
         data = mySQL.pureData(js_data)  # 새로 들어오는 데이터 내에서 중복 제거
         data = mySQL.getfromTable(data)  # 새로 들어오는 데이터가 테이블 내의 데이터와 중복되는것 제거
         data = mySQL.filter_url_with_X(data) # 게시글url이 x가 아니면 필터링
-        mySQL.insertData(data, "Data")  # 중복이 전혀 없는 데이터들만 테이블에 추가
+        mySQL.insertData(data, "data")  # 중복이 전혀 없는 데이터들만 테이블에 추가
         mySQL.Log(data)
         # reset_auto_increment() #데이터가 삭제될 일이 없으면 호출하지 않아도 됨
 
@@ -77,9 +77,9 @@ class mySQL:
         NUMBER INT AUTO_INCREMENT PRIMARY KEY,
         celebrity VARCHAR(20),
         uploader VARCHAR(30),
-        date varchar(100),
-        place varchar(100),
-        post_url varchar(100)
+        date VARCHAR(100),
+        place VARCHAR(100),
+        post_url VARCHAR(100)
         );""".format(name)
         mySQL.cur.execute(sql)
         mySQL.conn.commit()
@@ -137,7 +137,7 @@ class mySQL:
                 raise "Input data's all values are None."
 
             sql = sql[:-5]  # 맨 뒤에 AND가 공란 포함 5글자임
-            mySQL.cur.execute("SELECT * FROM Data " + sql + ";")
+            mySQL.cur.execute("SELECT * FROM data " + sql + ";")
             row = mySQL.cur.fetchone()
             if row == None:  # 테이블에 자료 없음
                 data[str(num)] = i
@@ -156,15 +156,15 @@ class mySQL:
     @staticmethod
     def reset_auto_increment():
         mySQL.makeTable("tmp")  # 기존 테이블의 내용을 백업할 테이블
-        mySQL.cur.execute("SELECT * FROM Data;")
+        mySQL.cur.execute("SELECT * FROM data;")
         dic, data = dict(), mySQL.cur.fetchall()
 
         for idx, value in enumerate(data):
             dic[str(idx + 1)] = {_value: value[_idx + 1] for _idx, _value in enumerate(mySQL.keys.keys())}
 
         mySQL.insertData(dic, "tmp")
-        mySQL.cur.execute("DROP TABLE Data;")
-        mySQL.cur.execute("RENAME TABLE tmp TO Data;")
+        mySQL.cur.execute("DROP TABLE data;")
+        mySQL.cur.execute("RENAME TABLE tmp TO data;")
         mySQL.conn.commit()
 
     @staticmethod
