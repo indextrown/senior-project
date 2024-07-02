@@ -4,27 +4,40 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
+@Table(name = "Data") // 테이블 이름을 대문자로 지정
 public class Data {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int NUMBER; // 필드 이름을 테이블의 컬럼 이름과 일치시킴
+    @Column(name = "NUMBER") // 필드 이름과 테이블의 컬럼 이름이 일치하도록 지정
+    private int number;
 
+    @Column(name = "celebrity")
     private String celebrity;
+
+    @Column(name = "uploader")
     private String uploader;
+
+    @Column(name = "date")
     private String date;
+
+    @Column(name = "place")
     private String place;
+
+    @Column(name = "post_url")
     private String post_url;
 
     // Getter and Setter methods
 
-    public int getNUMBER() {
-        return NUMBER;
+    public int getNumber() {
+        return number;
     }
 
-    public void setNUMBER(int NUMBER) {
-        this.NUMBER = NUMBER;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getCelebrity() {
