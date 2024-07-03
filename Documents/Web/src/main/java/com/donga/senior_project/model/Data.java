@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "Data") // 테이블 이름을 대문자로 지정
+@Table(name = "data") // 테이블 이름을 대문자로 지정
 public class Data {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

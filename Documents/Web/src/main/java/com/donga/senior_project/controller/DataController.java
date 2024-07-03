@@ -15,7 +15,7 @@ public class DataController {
     @Autowired
     private DataRepository dataRepository;
 
-    @GetMapping("data")
+    @GetMapping("/data")
     public String showData(Model model) {
         List<Data> dataList = dataRepository.findAll();
         model.addAttribute("dataList", dataList);
