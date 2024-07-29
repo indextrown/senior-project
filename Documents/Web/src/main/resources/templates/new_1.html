@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블립</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .kpop-radar {
+            background-color: #000;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .breadcrumb {
+            margin: 20px 0;
+            color: #888;
+        }
+
+        main {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        p {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .artists {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+        }
+
+        .artist {
+            text-align: center;
+        }
+
+        .artist img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<!-- 첫 번째 화면 -->
+<div class="container">
+    <header>
+        <div class="logo">blip</div>
+        <nav>
+            <a href="#">Artists</a>
+            <a href="#">Schedule</a>
+            <a href="#">Event</a>
+        </nav>
+        <div class="kpop-radar">kpop radar</div>
+    </header>
+    <div class="breadcrumb">blip > Artists</div>
+    <main>
+        <h1>98팀의 아티스트를<br>블립에서 만나볼 수 있어요</h1>
+        <p>지금 관심 있는 아티스트를 선택하고<br>스케줄, 실시간 차트, M/V 조회수, 인기 콘텐츠를 확인해보세요</p>
+        <div class="artists">
+            <div class="artist">
+                <img src="image1.jpg" alt="갓세븐">
+                <div>갓세븐<br>GOT7</div>
+            </div>
+            <div class="artist">
+                <img src="image2.jpg" alt="강다니엘">
+                <div>강다니엘<br>KANG DANIEL</div>
+            </div>
+            <div class="artist">
+                <img src="image3.jpg" alt="골든차일드">
+                <div>골든차일드<br>GOLDEN CHILD</div>
+            </div>
+            <div class="artist">
+                <img src="image4.jpg" alt="김세정">
+                <div>김세정<br>KIM SEJEONG</div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
