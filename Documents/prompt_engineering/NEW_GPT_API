@@ -1,0 +1,135 @@
+import openai
+import json
+import re
+client = openai.OpenAI(api_key = 'API_KEY')
+
+def gpt_api(file_path):
+    msg = []
+
+    f = open(file_path, 'r', encoding='UTF8')
+    lines = f.readlines()
+    for line in lines:
+        line = line.strip()  # 줄 끝의 줄 바꿈 문자를 제거한다.
+        msg.append(line)
+    f.close()
+    formatted_text = f"제목:{msg}"
+    print(formatted_text)
+
+    completion = client.chat.completions.create(
+        model="gpt-4o",
+        temperature=0.1,
+        response_format={"type":"json_object"},
+        messages=[
+            {
+                "role": "system",
+                "content": """[게시자아이디, 게시글작성시간, 게시글내용, 게시글링크, [사진의 경로]]의 x 크롤링 데이터가 주어지는데 데이터를 방송/행사/사진 의 종류를 판단하여  순번, 제목, 내용, 게시자아이디, 가수(아이브, 뉴진스, 방탄소년단), 행사날짜시간(없다면 null출력),게시글날짜시간,url,종류,사진의경로의 json형식의 데이터로 출력해줘 날짜 데이터는 모두 yyyy-mm-dd형식으로 출력해줘 다음은 출력 예시야
+{
+    "1": {
+	"순번": 1,
+        "제목": "IVE THE 1ST WORLD TOUR <SHOW WHAT I HAVE> - ENCORE 현장 운영 안내",
+        "내용": "IVE THE 1ST WORLD TOUR <SHOW WHAT I HAVE> - ENCORE 현장 운영 안내 자세한 내용은 IVE 공식 팬카페에서 확인해 주세요!",
+        "게시자아이디": "@IVEstarship",
+        "가수": "아이브",
+        "행사날짜시간": null,
+        "게시글날짜시간": "2024-08-01",
+        "url": "https://x.com/IVEstarship/status/1818919664229269653",
+        "종류": "행사",
+        "사진의경로": ["NULL"]
+            },
+    "2": {
+ 	"제목": "Beyond LIVE - THE 1ST WORLD TOUR 'SHOW WHAT I HAVE' - ENCORE",
+        "내용": "Beyond LIVE - THE 1ST WORLD TOUR 'SHOW WHAT I HAVE' - ENCORE 전 세계를 뒤집어 놓은 무대천재만재 IVE의 앙코르 콘서트를 Beyond LIVE로 볼 수 있다고? 완전 럭키비욘라잖아~ 8/11 SUN 5PM (KST)",
+        "게시자아이디": "@Beyond_LIVE",
+        "가수": "아이브",
+        "행사날짜시간": "2024-08-11",
+        "게시글날짜시간": "2024-08-01",
+        "url": "https://x.com/Beyond_LIVE/status/1818904565997355499",
+        "종류": "방송",
+        "사진의경로": ["https://pbs.twimg.com/media/GT4MED_WMAABjgF?format=jpg&name=medium"]
+    },
+    "3": {
+        "제목": "[공지] 지민 (Jimin) ‘Be Mine (English Version)’ 발매 안내 (+ENG/JPN/CHN)",
+        "내용": "[공지] 지민 (Jimin) ‘Be Mine (English Version)’ 발매 안내 (+ENG/JPN/CHN)",
+        "게시자아이디": "@bts_bighit",
+        "가수": "방탄소년단",
+        "행사날짜시간": null,
+        "게시글날짜시간": "2024-08-01",
+        "url": "https://x.com/bts_bighit/status/1818662922933170599",
+        "종류": "행사",
+        "사진의경로": ["https://pbs.twimg.com/card_img/1817807214419263488/8tMrXtwt?format=png&name=medium"]
+    },
+    "4": {
+        "제목": "지민 (Jimin) 'MUSE' Official Merch.",
+        "내용": "지민 (Jimin) 'MUSE' Official Merch. I've been looking for love, just for you Vinyl Rug Paper Weight Pin Brooch 상품 공개 : 2024. 08. 01. 6PM(KST) 판매 오픈 : 2024. 08. 02. 6PM(KST)",
+        "게시자아이디": "@HYBE_MERCH",
+        "가수": "방탄소년단",
+        "행사날짜시간": "2024-08-02",
+        "게시글날짜시간": "2024-08-01",
+        "url": "https://x.com/HYBE_MERCH/status/1818572315476504957",
+        "종류": "행사",
+        "사진의경로": ["https://pbs.twimg.com/media/GTzSM_tbwAIlxZW?format=jpg&name=900x900"]
+    },
+    "5": {
+        "제목": "Congratulation! 'Attention' 스포티파이 4억 스트리밍 달성을 축하합니다!",
+        "내용": "Congratulation! 'Attention' 스포티파이 4억 스트리밍 달성을 축하합니다! 'Attention' hits 400,000,000 Streams on Spotify!",
+        "게시자아이디": "@NewJeans_ADOR",
+        "가수": "뉴진스",
+        "행사날짜시간": null,
+        "게시글날짜시간": "2024-08-01",
+        "url": "https://x.com/NewJeans_ADOR/status/1818783709870342146",
+        "종류": "행사",
+        "사진의경로": ["https://pbs.twimg.com/media/GTz52mmbwAA62Qb?format=jpg&name=medium"]
+    }
+}
+"""
+        },
+        {"role": "user", "content": f"{formatted_text}"}
+    ]
+)
+
+    i= str(completion.choices[0].message)
+    #start_index = len("ChatCompletionMessage(content='```json\n")
+    #end_index = len("```', role='assistant', function_call=None, tool_calls=None)")
+    start = i.find('{')
+    end = i.rfind('}')
+    json_str = i[start:end]
+    # 원하는 부분을 추출
+    json_str = json_str.replace('\\n', '').replace('\n', '').replace('\\t', '').replace('\t', '').replace('\\\\', '\\')
+    json_str = json_str.replace(' "null"', ' null')
+    json_str = re.sub(r'"(\w+)"\s+null', r'"\1": null', json_str)
+    json_str = json_str.replace("'", "")
+    json_str = json_str.replace("\\", "")
+    json_str = json_str.rstrip()
+    if json_str.endswith('}}'):
+        pass
+    elif json_str.endswith('}'):
+        json_str += '}'
+    else:
+        # If it does not end with }, add }}
+        json_str += '}}'
+    print(json_str)
+
+    # json_str이 JSON 문자열인지 딕셔너리인지 확인
+    if isinstance(json_str, str):
+        try:
+            # JSON 문자열을 파이썬 데이터로 변환
+            json_data = json.loads(json_str)
+        except json.JSONDecodeError as e:
+            print(f"JSON Decode Error: {e}")
+            json_data = {}  # JSON Decode Error 발생 시 빈 딕셔너리 반환
+        except Exception as e:
+            print(f"Error: {e}")
+            json_data = {}  # 기타 예외 발생 시 빈 딕셔너리 반환
+    else:
+        json_data = json_str  # 문자열이 아닌 경우 그대로 반환
+
+    # 결과 출력
+    print(json_data)
+
+    file_path = 'Output.json'
+
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(json_data, file, ensure_ascii=False, indent=4)
+
+
+gpt_api("output.txt")
