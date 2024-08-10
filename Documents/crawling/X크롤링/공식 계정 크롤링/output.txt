@@ -1,0 +1,23 @@
+IVEstarship크롤링 시작
+####################################################################
+['@IVEstarship', '2h', "IVE THE 1ST WORLD TOUR <SHOW WHAT I HAVE – ENCORE> 2024.08.10 (토) 3RD 'DIVE' FANCLUB BOOTH 운영 안내 시간: 1PM ~ 5PM 장소: KSPO DOME 3RD 'DIVE' FANCLUB BOOTH Show more", '/IVEstarship/status/1822119321541480860', ['image/IVEstarship/IVEstarship_1822119321541480860_0.jpg']]
+['@IVEstarship', '20h', 'IVE THE 1ST WORLD TOUR <SHOW WHAT I HAVE – ENCORE> Rehearsal 2024.08.10 (SAT) 6PM 2024.08.11 (SUN) 5PM (+ONLINE) KSPO DOME Show more', '/IVEstarship/status/1821835629778342308', ['NULL']]
+['@IVEstarship', '22h', 'IVE THE 1ST WORLD TOUR <SHOW WHAT I HAVE – ENCORE> D-1 2024.08.10 (SAT) 6PM 2024.08.11 (SUN) 5PM (+ONLINE) KSPO DOME Show more', '/IVEstarship/status/1821818699931906551', ['NULL']]
+
+
+NewJeans_ADOR크롤링 시작
+####################################################################
+['@NewJeans_ADOR', 'Aug 8', "[Jeans' ZINE] 알바왕 김민지 EP.1 나이키 강남 스토어 준비 갈 완료 (갈 준비 완료.) https://youtu.be/KMIDJb942bc #NewJeans #뉴진스 #MINJI #Jeans_ZINE #NewJeans_is_Everywhere", '/NewJeans_ADOR/status/1821486609327702523', ['image/NewJeans_ADOR/NewJeans_ADOR_1821486609327702523_0.jpg', 'image/NewJeans_ADOR/NewJeans_ADOR_1821486609327702523_1.jpg', 'image/NewJeans_ADOR/NewJeans_ADOR_1821486609327702523_2.jpg', 'image/NewJeans_ADOR/NewJeans_ADOR_1821486609327702523_3.jpg', 'image/NewJeans_ADOR/NewJeans_ADOR_1821486609327702523_4.jpg']]
+['@NewJeans_ADOR', 'Aug 7', 'EDVARD MUNCH BEYOND THE SCREAM #NewJeans #뉴진스 #NewJeans_is_Everywhere', '/NewJeans_ADOR/status/1821139235212292380', ['image/NewJeans_ADOR/NewJeans_ADOR_1821139235212292380_0.jpg']]
+['@NewJeans_ADOR', 'Aug 7', '', '/NewJeans_ADOR/status/1821139245668691971', ['NULL']]
+['@NewJeans_ADOR', 'Aug 7', '[About Jeans] NewJeans vlog 미술관 나들이 2탄 https://youtu.be/12GuHGTYenI #NewJeans #뉴진스 #About_Jeans #NewJeans_is_Everywhere', '/NewJeans_ADOR/status/1821124182236893516', ['image/NewJeans_ADOR/NewJeans_ADOR_1821124182236893516_0.jpg', 'image/NewJeans_ADOR/NewJeans_ADOR_1821124182236893516_1.jpg', 'image/NewJeans_ADOR/NewJeans_ADOR_1821124182236893516_2.jpg']]
+['@NewJeans_ADOR', 'Aug 7', "We are honored to be nominated for MTV VMAs 'Best K-Pop'! Vote for us every day at the link below! https://mtv.com/vma/vote/best-k-pop… Vote 'Super Shy' for Best K-Pop! #VMA @vmas #NewJeans #뉴진스 #NewJeans_SuperShy #NewJeans_is_Everywhere", '/NewJeans_ADOR/status/1821033526550262128', ['image/NewJeans_ADOR/NewJeans_ADOR_1821033526550262128_0.jpg']]
+
+
+bts_bighit크롤링 시작
+####################################################################
+['@bts_bighit', '21h', 'For global ARMYs, you can listen to Jimin\'s "Who" here at Apple Music: https://music.apple.com/album/muse/1751773074… #Jimin #지민 #Jimin_Who #Jimin_MUSE', '/bts_bighit/status/1821826078568292529', ['image/bts_bighit/bts_bighit_1821826078568292529_0.jpg']]
+['@bts_bighit', 'Aug 9', '<Are You Sure?!> Preview Clip 비가 오려나~? 뷔가 왔습니다! May V ~ we could V~ https://youtu.be/Nj6dGh2_PU8 Every Thursday 4PM (KST), only on Disney+ #AreYouSure #이게맞아 #지민x정국x뷔 #JiminXJungKookXV', '/bts_bighit/status/1821698014765051984', ['NULL']]
+['@bts_bighit', 'Aug 8', "Join the Jimin 'MUSE' Listening Party on @STATIONHEAD ! Schedule Aug 8~14, 10pm (ET) Aug 9~15, 11am (KST) http://stationhead.com/btsofficial *Stationhead log-in & Connect to Spotify or Apple Music account required.", '/bts_bighit/status/1821501619357257869', ['image/bts_bighit/bts_bighit_1821501619357257869_0.jpg']]
+['@bts_bighit', 'Aug 7', 'So excited to be nominated for ‘Best Collaboration’ and ‘Best K-Pop’ at the 2024 #VMAs! #BTSARMY, thank you for all your great love and support https://mtv.com/vma/vote/best-collaboration… #정국 #JungKook #JungKook_Seven', '/bts_bighit/status/1821019815580188830', ['image/bts_bighit/bts_bighit_1821019815580188830_0.jpg']]
+

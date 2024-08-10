@@ -30,6 +30,7 @@ def create_folder(directory):
 ## 이미지 다운로드
 def download_image(image_url, save_path):
     try:
+        print("이미지 다운 request...")
         response = requests.get(image_url, stream=True)
         if response.status_code == 200:
             with open(save_path, 'wb') as file:
