@@ -21,14 +21,25 @@ import pymysql
 import os
 import json
 import platform
+import time as t
 class mySQL:
+    os_name = platform.system()
+
+    if os_name == "Windows":
+        os.system("net start MySQL")
+    elif os_name == "Darwin":
+        os.system("mysql.server start")
+    elif os_name == "Linux":
+        os.system("sudo systemctl start mysqld")
+    else:
+        pass
+
     CONN = pymysql.connect(
         host="localhost",
         user="root",
         password="1q2w3e4r!",
         database="db"
     )
-
     CUR = CONN.cursor()
     #ko to en
     KEYS = {
@@ -54,6 +65,16 @@ class mySQL:
             os.system("sudo systemctl start mysqld")
         else:
             pass
+
+    @staticmethod
+    def setVariables():
+        mySQL.CONN = pymysql.connect(
+            host="localhost",
+            user="root",
+            password="1q2w3e4r!",
+            database="db"
+        )
+        mySQL.CUR = mySQL.CONN.cursor()
 
     @staticmethod
     def createTable(name): #
@@ -106,6 +127,7 @@ class mySQL:
         mySQL.CUR.execute(sql)
         mySQL.CONN.commit()
 
+
     @staticmethod
     def mysql():
         with open("Output.json", "r") as file:
@@ -119,7 +141,6 @@ class mySQL:
         mySQL.startMySQL()
         mySQL.createTable(name)
         mySQL.insertData(name, js_data)
-
 
 if __name__ == "__main__":  # Call if this file is main
     mySQL.mysql()
