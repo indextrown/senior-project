@@ -1,7 +1,7 @@
 package com.starbridge.senior_project.controller;
 
-import com.starbridge.senior_project.model.Dummy;
-import com.starbridge.senior_project.service.DummyService;
+import com.starbridge.senior_project.model.ArtistEvent;
+import com.starbridge.senior_project.service.ArtistEventService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,29 +11,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class DummyController {
+public class ArtistEventController {
 
-    private final DummyService dummyService;
+    private final ArtistEventService artistEventService;
 
-    public DummyController(DummyService dummyService) {
-        this.dummyService = dummyService;
+    public ArtistEventController(ArtistEventService artistEventService) {
+        this.artistEventService = artistEventService;
     }
 
     // 기존의 /dummies 엔드포인트
-    @GetMapping("/dummies")
-    public String getAllDummies(Model model) {
-        List<Dummy> dummies = dummyService.getAllDummies();
-        model.addAttribute("dummies", dummies);
-        return "dummies";
+    @GetMapping("/artistEvent")
+    public String getAllEvents(Model model) {
+        List<ArtistEvent> artistEvent = artistEventService.getAllEvents();
+        model.addAttribute("artistEvent", artistEvent);
+        return "artistEvent";
     }
 
     // 추가된 /events 엔드포인트
     @GetMapping("/events")
     @ResponseBody
     public List<EventDto> getEvents() {
-        List<Dummy> dummies = dummyService.getAllDummies();
-        return dummies.stream()
-                .map(dummy -> new EventDto(dummy.getTitle(), dummy.getEvent_date().toString(), dummy.getDetail()))
+        List<ArtistEvent> artistEvents = artistEventService.getAllEvents();
+        return artistEvents.stream()
+                .map(artistEvent -> new EventDto(artistEvent.getTitle(), artistEvent.getEvent_date().toString(), artistEvent.getDetail()))
                 .collect(Collectors.toList());
     }
 

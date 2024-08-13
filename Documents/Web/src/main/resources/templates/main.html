@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>블립</title>
+    <title>StarBridge</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,8 +26,18 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
             font-size: 24px;
             font-weight: bold;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-left: 10px; /* 로고와 텍스트 간격 조정 */
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         nav a {
@@ -86,17 +96,20 @@
 <!-- 첫 번째 화면 -->
 <div class="container">
     <header>
-        <div class="logo">blip</div>
+        <div class="logo">
+            StarBridge
+            <img src="/images/logo.png" alt="로고">
+        </div>
         <nav>
             <a href="#">Artists</a>
             <a href="#">Schedule</a>
-            <a href="#">Event</a>
+            <a href="#">Birthday Cafe</a>
         </nav>
         <div class="kpop-radar">kpop radar</div>
     </header>
-    <div class="breadcrumb">blip > Artists</div>
+    <div class="breadcrumb">StarBridge > Artists</div>
     <main>
-        <h1>98팀의 아티스트를<br>블립에서 만나볼 수 있어요</h1>
+        <h1>3팀의 아티스트를<br>스타브릿지에서 만나볼 수 있어요</h1>
         <p>지금 관심 있는 아티스트를 선택하고<br>스케줄, 실시간 차트, M/V 조회수, 인기 콘텐츠를 확인해보세요</p>
         <div class="artists">
             <div class="artist">

@@ -2,32 +2,40 @@ package com.starbridge.senior_project.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
-@Table(name = "dummy")
-public class Dummy {
-
+@Table(name = "artist_events")
+public class ArtistEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long number;
+    private Integer number;
 
+    private String kind;
     private String title;
     private String detail;
     private String x_id;
-    private LocalDate event_date;
-    private LocalDate post_date;
+    private Date event_date;
+    private Date post_date;
     private String url;
-    private String kind;
     private String photo;
+    private String singer;
 
     // Getters and Setters
-    public Long getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public String getTitle() {
@@ -54,19 +62,19 @@ public class Dummy {
         this.x_id = x_id;
     }
 
-    public LocalDate getEvent_date() {
+    public Date getEvent_date() {
         return event_date;
     }
 
-    public void setEvent_date(LocalDate event_date) {
+    public void setEvent_date(Date event_date) {
         this.event_date = event_date;
     }
 
-    public LocalDate getPost_date() {
+    public Date getPost_date() {
         return post_date;
     }
 
-    public void setPost_date(LocalDate post_date) {
+    public void setPost_date(Date post_date) {
         this.post_date = post_date;
     }
 
@@ -78,19 +86,19 @@ public class Dummy {
         this.url = url;
     }
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
     public String getPhoto() {
         return photo;
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getSinger() {
+        return singer;
+    }
+
+    public void setSinger(String singer) {
+        this.singer = singer;
     }
 }
