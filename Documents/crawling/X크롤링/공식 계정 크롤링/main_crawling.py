@@ -6,6 +6,7 @@ import pickle
 from selenium.webdriver.common.by import By
 import time
 import sys
+
 import os
 import requests
 
@@ -19,6 +20,8 @@ import requests
 # pip3 uninstall webdriver-manager
 # pip3 install webdriver-manager
 
+ban_list = ["입금","대리구매","Replying", "양도"]
+
 ## 폴더 생성
 def create_folder(directory):
     if not os.path.exists(directory):
@@ -30,8 +33,7 @@ def create_folder(directory):
 ## 이미지 다운로드
 def download_image(image_url, save_path):
     try:
-        print("이미지 다운 request...")
-        response = requests.get(image_url, stream=True)
+        response = requests.get(image_url, stream=True, timeout=3)
         if response.status_code == 200:
             with open(save_path, 'wb') as file:
                 for chunk in response.iter_content(1024):
@@ -94,7 +96,7 @@ def check_login(driver, url):
     driver.get(url)
     driver.implicitly_wait(15)
 
-    cookies = pickle.load(open('x_cookies.pkl', 'rb'))
+    cookies = pickle.load(open('./x_cookies.pkl', 'rb'))
     for cookie in cookies:
         driver.add_cookie(cookie)
 
@@ -150,7 +152,7 @@ def profile_crawling(profile_url_list):
             i = 0
 
             old_titles = []
-            while(i < 3):
+            while(i < 10):
                 posts = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div.css-175oi2r.r-kemksi.r-1kqtdi0.r-1ua6aaf.r-th6na.r-1phboty.r-16y2uox.r-184en5c.r-1c4cdxw.r-1t251xo.r-f8sm7e.r-13qz1uu.r-1ye8kvj > div > div:nth-child(3) > div > div > section > div > div > div > div > div  > article")
 
                 # 프로필명, 게시글내용, 게시글날짜시간, url, 이미지절대경로
@@ -225,13 +227,18 @@ def profile_crawling(profile_url_list):
                             # 이미지 없는경우 빈리스트 반환
                             error_srcs = []
 
-
                         # 존재하면
                         if error_srcs:
+                            #print(error_srcs)
+
                             images_path = []
                             for img_num, img_url in enumerate(error_srcs):
-                                # image_filename = f"{profile_name}_{i}_{img_num}.jpg"
-                                image_filename = f"{profile_name}_{url_gap}_{img_num}.jpg"
+
+                                # svg 파일은 제거
+                                if img_url[-3:] == "svg": continue
+                                print(f"이미지 파일: {img_url}")
+
+                                image_filename = f"{url_gap}_{img_num}.jpg"
                                 image_save_path = os.path.join(folder_path, image_filename)
                                 download_image(img_url, image_save_path)
                                 images_path.append(image_save_path)
@@ -240,6 +247,12 @@ def profile_crawling(profile_url_list):
                         else:
                             old_titles.append([post_name, post_date, post_conents, post_url, ["NULL"]])
 
+                        # print(postinfo[-1].text.split())
+                        # print(f"프로필명: {post_name}")
+                        # print(f"{post_date}")
+                        # print(post_conents)
+                        # print(post_url)
+                        # print()
 
                 driver.execute_script(scroll_script)
                 time.sleep(2.5)
@@ -249,25 +262,28 @@ def profile_crawling(profile_url_list):
             all_titles.append("####################################################################")
             all_titles.extend(old_titles)
             all_titles.append("\n")
+            #print(all_titles)
 
         with open('output.txt', 'w', encoding='utf-8') as file:
             file.write('\n'.join([str(res) for res in all_titles]))
+
+            # for res in old_titles:
+            #     print(res)
+            # print()
+            # input()
 
     driver.quit()
 
 # main함수
 def main():
-    # 게시글 크롤링할 프로필 리스트
     profile_url_list = ["https://x.com/IVEstarship",
                         "https://x.com/NewJeans_ADOR",
                         "https://x.com/bts_bighit"
                         ]
+    # profile_url_list = ["https://x.com/IVEstarship",
+    #                     ]
+
     profile_crawling(profile_url_list)
 
 if __name__ == "__main__":
     main()
-
-
-
-# selenium
-# webdriver_manager
