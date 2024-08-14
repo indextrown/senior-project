@@ -125,7 +125,7 @@ class mySQL:
 
         # print(js_data)
         print("\nmysql started")
-        name = "artist_events"   #Table name
+        name = "blipdb"   #Table name
         mySQL.createTable(name)
         mySQL.insertData(name, js_data)
 
