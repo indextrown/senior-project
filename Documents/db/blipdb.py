@@ -6,7 +6,7 @@
 #| Field      | Type         | Null | Key | Default | Extra          |
 #+------------+--------------+------+-----+---------+----------------+
 #| number     | int          | NO   | PRI | NULL    | auto_increment |
-#| kind       | varchar(10)  | YES  |     | NULL    |                |
+#| kind       | varchar(30)  | YES  |     | NULL    |                |
 #| title      | varchar(255) | YES  |     | NULL    |                |
 #| detail     | text         | YES  |     | NULL    |                |
 #| x_id       | varchar(15)  | YES  |     | NULL    |                |
@@ -21,7 +21,7 @@ import pymysql
 import os
 import json
 import platform
-import time as t
+
 class mySQL:
     os_name = platform.system()
 
@@ -43,6 +43,7 @@ class mySQL:
     CUR = CONN.cursor()
     #ko to en
     KEYS = {
+        "종류": "kind",
         "제목": "title",
         "내용": "detail",
         "게시자아이디": "x_id",
@@ -52,19 +53,6 @@ class mySQL:
         "url": "url",
         "사진의경로": "photo"
     }
-
-    @staticmethod
-    def startMySQL():
-        os_name = platform.system()
-
-        if os_name == "Windows":
-            os.system("net start MySQL")
-        elif os_name == "Darwin":
-            os.system("mysql.server start")
-        elif os_name == "Linux":
-            os.system("sudo systemctl start mysqld")
-        else:
-            pass
 
     @staticmethod
     def setVariables():
@@ -80,7 +68,7 @@ class mySQL:
     def createTable(name): #
         sql = f"""CREATE TABLE IF NOT EXISTS `{name}` (
             number INT NOT NULL AUTO_INCREMENT,
-            kind VARCHAR(10),
+            kind VARCHAR(30),
             title VARCHAR(255),
             detail TEXT,
             singer VARCHAR(255),
@@ -97,20 +85,20 @@ class mySQL:
 
     @staticmethod
     def insertData(name, js_data): #name: Table Name, js_data:
-        columns = ",".join(map(str, list(mySQL.KEYS.values())))
+        columns = []
         input_data = ""
         for idx0, data in enumerate(js_data):
             input_data += "("
             for idx1, key in enumerate(data.keys()):
                 if key in mySQL.KEYS:
+                    if idx0 == 0:
+                        columns.append(mySQL.KEYS[key])
                     if data[key] is None or data[key] == ["NULL"]:
                         input_data += "NULL"
                     elif key == "사진의경로":
                         input_data += "'"
-                        title_link = data["url"]    # 게시글 url
-                        title_link = title_link[title_link.find("status")+7:]
                         for idx2, link in enumerate(data[key]):
-                            input_data += f"{title_link}_{idx2}"
+                            input_data += f"{link}"
                             if idx2 < len(data[key]) - 1:
                                 input_data += ","
                         input_data += "'"
@@ -123,7 +111,7 @@ class mySQL:
                 input_data += ",\n"
 
 
-        sql = f"""INSERT INTO {name} ({columns}) VALUES {input_data};"""
+        sql = f"INSERT INTO {name} ({', '.join(columns)}) VALUES {input_data};"
         mySQL.CUR.execute(sql)
         mySQL.CONN.commit()
 
@@ -137,8 +125,7 @@ class mySQL:
 
         # print(js_data)
         print("\nmysql started")
-        name = "blipdb"   #Table name
-        mySQL.startMySQL()
+        name = "artist_events"   #Table name
         mySQL.createTable(name)
         mySQL.insertData(name, js_data)
 
