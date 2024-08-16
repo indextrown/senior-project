@@ -288,12 +288,12 @@ struct ScheduleView: View{
     
     // --- api 관련 함수들 및 자료형 ---
     func loadData(for date: String) async {
-        guard let apiUrl = Bundle.main.object(forInfoDictionaryKey: "API_MAIN_URL") as? String else {
-            fatalError("Cannot get api key.")
+        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_MAIN_URL") as? String else {
+            fatalError("Wrong API key.")
         }
         
-        guard let url = URL(string: apiUrl) else {
-           fatalError("Cannot get URL")
+        guard let url = URL(string: apiKey) else {
+           fatalError("Wrong URL.")
         }
         
         var request = URLRequest(url: url)
@@ -329,22 +329,6 @@ struct ScheduleView: View{
             }
         }
         .resume()
-        
-//        var pdValues = Array(tmp.values)
-//        let df = DateFormatter(); df.dateFormat = "yyyy-MM-dd"
-//        
-//        pdValues.sort { first, second in
-//            guard
-//                let firstDateString = first.event_date,
-//                let secondDateString = second.event_date,
-//                let firstDate = df.date(from: firstDateString),
-//                let secondDate = df.date(from: secondDateString)
-//            else {
-//                return false
-//            }
-//            return firstDate < secondDate
-//        }
-//        parsedData = pdValues
     }
     
     func loadImage(from base64String: String) -> UIImage?{
