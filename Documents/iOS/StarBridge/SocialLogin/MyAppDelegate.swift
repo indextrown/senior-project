@@ -37,8 +37,9 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
         let sceneConfiguration =  UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
         
         // 내가 만든 MyAppDelegate SceneDelegate을 쓰겠다
-        sceneConfiguration.delegateClass = MyAppDelegate.self
+        sceneConfiguration.delegateClass = SceneDelegate.self
         return sceneConfiguration
     }
 }
+
 

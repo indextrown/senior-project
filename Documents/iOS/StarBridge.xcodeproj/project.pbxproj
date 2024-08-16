@@ -17,7 +17,6 @@
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
 		DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */; };
 		DF7B47412C6DB521000F1B0D /* apiConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7B47402C6DB521000F1B0D /* apiConfig.swift */; };
-		DF7B47432C6DDF76000F1B0D /* apiMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7B47422C6DDF76000F1B0D /* apiMain.swift */; };
 		DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF7CC1312C6F18BE00531736 /* Config.xcconfig */; };
 		DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */; };
 		DF7CC1392C6F18BE00531736 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1332C6F18BE00531736 /* LoginView.swift */; };
@@ -36,8 +35,6 @@
 		DF7CC1522C6F18FE00531736 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1512C6F18FE00531736 /* KakaoSDKTemplate */; };
 		DF7CC1542C6F18FE00531736 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1532C6F18FE00531736 /* KakaoSDKUser */; };
 		DF97626B2C6595F900FD8577 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DF97626A2C6595F900FD8577 /* README.md */; };
-		DF97626D2C65AABB00FD8577 /* testView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF97626C2C65AABB00FD8577 /* testView.swift */; };
-		DFBC0F752C6B2FB60038BE96 /* testApiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBC0F742C6B2FB60038BE96 /* testApiView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,15 +50,12 @@
 		DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DF7B473F2C6D164A000F1B0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DF7B47402C6DB521000F1B0D /* apiConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = apiConfig.swift; sourceTree = "<group>"; };
-		DF7B47422C6DDF76000F1B0D /* apiMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = apiMain.swift; sourceTree = "<group>"; };
 		DF7CC1312C6F18BE00531736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KakaoAuthVM.swift; sourceTree = "<group>"; };
 		DF7CC1332C6F18BE00531736 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF7CC1342C6F18BE00531736 /* MyAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAppDelegate.swift; sourceTree = "<group>"; };
 		DF7CC1352C6F18BE00531736 /* MySceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySceneDelegate.swift; sourceTree = "<group>"; };
 		DF97626A2C6595F900FD8577 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		DF97626C2C65AABB00FD8577 /* testView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testView.swift; sourceTree = "<group>"; };
-		DFBC0F742C6B2FB60038BE96 /* testApiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testApiView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,10 +113,7 @@
 				DF37BB402C64442E00B8F976 /* BlipView.swift */,
 				DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */,
 				DF3907EE2C65199C00E17C40 /* ArtistView.swift */,
-				DF97626C2C65AABB00FD8577 /* testView.swift */,
-				DFBC0F742C6B2FB60038BE96 /* testApiView.swift */,
 				DF7B47402C6DB521000F1B0D /* apiConfig.swift */,
-				DF7B47422C6DDF76000F1B0D /* apiMain.swift */,
 			);
 			path = StarBridge;
 			sourceTree = "<group>";
@@ -241,10 +232,7 @@
 				DF37BB412C64442E00B8F976 /* BlipView.swift in Sources */,
 				DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */,
 				DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */,
-				DFBC0F752C6B2FB60038BE96 /* testApiView.swift in Sources */,
 				DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */,
-				DF97626D2C65AABB00FD8577 /* testView.swift in Sources */,
-				DF7B47432C6DDF76000F1B0D /* apiMain.swift in Sources */,
 				DF7B47412C6DB521000F1B0D /* apiConfig.swift in Sources */,
 				DF7CC13A2C6F18BE00531736 /* MyAppDelegate.swift in Sources */,
 				DF7CC1392C6F18BE00531736 /* LoginView.swift in Sources */,
