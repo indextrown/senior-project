@@ -17,16 +17,15 @@ struct StarBridgeApp: App {
     @StateObject var kakaoAuthVM = KakaoAuthVM()
     
     var body: some Scene {
-        WindowGroup {
-            if kakaoAuthVM.isLoggedIn {
-                ContentView(kakaoAuthVM: kakaoAuthVM)
-            } else {
-                LoginView(kakaoAuthVM: kakaoAuthVM)
-            }
+//        WindowGroup {
+//            if kakaoAuthVM.isLoggedIn {
+//                ContentView(kakaoAuthVM: kakaoAuthVM)
+//            } else {
+//                LoginView(kakaoAuthVM: kakaoAuthVM)
+//            }
+//        }
+        WindowGroup{
+            ContentView(kakaoAuthVM: kakaoAuthVM)
         }
-//                WindowGroup {
-//                    ContentView()
-//        
-//                }
     }
 }
