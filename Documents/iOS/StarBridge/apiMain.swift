@@ -22,10 +22,10 @@ struct ResponseData: Codable, Hashable {    // 절대 바꾸지 말것
 
 struct apiMain{
     func getData(for date: String) -> [ResponseData]?{
-       guard let url = URL(string: "http://13.125.169.165:8000/api_main") else {
+        guard let url = URL(string: apiConfig.getConfig()) else {
            print("Wrong URL")
            return nil
-       }
+        }
         var parsedData: [String: ResponseData] = [:]
         
         var request = URLRequest(url: url)
