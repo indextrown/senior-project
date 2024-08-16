@@ -11,7 +11,8 @@ import SwiftUI
 struct StarBridgeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            ScheduleView()
         }
     }
 }
