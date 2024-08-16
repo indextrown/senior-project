@@ -10,10 +10,6 @@ import UIKit
 import SwiftUI
 
 struct ScheduleView: View{
-    // --- api 관련 변수들 ---
-    private let api = apiMain()
-    @State private var parsedData: [String: ResponseData]? = [:]
-    
     // -- 달력 관련 변수들 ---
     private let today: Date = Date()
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
@@ -22,6 +18,10 @@ struct ScheduleView: View{
     @State private var selectDate: Date = Date()
     @State private var showDate: Date = Date()
     
+    
+    // --- api 관련 변수들 ---
+    @State private var schedules: [String:[ResponseData]] = [:]
+
     var body: some View{
         GeometryReader{ geometry in
             ScrollView{
@@ -42,6 +42,7 @@ struct ScheduleView: View{
                                     .onTapGesture {
                                         selectDate = today
                                         showDate = today
+                                        
                                     }
                                 Image(systemName: "chevron.left")
                                     .foregroundColor(.white)
@@ -56,6 +57,7 @@ struct ScheduleView: View{
                                         if let nextMonthDate = calendar.date(byAdding: .month, value: -1, to: selectDate){
                                             selectDate = nextMonthDate
                                         }
+                                        
                                     }
                                 
                                 Image(systemName: "chevron.right")
@@ -71,6 +73,7 @@ struct ScheduleView: View{
                                         if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: selectDate){
                                             selectDate = nextMonthDate
                                         }
+                                        
                                     }
                             }
                             .padding([.horizontal, .top])
@@ -88,20 +91,28 @@ struct ScheduleView: View{
                             LazyVGrid(columns: columns) {
                                 ForEach(calendarDates(date: selectDate), id: \.self) { date in
                                     VStack{
-                                        TextView("\(calendar.component(.day, from: date))", weight: .medium, color: setDayForegroundColor(date: date))
+                                        TextView("\(calendar.component(.day, from: date))", weight: .medium, color: setDayforegroundColor(date: date))
                                             .frame(width: 30, height: 30)
                                             .background(setDayBackgroundColor(date: date))
                                             .cornerRadius(15)
                                             .padding(.bottom, 6)
-                                        
-            //                            Image(systemName: "ellipsis")
-            //                                .font(.system(size: 20))
-            //                                .foregroundColor(.black)
-                                        
-//                                        ForEach()
-                                        
+//                                        
+                                        if isExpanded{
+                                            
+                                        }
+                                        else{
+                                            HStack(spacing: 2){
+                                                let events = schedules[dayMonthYear(date)]?.prefix(3) ?? []
+                                                ForEach(events, id: \.self) { event in
+                                                    Image(systemName: "circle.fill")
+                                                        .font(.system(size: 4))
+                                                        .foregroundColor(dotColor(event.kind))
+                                                }
+                                            }
+                                        }
                                     }
                                     .frame(width: 50, height: isExpanded ? 50 : 40)
+//                                    .border(Color.black)
                                     .onTapGesture {
                                         selectDate = date
                                         if calendar.component(.month, from: selectDate) != showMonth{
@@ -119,17 +130,18 @@ struct ScheduleView: View{
                                 }
                             
                         }
-//                        Spacer()
                     }
 //                    .frame(height: geometry.size.height / 2)
+                    .onAppear{
+                        Task{
+                            await loadData(for: yearMonth(showDate))
+                        }
+                    }
                     .background(.white)
                     .cornerRadius(30)
                     .border(Color.black)
-//                    .onAppear{
-//                        parsedData = api.getData(for: "\(showYear)-\(showMonth)")
-//                    }
                     .padding()
-                    
+                                    
                     HStack{ // 오늘 있는 스케줄
                         TextView("오늘의 스케줄", size: 20, weight: .bold)
                             .padding()
@@ -158,7 +170,7 @@ struct ScheduleView: View{
                     .padding(.horizontal)
                 
                     VStack{
-                        testView()
+                        
                     }
                     .frame(height: geometry.size.width / 3)
                     .background(.white)
@@ -193,10 +205,26 @@ struct ScheduleView: View{
         calendar.isDate(date1, inSameDayAs: date2)
     }
     
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
+    private func yearMonth(_ date: Date) -> String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM"
+        return fmt.string(from: date)
+    }
+    
+    private func dayMonthYear(_ date: Date) -> String{
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM-dd"
+        return fmt.string(from: date)
+    }
+  
+    private func setDayforegroundColor(date: Date) -> Color {
+        if isSameDay(date1: date, date2: today) || isSameDay(date1: date, date2: selectDate){
+            return .white
+        }
+        else if showYear == calendar.component(.year, from: date) && showMonth == calendar.component(.month, from: date){
+            return .black
+        }
+        return .gray
     }
     
     private func setDayBackgroundColor(date: Date) -> Color {
@@ -207,16 +235,6 @@ struct ScheduleView: View{
             return .red
         }
         return .clear
-    }
-    
-    private func setDayForegroundColor(date: Date) -> Color {
-        if isSameDay(date1: date, date2: today) || isSameDay(date1: date, date2: selectDate){
-            return .white
-        }
-        else if showYear == calendar.component(.year, from: date) && showMonth == calendar.component(.month, from: date){
-            return .black
-        }
-        return .gray
     }
     
     private func calendarDates(date: Date) -> [Date] {
@@ -254,29 +272,104 @@ struct ScheduleView: View{
         return dates
     }
     
-    enum dotColor{
-        case broad, festival, photo
-        case null
-        func color() -> Color {
-            switch self {
-            case .broad:
-                return Color.brown
-            case .festival:
-                return Color.purple
-            case .photo:
-                return Color.cyan
-            default:
-                return Color.black
+    private func dotColor(_ kind: String?) -> Color {
+        switch kind {
+        case "방송":
+            return Color.brown
+        case "축제":
+            return Color.purple
+        case "사진":
+            return Color.cyan
+        default:
+            return Color.black
+        }
+    }
+
+    
+    // --- api 관련 함수들 및 자료형 ---
+    func loadData(for date: String) async {
+        guard let url = URL(string: apiConfig.getConfig()) else {
+           print("Wrong URL")
+           return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let parameters: [String: Any] = ["date": date]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                do {
+                    // JSON 데이터를 모델로 디코딩
+                    let decoder = JSONDecoder()
+                    let decodedData = try decoder.decode([String: [ResponseData]].self, from: data)
+                    
+                    DispatchQueue.main.async{
+                        schedules = decodedData
+                    }
+                    
+                } catch {
+                    print("Failed to decode JSON: \(error.localizedDescription)")
+                }
+                
+//                if let jsonString = String(data: data, encoding: .utf8) {
+//                    DispatchQueue.main.async {
+//                        print(jsonString)
+//                    }
+//                }
+            }
+            else{
+                print("Unable to get data")
             }
         }
+        .resume()
+        
+//        var pdValues = Array(tmp.values)
+//        let df = DateFormatter(); df.dateFormat = "yyyy-MM-dd"
+//        
+//        pdValues.sort { first, second in
+//            guard
+//                let firstDateString = first.event_date,
+//                let secondDateString = second.event_date,
+//                let firstDate = df.date(from: firstDateString),
+//                let secondDate = df.date(from: secondDateString)
+//            else {
+//                return false
+//            }
+//            return firstDate < secondDate
+//        }
+//        parsedData = pdValues
+    }
+    
+    func loadImage(from base64String: String) -> UIImage?{
+        guard let imageData = Data(base64Encoded: base64String) else {
+            print("Failed to decode base64 string.")
+            return nil
+        }
+        return UIImage(data: imageData)
+    }
+    
+    struct ResponseData: Codable, Hashable {    // 절대 바꾸지 말것
+        let kind: String?
+        let title: String?
+        let detail: String?
+        let singer: String?
+        let x_id: String?
+        let event_date: String?
+        let post_date: String?
+        let url: String?
+        let photos: [String]?
     }
 }
 
 extension DateFormatter {
     static let krFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 M월" // 한국어 형식의 연월 포맷
-        return formatter
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy년 M월" // 한국어 형식의 연월 포맷
+        return fmt
     }()
 }
 
