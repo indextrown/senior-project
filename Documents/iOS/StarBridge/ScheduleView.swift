@@ -125,9 +125,9 @@ struct ScheduleView: View{
                     .background(.white)
                     .cornerRadius(30)
                     .border(Color.black)
-                    .onAppear{
-                        parsedData = api.getData(for: "\(showYear)-\(showMonth)")
-                    }
+//                    .onAppear{
+//                        parsedData = api.getData(for: "\(showYear)-\(showMonth)")
+//                    }
                     .padding()
                     
                     HStack{ // 오늘 있는 스케줄
