@@ -288,9 +288,12 @@ struct ScheduleView: View{
     
     // --- api 관련 함수들 및 자료형 ---
     func loadData(for date: String) async {
-        guard let url = URL(string: apiConfig.getConfig()) else {
-           print("Wrong URL")
-           return
+        guard let apiUrl = Bundle.main.object(forInfoDictionaryKey: "API_MAIN_URL") as? String else {
+            fatalError("Cannot get api key.")
+        }
+        
+        guard let url = URL(string: apiUrl) else {
+           fatalError("Cannot get URL")
         }
         
         var request = URLRequest(url: url)
