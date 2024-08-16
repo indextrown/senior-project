@@ -16,7 +16,6 @@
 		DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632792C309B87001B3D26 /* ContentView.swift */; };
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
 		DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */; };
-		DF7B47412C6DB521000F1B0D /* apiConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7B47402C6DB521000F1B0D /* apiConfig.swift */; };
 		DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF7CC1312C6F18BE00531736 /* Config.xcconfig */; };
 		DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */; };
 		DF7CC1392C6F18BE00531736 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1332C6F18BE00531736 /* LoginView.swift */; };
@@ -50,7 +49,6 @@
 		DF66327B2C309B88001B3D26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DF7B473F2C6D164A000F1B0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		DF7B47402C6DB521000F1B0D /* apiConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = apiConfig.swift; sourceTree = "<group>"; };
 		DF7CC1312C6F18BE00531736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KakaoAuthVM.swift; sourceTree = "<group>"; };
 		DF7CC1332C6F18BE00531736 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 				DF37BB402C64442E00B8F976 /* BlipView.swift */,
 				DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */,
 				DF3907EE2C65199C00E17C40 /* ArtistView.swift */,
-				DF7B47402C6DB521000F1B0D /* apiConfig.swift */,
 			);
 			path = StarBridge;
 			sourceTree = "<group>";
@@ -245,7 +242,6 @@
 				DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */,
 				DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */,
 				DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */,
-				DF7B47412C6DB521000F1B0D /* apiConfig.swift in Sources */,
 				DF7CC13A2C6F18BE00531736 /* MyAppDelegate.swift in Sources */,
 				DF7CC1392C6F18BE00531736 /* LoginView.swift in Sources */,
 				DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */,
@@ -309,7 +305,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -367,7 +363,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -387,7 +383,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StarBridge/Preview Content\"";
-				DEVELOPMENT_TEAM = LGX4B4WC66;
+				DEVELOPMENT_TEAM = 4CPC6N38WA;
 				ENABLE_PREVIEWS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
@@ -426,7 +422,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StarBridge/Preview Content\"";
-				DEVELOPMENT_TEAM = LGX4B4WC66;
+				DEVELOPMENT_TEAM = 4CPC6N38WA;
 				ENABLE_PREVIEWS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
