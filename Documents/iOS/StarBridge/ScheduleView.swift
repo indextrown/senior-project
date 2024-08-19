@@ -14,13 +14,20 @@ struct ScheduleView: View{
     private let today: Date = Date()
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
     
-    @State private var isExpanded: Bool = false
-    @State private var selectDate: Date = Date()
-    @State private var showDate: Date = Date()
+    @State private var isExpanded: Bool = false     //  캘린더 확장 여부 변수
+    @State private var selectDate: Date = Date()    //  캘린더에서 사용자가 선택하는 날짜
+    @State private var showDate: Date = Date()      //  캘린더에서 현재 보여지고 있는 날짜
+    @State private var maxEventsCountOnEachWeeks: [Date:Int] = [:]    // 그 주에 있는 가장 행사가 많은 날: 그 날의 행사 갯수
+    @State private var noEventsComing = true        //  다가오는 스케줄 뷰에서 2주간 이벤트가 있는지 없는지 저장
     
-    
+
     // --- api 관련 변수들 ---
     @State private var schedules: [String:[ResponseData]] = [:]
+    
+    // --- 기준이 되는 디바이스에 대한 비율 반환
+    func stdRatio(_ geoProxy: GeometryProxy) -> CGFloat{
+        return geoProxy.size.width / iPhonePointRes.iPhoneXSMax.width
+    }
 
     var body: some View{
         GeometryReader{ geometry in
@@ -28,44 +35,42 @@ struct ScheduleView: View{
                 VStack{
                     TextView("음악 방송, 예능, 앨범, 기념일까지 컴백 시즌 모드 일정 한 눈에", size: 15, color: Color.gray)
                     VStack{
-                        VStack(spacing: 10){
+                        LazyVStack(spacing: 10){
                             HStack(alignment: .bottom){
                                 Text(showDate, formatter: DateFormatter.krFormatter)
-                                    .font(.system(size: 30, weight: .bold))
+                                    .font(.system(size: 30 * stdRatio(geometry), weight: .bold))
                                     .foregroundColor(.black)
                                 Spacer()
-                                TextView("오늘", size: 17, weight: .bold, color: .white)
-                                    .frame(width: 60, height: 40)
+                                TextView("오늘", size: 17 * stdRatio(geometry), weight: .bold, color: .white)
+                                    .frame(width: 60 * stdRatio(geometry), height: 40 * stdRatio(geometry))
                                     .background(isSameDay(date1: today, date2: showDate) &&
                                                 isSameDay(date1: today, date2: selectDate) ? .p3SlateGray : .p3CharcoalBlue)
-                                    .cornerRadius(5)
+                                    .cornerRadius(5 * stdRatio(geometry))
                                     .onTapGesture {
                                         selectDate = today
                                         showDate = today
-                                        
                                     }
                                 Image(systemName: "chevron.left")
                                     .foregroundColor(.white)
                                     .font(.system(size: 20, weight: .medium))
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 40 * stdRatio(geometry), height: 40 * stdRatio(geometry))
                                     .background(.p3CharcoalBlue)
-                                    .cornerRadius(5)
+                                    .cornerRadius(5 * stdRatio(geometry))
                                     .onTapGesture {
-                                        if let nextMonthDate = calendar.date(byAdding: .month, value: -1, to: showDate){
-                                            showDate = nextMonthDate
+                                        if let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: showDate){
+                                            showDate = prevMonthDate
                                         }
-                                        if let nextMonthDate = calendar.date(byAdding: .month, value: -1, to: selectDate){
-                                            selectDate = nextMonthDate
+                                        if let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: selectDate){
+                                            selectDate = prevMonthDate
                                         }
-                                        
                                     }
                                 
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.white)
-                                    .font(.system(size: 20, weight: .medium))
-                                    .frame(width: 40, height: 40)
+                                    .font(.system(size: 20 * stdRatio(geometry), weight: .medium))
+                                    .frame(width: 40 * stdRatio(geometry), height: 40 * stdRatio(geometry))
                                     .background(.p3CharcoalBlue)
-                                    .cornerRadius(5)
+                                    .cornerRadius(5 * stdRatio(geometry))
                                     .onTapGesture {
                                         if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: showDate){
                                             showDate = nextMonthDate
@@ -90,93 +95,210 @@ struct ScheduleView: View{
                             
                             LazyVGrid(columns: columns) {
                                 ForEach(calendarDates(date: selectDate), id: \.self) { date in
-                                    VStack{
+                                    LazyVStack(spacing: 0){
                                         TextView("\(calendar.component(.day, from: date))", weight: .medium, color: setDayforegroundColor(date: date))
                                             .frame(width: 30, height: 30)
                                             .background(setDayBackgroundColor(date: date))
                                             .cornerRadius(15)
-                                            .padding(.bottom, 6)
-//                                        
-                                        if isExpanded{
-                                            
-                                        }
-                                        else{
-                                            HStack(spacing: 2){
-                                                let events = schedules[dayMonthYear(date)]?.prefix(3) ?? []
-                                                ForEach(events, id: \.self) { event in
-                                                    Image(systemName: "circle.fill")
-                                                        .font(.system(size: 4))
-                                                        .foregroundColor(dotColor(event.kind))
+                                            .padding(.bottom, 0)
+                                            .onTapGesture {
+                                                selectDate = date
+                                                if calendar.component(.month, from: selectDate) != showDateMonth{
+                                                    showDate = date
                                                 }
                                             }
+                                            
+                                        if isExpanded{
+                                            let maxEventCountOnWeek: CGFloat = getMaxEventCountOnWeek(date: date)
+                                                VStack(spacing: 2){
+                                                    let events: [ResponseData] = schedules[dateToString(date)] ?? []
+                                                        ForEach(events, id: \.self) { event in
+                                                            if let singer = event.singer{
+                                                                NavigationLink(destination: ScheduleDetailView(detail: event.detail ?? "")){
+                                                                Text(singer)
+                                                                    .font(.system(size: CGFloat(min(20, 50 / max(singer.count, 1)))))
+                                                                    .foregroundColor(dotColor(event.kind))
+                                                                    .lineLimit(1)
+                                                                    .frame(width: 50, height: 20)
+                                                                    .border(dotColor(event.kind))
+                                                                    .navigationTitle("")
+                                                                    
+                                                            }
+                                                        }
+                                                    }
+                                                    if events.count < Int(maxEventCountOnWeek){
+                                                        Spacer()
+                                                    }
+                                                }
+                                                .frame(height: max(22 * maxEventCountOnWeek - 2, 8))
+                                                .transition(.opacity)
+                                        }
+                                        else{
+                                            HStack(spacing: 1){
+                                                if let events = schedules[dateToString(date)]?.prefix(3){
+                                                    ForEach(events, id: \.self) { event in
+                                                        Image(systemName: "circle.fill")
+                                                            .font(.system(size: 5))
+                                                            .foregroundColor(dotColor(event.kind))
+                                                    }
+                                                }
+                                                else{
+                                                    Spacer()
+                                                }
+                                            }
+                                            .frame(height: 8)
+                                            .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity),
+                                                                    removal: .move(edge: .bottom).combined(with: .opacity)))
                                         }
                                     }
-                                    .frame(width: 50, height: isExpanded ? 50 : 40)
-//                                    .border(Color.black)
-                                    .onTapGesture {
-                                        selectDate = date
-                                        if calendar.component(.month, from: selectDate) != showMonth{
-                                            showDate = date
+                                    .frame(width: 50)
+                                }
+                            }
+                            .padding(.horizontal)
+                            .onChange(of: schedules){ newSchedules in
+                                for (dateString, events) in newSchedules{
+                                    if let newDate = stringToDate(string: dateString){
+                                        maxEventsCountOnEachWeeks[newDate] = events.count
+                                    }
+                                }
+                            }
+                            
+                            HStack{
+                                Spacer()
+                                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                                    .font(.system(size: 20, weight: .light))
+                                    .foregroundColor(.black)
+                                Spacer()
+                            }
+                            .frame(height: 30)
+                            .padding([.horizontal,.bottom])
+                            .background(.white)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.25)){
+                                    isExpanded.toggle()
+                                }
+                            }
+                            
+                        }
+                    }
+                    .onAppear{
+                        Task{
+                            if let data = await loadData(for: dateToString(showDate, format: "yyyy-MM")){
+                                schedules = data
+                            }
+                        }
+                    }
+                    .onChange(of: showDate) { newDate in
+                        Task{
+                            if let data = await loadData(for: dateToString(newDate, format: "yyyy-MM")){
+                                schedules = data
+                            }
+                        }
+                    }
+                    .background(.white)
+                    .cornerRadius(30)
+                    .padding()
+                    
+                    if !isExpanded{
+                        Group{
+                            HStack{ // 오늘 or 선택한 날에 있는 스케줄
+                                TextView("\(selectDateDate)일 (\(selectDateDay))", size: 20, weight: .bold)
+                                    .padding()
+                                Spacer()
+                            }
+                            .frame(height: 25)
+                            .padding(.horizontal)
+                            
+                            if let events: [ResponseData] = schedules[dateToString(selectDate)] {
+                                LazyVStack{
+                                    ForEach(events, id: \.self) { event in
+                                        HStack{
+                                            VStack(alignment: .leading){
+                                                Text(event.title ?? "")
+                                                    .lineLimit(2)
+                                                Text(event.x_id ?? "")
+                                            }
+                                            .foregroundStyle(Color.black)
+                                            .padding(.horizontal)
+                                            Spacer()
+                                        }
+                                        .frame(height: 100)
+                                        .background(.white)
+                                        .cornerRadius(15)
+                                    }
+                                }
+                                .padding([.horizontal, .bottom])
+                                
+                            }
+                            else{
+                                VStack{
+                                    Text("스케줄이 없어요")
+                                        .font(.system(size: 17))
+                                    Text("업데이트될 수 있으니 조금만 기다려주세요")
+                                        .font(.system(size: 15))
+                                }
+                                .foregroundColor(.gray)
+                                .padding()
+                            }
+                        }
+                        Group{
+                            HStack{ //  selecteDate 기준으로 2주간의 이벤트
+                                TextView("다가오는 스케줄", size: 20, weight: .bold)
+                                    .padding()
+                                Spacer()
+                            }
+                            .frame(height: 25)
+                            .padding(.horizontal)
+                            
+                            
+                            let dates: [Date] = (1...14).compactMap { calendar.date(byAdding: .day, value: $0, to: selectDate) }
+                            VStack{
+                                ForEach(dates, id: \.self) { date in
+                                    if let events: [ResponseData] = schedules[dateToString(date)] {
+                                        ForEach(events, id: \.self) { event in
+                                            HStack{
+                                                VStack(alignment: .leading){
+                                                    Text(event.title ?? "")
+                                                        .lineLimit(2)
+                                                    Text(event.x_id ?? "")
+                                                    Text(event.event_date ?? "")
+                                                }
+                                                .foregroundStyle(Color.black)
+                                                .padding(.horizontal)
+                                                Spacer()
+                                            }
+                                            .frame(height: 100)
+                                            .background(.white)
+                                            .cornerRadius(15)
+                                        }
+                                        .onAppear{
+                                            noEventsComing = false
+                                        }
+                                        .onDisappear{
+                                            noEventsComing = true
                                         }
                                     }
                                 }
                             }
-                            .padding([.horizontal, .bottom])
-                            Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                                .foregroundColor(.black)
-                                .padding()
-                                .onTapGesture {
-                                    isExpanded = !isExpanded
+                            .padding([.horizontal,.bottom])
+
+                            if noEventsComing{
+                                VStack{
+                                    Text("스케줄이 없어요")
+                                        .font(.system(size: 17))
+                                    Text("업데이트될 수 있으니 조금만 기다려주세요")
+                                        .font(.system(size: 15))
                                 }
-                            
+                                .foregroundColor(.gray)
+                                .padding()
+                                .onAppear{
+                                    noEventsComing = true
+                                }
+                            }
                         }
                     }
-//                    .frame(height: geometry.size.height / 2)
-                    .onAppear{
-                        Task{
-                            await loadData(for: yearMonth(showDate))
-                        }
-                    }
-                    .background(.white)
-                    .cornerRadius(30)
-                    .border(Color.black)
-                    .padding()
-                                    
-                    HStack{ // 오늘 있는 스케줄
-                        TextView("오늘의 스케줄", size: 20, weight: .bold)
-                            .padding()
-                        Spacer()
-                    }
-                    .frame(height: 25)
-                    .padding(.horizontal)
-                    
-                    VStack{
-                        
-                    }
-                    .frame(height: geometry.size.width / 3)
-                    .background(.white)
-                    .cornerRadius(30)
-                    .padding(.horizontal)
-                    .border(.black)
-                    
-                    HStack{ //  그 주에 있는 스케줄
-                        TextView("다가오는 스케줄", size: 20, weight: .bold)
-                            .padding()
-                        Spacer()
-                        ZStack{
-                            
-                        }
-                    }
-                    .padding(.horizontal)
-                
-                    VStack{
-                        
-                    }
-                    .frame(height: geometry.size.width / 3)
-                    .background(.white)
-                    .cornerRadius(30)
-                    .padding(.horizontal)
                 }
+                .frame(width: geometry.size.width)
             }
             .background(.p3LightGray)
         }
@@ -189,12 +311,23 @@ struct ScheduleView: View{
         return calendar
     }
     
-    private var showYear: Int {
+    private var showDateYear: Int { //  년
         calendar.component(.year, from: showDate)
     }
     
-    private var showMonth: Int {
+    private var showDateMonth: Int {    // 월
         calendar.component(.month, from: showDate)
+    }
+    
+    private var selectDateDate: Int {  // 일
+        calendar.component(.day, from: selectDate)
+    }
+    
+    private var selectDateDay: String{
+        let fmt = DateFormatter()
+        fmt.locale = Locale(identifier: "ko_KR")
+        fmt.dateFormat = "E"
+        return fmt.string(from: selectDate)
     }
     
     private var daysOfWeek: [String] {
@@ -205,15 +338,44 @@ struct ScheduleView: View{
         calendar.isDate(date1, inSameDayAs: date2)
     }
     
-    private func yearMonth(_ date: Date) -> String {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "yyyy-MM"
-        return fmt.string(from: date)
+    private func stringToDate(string dateString: String) -> Date? {
+        let dmt = DateFormatter()
+
+        // DateFormatter 설정
+        dmt.dateFormat = "yyyy-MM-dd"
+        dmt.locale = Locale(identifier: "en_US_POSIX") // 정확한 변환을 위해 Locale 설정
+        
+        return dmt.date(from: dateString)
     }
     
-    private func dayMonthYear(_ date: Date) -> String{
+    func areDatesInSameWeek(date1: Date, date2: Date) -> Bool {
+        let calendar = Calendar.current
+
+        // 각 날짜의 연도 및 주를 추출
+        let weekOfYear1 = calendar.component(.weekOfYear, from: date1)
+        let weekOfYear2 = calendar.component(.weekOfYear, from: date2)
+        
+        let year1 = calendar.component(.yearForWeekOfYear, from: date1)
+        let year2 = calendar.component(.yearForWeekOfYear, from: date2)
+
+        // 두 날짜의 주와 연도가 같으면 동일한 주에 속함
+        return weekOfYear1 == weekOfYear2 && year1 == year2
+    }
+
+    
+    private func getMaxEventCountOnWeek(date stdDate: Date) -> CGFloat {
+        var count = 0
+        for (date, eventcount) in maxEventsCountOnEachWeeks{
+            if areDatesInSameWeek(date1: stdDate, date2: date){
+                count = max(count, eventcount)
+            }
+        }
+        return CGFloat(count)
+    }
+    
+    private func dateToString(_ date: Date, format: String = "yyyy-MM-dd") -> String {
         let fmt = DateFormatter()
-        fmt.dateFormat = "yyyy-MM-dd"
+        fmt.dateFormat = format
         return fmt.string(from: date)
     }
   
@@ -221,7 +383,7 @@ struct ScheduleView: View{
         if isSameDay(date1: date, date2: today) || isSameDay(date1: date, date2: selectDate){
             return .white
         }
-        else if showYear == calendar.component(.year, from: date) && showMonth == calendar.component(.month, from: date){
+        else if showDateYear == calendar.component(.year, from: date) && showDateMonth == calendar.component(.month, from: date){
             return .black
         }
         return .gray
@@ -275,25 +437,26 @@ struct ScheduleView: View{
     private func dotColor(_ kind: String?) -> Color {
         switch kind {
         case "방송":
-            return Color.brown
-        case "축제":
+            return Color.indigo
+        case "행사":
             return Color.purple
         case "사진":
-            return Color.cyan
+            return Color.teal
         default:
             return Color.black
         }
     }
-
     
     // --- api 관련 함수들 및 자료형 ---
-    func loadData(for date: String) async {
+    @MainActor
+    @discardableResult
+    func loadData(for date: String) async -> [String: [ResponseData]]? {
         guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_MAIN_URL") as? String else {
             fatalError("Wrong API key.")
         }
         
         guard let url = URL(string: apiKey) else {
-           fatalError("Wrong URL.")
+            fatalError("Wrong URL.")
         }
         
         var request = URLRequest(url: url)
@@ -303,32 +466,23 @@ struct ScheduleView: View{
         let parameters: [String: Any] = ["date": date]
         request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let data = data {
-                do {
-                    // JSON 데이터를 모델로 디코딩
-                    let decoder = JSONDecoder()
-                    let decodedData = try decoder.decode([String: [ResponseData]].self, from: data)
-                    
-                    DispatchQueue.main.async{
-                        schedules = decodedData
-                    }
-                    
-                } catch {
-                    print("Failed to decode JSON: \(error.localizedDescription)")
-                }
-                
-//                if let jsonString = String(data: data, encoding: .utf8) {
-//                    DispatchQueue.main.async {
-//                        print(jsonString)
-//                    }
-//                }
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                let decoder = JSONDecoder()
+                let decodedData = try decoder.decode([String: [ResponseData]].self, from: data)
+                return decodedData
+            } else {
+                print("Failed to receive valid response.")
+                await loadData(for: date)
+                return nil
             }
-            else{
-                print("Unable to get data")
-            }
+            
+        } catch {
+            print("Failed to load data: \(error.localizedDescription)")
+            return nil
         }
-        .resume()
     }
     
     func loadImage(from base64String: String) -> UIImage?{
