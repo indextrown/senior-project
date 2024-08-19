@@ -9,6 +9,8 @@
 	</dict>
 	<key>KAKAO_NATIVE_APP_KEY</key>
 	<string>${KAKAO_NATIVE_APP_KEY}</string>
+	<key>API_MAIN_URL</key>
+	<string>$(API_MAIN_URL)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

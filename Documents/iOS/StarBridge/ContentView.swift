@@ -24,78 +24,98 @@ struct ContentView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack{
-                ScrollViewReader{ ScrollViewProxy in
-                    HStack{
-                        Button{
-                            
-                        }label: {
-                            TextView("blip", size: 30, weight: .bold)
-                        }
-                        Button{
-                            ScrollViewProxy.scrollTo("ArtistView")
-                            currentView = "ArtistView"
-                        }label: {
-                            TextView("Artists", size: 18)
-                        }
-                        Button{
-                            ScrollViewProxy.scrollTo("ScheduleView")
-                            currentView = "ScheduleView"
-                        }label: {
-                            TextView("Schedule", size: 18)
-                        }
-                        Button{
-                           
-                            currentView = "CafeView"
-                        }label: {
-                            TextView("Cafe", size: 18)
-                        }
-                        Spacer()
-                        Button{
-                            
-                        }label: {
-                            TextView("kpop radar", weight: .bold, color: Color.white)
-                        }
+            ScrollViewReader{ scrollViewProxy in
+                NavigationView{
+                    VStack{
+                        HStack{
+                            Button{
+                                currentView = "blipView"
+                            } label:{
+                                TextView("blip", size: 30, weight: .bold)
+                            }
+                            TextView("Artists", size: 18, weight: currentView == "ArtistView" ? .bold : .regular)
+                                .onTapGesture {
+                                    scrollViewProxy.scrollTo("ArtistView")
+                                    //                                currentView = "ArtistView"
+                                }
+                            TextView("Schedule", size: 18, weight: currentView == "ScheduleView" ? .bold : .regular)
+                                .onTapGesture {
+                                    scrollViewProxy.scrollTo("ScheduleView")
+                                    //                                currentView = "ScheduleView"
+                                }
+                            TextView("Cafe", size: 18, weight: currentView == "CafeView" ? .bold : .regular)
+                                .onTapGesture {
+                                    scrollViewProxy.scrollTo("CafeView")
+                                    //                                currentView = "CafeView"
+                                }
+                            Spacer()
+                            Button{
+                                
+                            }label: {
+                                TextView("kpop radar", weight: .bold, color: Color.white)
+                            }
                             .frame(width: 100, height: 40) //가로 세로 비율: 5: 2
                             .background(Color.black)
                             .clipShape(RoundedRectangle(cornerRadius: 25))
                         }
-                        .padding()
                         .frame(height: geometry.size.height / 20)
-                    ScrollView(.horizontal, showsIndicators: false){
-                        HStack{
-                            ArtistView().frame(width: geometry.size.width)
-                                .id("ArtistView")
-                                .frame(width: geometry.size.width)
-                            ScheduleView().frame(width: geometry.size.width)
-                                .id("ScheduleView")
-                                .frame(width: geometry.size.width)
+                        .padding()
+                    
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 0) {
+                                ArtistView()
+                                    .frame(width: geometry.size.width)
+                                    .id("ArtistView")
+                                    .background(GeometryReader { geo in
+                                        Color.clear.onChange(of: geo.frame(in: .global).minX) { newX in
+                                            if abs(newX) < geometry.size.width / 2 {
+                                                currentView = "ArtistView"
+                                            }
+                                        }
+                                    })
+                                
+                                ScheduleView()
+                                    .frame(width: geometry.size.width)
+                                    .id("ScheduleView")
+                                    .background(GeometryReader { geo in
+                                        Color.clear.onChange(of: geo.frame(in: .global).minX) { newX in
+                                            if abs(newX) < geometry.size.width / 2 {
+                                                currentView = "ScheduleView"
+                                            }
+                                        }
+                                    })
+                            }
+                        }
+                        .onChange(of: currentView) { newView in
+                            withAnimation{
+                                scrollViewProxy.scrollTo(newView)
+                            }
                         }
                     }
-                    
+                    .frame(width: geometry.size.width)
+                    .background(.p3LightGray)
+                    .padding(.top,  iPhonePointRes.currentDevicePortraitSafeArea()?.top)
+                    .ignoresSafeArea()
+                    .navigationBarHidden(true)
                 }
             }
-            .frame(width: geometry.size.width)
-            .ignoresSafeArea()
-            .padding(.top,  iPhonePointRes.currentDevicePortraitSafeArea()?.top)
-            .background(.p3LightGray)
         }
+   
         
-        // 
-        Button("카카오 로그아웃", action: {
-            kakaoAuthVM.kakaoLogout()
-        })
-        .onChange(of: kakaoAuthVM.isLoggedIn) { isLoggedIn in
-            if !isLoggedIn {
-                // 로그아웃 되었을 때, 화면 전환 처리
-                withAnimation {
-                    // 화면을 리셋하거나 다른 액션 수행
-                }
-            }
-        }
+        //
+//        Button("카카오 로그아웃", action: {
+//            kakaoAuthVM.kakaoLogout()
+//        })
+//        .onChange(of: kakaoAuthVM.isLoggedIn) { isLoggedIn in
+//            if !isLoggedIn {
+//                // 로그아웃 되었을 때, 화면 전환 처리
+//                withAnimation {
+//                    // 화면을 리셋하거나 다른 액션 수행
+//                }
+//            }
+//        }
     }
 }
-
 
 // MARK: ContentView가 kakaoAuthVM 객체를 필요로 함
 #Preview {
