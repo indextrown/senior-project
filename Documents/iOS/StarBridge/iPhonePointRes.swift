@@ -20,6 +20,7 @@ enum iPhonePointRes: String {
     case iPhone15 = "iPhone 15", iPhone15Plus = "iPhone 15 Plus", iPhone15Pro = "iPhone 15 Pro", iPhone15ProMax = "iPhone 15 Pro Max"
     
 
+
     static func currentDeviceWidth() -> CGFloat? {
         let deviceName = UIDevice.current.name
         guard let model = iPhonePointRes(rawValue: deviceName) else{
