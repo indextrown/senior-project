@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 
 ### macOS ###
-.DS_Store
+#.DS_Store
 
 ### STS ###
 .apt_generated
