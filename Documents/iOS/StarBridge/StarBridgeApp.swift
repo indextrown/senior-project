@@ -7,11 +7,26 @@
 
 import SwiftUI
 
+
 @main
 struct StarBridgeApp: App {
+    // MARK: AppDelegate 사용
+    @UIApplicationDelegateAdaptor var appDelegate: MyAppDelegate
+    
+    // MARK: 앱 전체에서 로그인 상태를 관리
+    @StateObject var kakaoAuthVM = KakaoAuthVM()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if kakaoAuthVM.isLoggedIn {
+                ContentView(kakaoAuthVM: kakaoAuthVM)
+            } else {
+                LoginView(kakaoAuthVM: kakaoAuthVM)
+            }
         }
+//                WindowGroup {
+//                    ContentView()
+//        
+//                }
     }
 }

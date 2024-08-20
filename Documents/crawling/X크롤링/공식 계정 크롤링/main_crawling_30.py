@@ -6,9 +6,9 @@ import pickle
 from selenium.webdriver.common.by import By
 import time
 import sys
-
 import os
 import requests
+import re
 
 
 ## warning
@@ -21,6 +21,21 @@ import requests
 # pip3 install webdriver-manager
 
 ban_list = ["입금","대리구매","Replying", "양도"]
+
+# 정규표현식 파싱
+def extract_time(s):
+    # 숫자와 그 뒤에 오는 문자(m 또는 s)를 찾습니다.
+    match = re.search(r"(\d+)(m|s)", s)
+    if match:
+        number = int(match.group(1))  # 숫자 추출
+        unit = match.group(2)         # 단위 추출 (m 또는 s)
+
+        # 단위에 따라 출력문을 결정합니다.
+        if unit == 'm':
+            return f"{number}분"
+        elif unit == 's':
+            return f"{number}초"
+    return "time_error"
 
 ## 폴더 생성
 def create_folder(directory):
@@ -120,6 +135,8 @@ def check_login(driver, url):
 
 ## 크롤링 진행
 def profile_crawling(profile_url_list):
+    ongoing = True
+
     # 스크롤을 조금씩 내리는 JavaScript 코드
     scroll_script = """
             var currentPosition = window.pageYOffset;
@@ -152,7 +169,7 @@ def profile_crawling(profile_url_list):
             i = 0
 
             old_titles = []
-            while(i < 10):
+            while(ongoing):
                 posts = driver.find_elements(By.CSS_SELECTOR, "#react-root > div > div > div.css-175oi2r.r-1f2l425.r-13qz1uu.r-417010.r-18u37iz > main > div > div > div > div.css-175oi2r.r-kemksi.r-1kqtdi0.r-1ua6aaf.r-th6na.r-1phboty.r-16y2uox.r-184en5c.r-1c4cdxw.r-1t251xo.r-f8sm7e.r-13qz1uu.r-1ye8kvj > div > div:nth-child(3) > div > div > section > div > div > div > div > div  > article")
 
                 # 프로필명, 게시글내용, 게시글날짜시간, url, 이미지절대경로
@@ -181,6 +198,20 @@ def profile_crawling(profile_url_list):
                     post_name = ''.join(postname[index_with_at])
                     post_date = ' '.join(postname[index+2:])
                     post_conents = ' '.join(postinfo[1].text.split())
+
+                    # 시간조건
+                    int_catch_title = extract_time(post_date)
+
+                    if int_catch_title == "time_error":
+                        print("타입 에러로 무시합니다")
+                        ongoing = False
+                        break
+
+                    # 현재시간으로부터 30분까지의 내용만 추출하고 종료하겠다.
+                    print(f"디버깅: {int_catch_title}")
+                    if int_catch_title[-1] == "분" and int(int_catch_title[:-1]) > 30:
+                        ongoing = False
+                        break
 
 
                     # url
@@ -280,10 +311,9 @@ def main():
                         "https://x.com/NewJeans_ADOR",
                         "https://x.com/bts_bighit"
                         ]
-    # profile_url_list = ["https://x.com/IVEstarship",
-    #                     ]
-
     profile_crawling(profile_url_list)
+
 
 if __name__ == "__main__":
     main()
+    
