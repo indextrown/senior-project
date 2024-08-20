@@ -1,200 +1,200 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artist Events</title>
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f5f5f5;
-        }
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Artist Events</title>-->
+<!--    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />-->
+<!--    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>-->
+<!--    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            background-color: #f5f5f5;-->
+<!--        }-->
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+<!--        .container {-->
+<!--            max-width: 1200px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 20px;-->
+<!--        }-->
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
+<!--        header {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            padding: 20px 0;-->
+<!--        }-->
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+<!--        .logo {-->
+<!--            font-size: 24px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
 
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #000;
-        }
+<!--        nav a {-->
+<!--            margin: 0 15px;-->
+<!--            text-decoration: none;-->
+<!--            color: #000;-->
+<!--        }-->
 
-        .kpop-radar {
-            background-color: #000;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
+<!--        .kpop-radar {-->
+<!--            background-color: #000;-->
+<!--            color: #fff;-->
+<!--            padding: 5px 10px;-->
+<!--            border-radius: 20px;-->
+<!--        }-->
 
-        .subtitle {
-            text-align: center;
-            font-size: 18px;
-            color: #888;
-            margin-bottom: 40px;
-        }
+<!--        .subtitle {-->
+<!--            text-align: center;-->
+<!--            font-size: 18px;-->
+<!--            color: #888;-->
+<!--            margin-bottom: 40px;-->
+<!--        }-->
 
-        .calendar-container {
-            display: flex;
-            justify-content: space-between;
-        }
+<!--        .calendar-container {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--        }-->
 
-        .calendar {
-            width: 60%;
-            background-color: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+<!--        .calendar {-->
+<!--            width: 60%;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 15px;-->
+<!--            padding: 20px;-->
+<!--            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
 
-        .schedule {
-            width: 35%;
-        }
+<!--        .schedule {-->
+<!--            width: 35%;-->
+<!--        }-->
 
-        .schedule-today,
-        .upcoming-schedule {
-            background-color: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
+<!--        .schedule-today,-->
+<!--        .upcoming-schedule {-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 15px;-->
+<!--            padding: 20px;-->
+<!--            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
 
-        .schedule-today h2,
-        .upcoming-schedule h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+<!--        .schedule-today h2,-->
+<!--        .upcoming-schedule h2 {-->
+<!--            font-size: 18px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
 
-        .schedule-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
+<!--        .schedule-item {-->
+<!--            padding: 10px 0;-->
+<!--            border-bottom: 1px solid #eee;-->
+<!--        }-->
 
-        .schedule-item:last-child {
-            border-bottom: none;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <header>
-        <div class="logo">StarBridge</div>
-        <nav>
-            <a href="#">Artists</a>
-            <a href="#">Schedule</a>
-            <a href="#">Event</a>
-        </nav>
-        <div class="kpop-radar">kpop radar</div>
-    </header>
-    <div class="subtitle">
-        음악 방송, 예능, 앨범 발매, 기념일까지 컴백 시즌 모든 일정 한 눈에
-    </div>
-    <div class="calendar-container">
-        <div class="calendar" id="calendar"></div>
-        <div class="schedule">
-            <div class="schedule-today">
-                <h2>오늘의 스케줄</h2>
-                <div id="today-schedule" class="schedule-item">
-                    <!-- 오늘의 스케줄이 여기에 추가됩니다 -->
-                </div>
-            </div>
-            <div class="upcoming-schedule">
-                <h2>다가오는 스케줄</h2>
-                <div id="upcoming-schedule" class="schedule-item">
-                    <!-- 다가오는 스케줄이 여기에 추가됩니다 -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--        .schedule-item:last-child {-->
+<!--            border-bottom: none;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <header>-->
+<!--        <div class="logo">StarBridge</div>-->
+<!--        <nav>-->
+<!--            <a href="#">Artists</a>-->
+<!--            <a href="#">Schedule</a>-->
+<!--            <a href="#">Event</a>-->
+<!--        </nav>-->
+<!--        <div class="kpop-radar">kpop radar</div>-->
+<!--    </header>-->
+<!--    <div class="subtitle">-->
+<!--        음악 방송, 예능, 앨범 발매, 기념일까지 컴백 시즌 모든 일정 한 눈에-->
+<!--    </div>-->
+<!--    <div class="calendar-container">-->
+<!--        <div class="calendar" id="calendar"></div>-->
+<!--        <div class="schedule">-->
+<!--            <div class="schedule-today">-->
+<!--                <h2>오늘의 스케줄</h2>-->
+<!--                <div id="today-schedule" class="schedule-item">-->
+<!--                    &lt;!&ndash; 오늘의 스케줄이 여기에 추가됩니다 &ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="upcoming-schedule">-->
+<!--                <h2>다가오는 스케줄</h2>-->
+<!--                <div id="upcoming-schedule" class="schedule-item">-->
+<!--                    &lt;!&ndash; 다가오는 스케줄이 여기에 추가됩니다 &ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            locale: 'ko',
-            events: function(fetchInfo, successCallback, failureCallback) {
-                $.ajax({
-                    url: '/events', // 수정된 부분
-                    dataType: 'json',
-                    success: function(data) {
-                        var events = [];
-                        $(data).each(function() {
-                            events.push({
-                                title: this.title,
-                                start: this.start,
-                                description: this.description
-                            });
-                        });
-                        successCallback(events);
-                        updateSchedule(events);
-                    },
-                    error: function() {
-                        alert('There was an error while fetching events!');
-                    }
-                });
-            },
-            eventClick: function(info) {
-                alert('Event: ' + info.event.title + '\n' + info.event.extendedProps.description);
-            }
-        });
-        calendar.render();
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        var calendarEl = document.getElementById('calendar');-->
+<!--        var calendar = new FullCalendar.Calendar(calendarEl, {-->
+<!--            initialView: 'dayGridMonth',-->
+<!--            locale: 'ko',-->
+<!--            events: function(fetchInfo, successCallback, failureCallback) {-->
+<!--                $.ajax({-->
+<!--                    url: '/events', // 수정된 부분-->
+<!--                    dataType: 'json',-->
+<!--                    success: function(data) {-->
+<!--                        var events = [];-->
+<!--                        $(data).each(function() {-->
+<!--                            events.push({-->
+<!--                                title: this.title,-->
+<!--                                start: this.start,-->
+<!--                                description: this.description-->
+<!--                            });-->
+<!--                        });-->
+<!--                        successCallback(events);-->
+<!--                        updateSchedule(events);-->
+<!--                    },-->
+<!--                    error: function() {-->
+<!--                        alert('There was an error while fetching events!');-->
+<!--                    }-->
+<!--                });-->
+<!--            },-->
+<!--            eventClick: function(info) {-->
+<!--                alert('Event: ' + info.event.title + '\n' + info.event.extendedProps.description);-->
+<!--            }-->
+<!--        });-->
+<!--        calendar.render();-->
 
-        function updateSchedule(events) {
-            const today = new Date().toISOString().split('T')[0];
-            const todaySchedule = events.filter(event => event.start === today);
-            const upcomingSchedule = events.filter(event => event.start > today);
+<!--        function updateSchedule(events) {-->
+<!--            const today = new Date().toISOString().split('T')[0];-->
+<!--            const todaySchedule = events.filter(event => event.start === today);-->
+<!--            const upcomingSchedule = events.filter(event => event.start > today);-->
 
-            const todayScheduleContainer = document.getElementById('today-schedule');
-            const upcomingScheduleContainer = document.getElementById('upcoming-schedule');
+<!--            const todayScheduleContainer = document.getElementById('today-schedule');-->
+<!--            const upcomingScheduleContainer = document.getElementById('upcoming-schedule');-->
 
-            todayScheduleContainer.innerHTML = '';
-            upcomingScheduleContainer.innerHTML = '';
+<!--            todayScheduleContainer.innerHTML = '';-->
+<!--            upcomingScheduleContainer.innerHTML = '';-->
 
-            if (todaySchedule.length > 0) {
-                todaySchedule.forEach(event => {
-                    const scheduleItem = document.createElement('div');
-                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;
-                    todayScheduleContainer.appendChild(scheduleItem);
-                });
-            } else {
-                todayScheduleContainer.innerHTML = '<p>오늘의 스케줄이 없습니다.</p>';
-            }
+<!--            if (todaySchedule.length > 0) {-->
+<!--                todaySchedule.forEach(event => {-->
+<!--                    const scheduleItem = document.createElement('div');-->
+<!--                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;-->
+<!--                    todayScheduleContainer.appendChild(scheduleItem);-->
+<!--                });-->
+<!--            } else {-->
+<!--                todayScheduleContainer.innerHTML = '<p>오늘의 스케줄이 없습니다.</p>';-->
+<!--            }-->
 
-            if (upcomingSchedule.length > 0) {
-                upcomingSchedule.forEach(event => {
-                    const scheduleItem = document.createElement('div');
-                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;
-                    upcomingScheduleContainer.appendChild(scheduleItem);
-                });
-            } else {
-                upcomingScheduleContainer.innerHTML = '<p>다가오는 스케줄이 없습니다.</p>';
-            }
-        }
-    });
-</script>
-</body>
-</html>
+<!--            if (upcomingSchedule.length > 0) {-->
+<!--                upcomingSchedule.forEach(event => {-->
+<!--                    const scheduleItem = document.createElement('div');-->
+<!--                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;-->
+<!--                    upcomingScheduleContainer.appendChild(scheduleItem);-->
+<!--                });-->
+<!--            } else {-->
+<!--                upcomingScheduleContainer.innerHTML = '<p>다가오는 스케줄이 없습니다.</p>';-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

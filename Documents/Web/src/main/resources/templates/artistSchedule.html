@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Schedule</title>
+    <link href="/css/artistSchedule.css" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet'/>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            StarBridge<img src="/images/logo.png" alt="로고">
+        </div>
+        <nav>
+            <a href="#">Artists</a>
+            <a href="#">Schedule</a>
+            <a href="/birthdayCafe">Birthday Cafe</a>
+        </nav>
+        <div class="kpop-radar">kpop radar</div>
+    </header>
+    <div class="subtitle">
+        음악 방송, 예능, 앨범 발매, 기념일까지 컴백 시즌 모든 일정 한 눈에
+    </div>
+    <div class="calendar-container">
+        <div class="calendar" id="calendar"></div>
+        <div class="schedule">
+            <div class="schedule-today">
+                <h2>오늘의 스케줄</h2>
+                <div id="today-schedule" class="schedule-item">
+                    <!-- 오늘의 스케줄이 여기에 추가됩니다 -->
+                </div>
+            </div>
+            <div class="upcoming-schedule">
+                <h2>다가오는 스케줄</h2>
+                <div id="upcoming-schedule" class="schedule-item">
+                    <!-- 다가오는 스케줄이 여기에 추가됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 추가된 부분: 날짜순 정렬된 이벤트 리스트 -->
+    <div class="sorted-events">
+        <h2>o 날짜순 정렬 o</h2>
+        <div id="sorted-event-list" class="event-list">
+            <!-- 정렬된 이벤트가 여기에 추가됩니다 -->
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ko',
+            events: function (fetchInfo, successCallback, failureCallback) {
+                $.ajax({
+                    url: '/schedules', // Controller 'endpoint'와 맞추기
+                    dataType: 'json',
+                    success: function (data) {
+                        var events = [];
+                        $(data).each(function () {
+                            events.push({
+                                title: this.singer,  // 캘린더에서 제목으로 사용
+                                start: this.event_date,  // 이벤트 시작 날짜 (캘린더에서 날짜로 사용)
+                                detail: this.detail,  // 이벤트 세부 정보
+                                photo: this.photo, // 사진 경로
+                                backgroundColor: getColorBySinger(this.singer)  // 가수에 따라 색상 설정
+                            });
+                        });
+                        successCallback(events);
+                        updateSchedule(events);
+                        displaySortedEvents(events);
+                    },
+                    error: function () {
+                        alert('There was an error while fetching events!');
+                    }
+                });
+            },
+            eventClick: function (info) {
+                alert('Event: ' + info.event.title + '\n' + info.event.extendedProps.detail);
+            }
+        });
+        calendar.render();
+
+        function getColorBySinger(singer) {
+            switch (singer) {
+                case '아이브':
+                    return '#15326c'; // IVE의 색상
+                case '뉴진스':
+                    return '#837f34'; // NewJeans의 색상
+                case '방탄소년단':
+                    return '#3357FF'; // BTS의 색상
+                default:
+                    return '#888888'; // 기본 색상
+            }
+        }
+
+        function updateSchedule(events) {
+            const today = new Date().toISOString().split('T')[0];
+            const todaySchedule = events.filter(event => event.start === today);
+            const upcomingSchedule = events.filter(event => event.start > today);
+
+            const todayScheduleContainer = document.getElementById('today-schedule');
+            const upcomingScheduleContainer = document.getElementById('upcoming-schedule');
+
+            todayScheduleContainer.innerHTML = '';
+            upcomingScheduleContainer.innerHTML = '';
+
+            if (todaySchedule.length > 0) {
+                todaySchedule.forEach(event => {
+                    const scheduleItem = document.createElement('div');
+                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;
+                    todayScheduleContainer.appendChild(scheduleItem);
+                });
+            } else {
+                todayScheduleContainer.innerHTML = '<p>오늘의 스케줄이 없습니다.</p>';
+            }
+
+            if (upcomingSchedule.length > 0) {
+                upcomingSchedule.forEach(event => {
+                    const scheduleItem = document.createElement('div');
+                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;
+                    upcomingScheduleContainer.appendChild(scheduleItem);
+                });
+            } else {
+                upcomingScheduleContainer.innerHTML = '<p>다가오는 스케줄이 없습니다.</p>';
+            }
+        }
+
+        // 추가된 함수: 날짜순으로 이벤트를 정렬하여 표시
+        function displaySortedEvents(events) {
+            const sortedEvents = events.sort((a, b) => new Date(a.start) - new Date(b.start));
+            const sortedEventListContainer = document.getElementById('sorted-event-list');
+
+            sortedEventListContainer.innerHTML = '';
+
+            sortedEvents.forEach(event => {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'sorted-event-item';
+                eventItem.innerHTML = `
+                    <h3>${event.title} (${event.start})</h3>
+                    <p>${event.detail}</p>
+                    ${event.photo ? `<img src="/${event.photo}" alt="${event.title}" style="max-width: 200px;">` : ''}
+                `;
+                sortedEventListContainer.appendChild(eventItem);
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -4,93 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StarBridge</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <link href="/css/main.css" rel="stylesheet">
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .logo img {
-            width: 50px;
-            height: 50px;
-            margin-left: 10px; /* 로고와 텍스트 간격 조정 */
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #000;
-        }
-
-        .kpop-radar {
-            background-color: #000;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .breadcrumb {
-            margin: 20px 0;
-            color: #888;
-        }
-
-        main {
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 36px;
-            font-weight: bold;
-            line-height: 1.4;
-        }
-
-        p {
-            font-size: 18px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .artists {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 40px;
-        }
-
-        .artist {
-            text-align: center;
-        }
-
-        .artist img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-    </style>
 </head>
 <body>
 <!-- 첫 번째 화면 -->
@@ -102,8 +17,8 @@
         </div>
         <nav>
             <a href="#">Artists</a>
-            <a href="#">Schedule</a>
-            <a href="#">Birthday Cafe</a>
+            <a href="/artistSchedule">Schedule</a>
+            <a href="/birthdayCafe">Birthday Cafe</a>
         </nav>
         <div class="kpop-radar">kpop radar</div>
     </header>
@@ -121,12 +36,12 @@
                 <div>엔씨티<br>NCT</div>
             </div>
             <div class="artist">
-                <img src="image3.jpg" alt="골든차일드">
-                <div>골든차일드<br>GOLDEN CHILD</div>
+                <img src="/images/bts.jpeg" alt="골든차일드">
+                <div>방탄소년단<br>BTS</div>
             </div>
             <div class="artist">
-                <img src="image4.jpg" alt="김세정">
-                <div>김세정<br>KIM SEJEONG</div>
+                <img src="/images/newjeans.jpeg" alt="김세정">
+                <div>뉴진스<br>new jeans</div>
             </div>
         </div>
     </main>
