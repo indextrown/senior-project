@@ -101,8 +101,7 @@ def driver_Settings():
     return driver
 
 
-# 시간 , 내용, 사진
-if __name__ == "__main__":
+def insta_crawl(title_cnt):
     driver = driver_Settings()
     driver.get("https://www.instagram.com/")
     driver.implicitly_wait(15)
@@ -139,7 +138,7 @@ if __name__ == "__main__":
     # KST 시간으로 변환하여 출력
     kst_time = convert_to_kst(datetime_value)
 
-    #print("게시글 생략")
+    # print("게시글 생략")
     print("#########################################################################")
     # print("".join(contents.text.split()))
     # print("KST Datetime:", kst_time)
@@ -161,22 +160,20 @@ if __name__ == "__main__":
     save_path = os.path.join(folder_path, image_name)
     download_image(img_url, save_path)
 
-
-
     ###
     img_cnt = 1
     while True:
         clicked = driver.execute_script('''
-                    var btn = document.querySelector('button[aria-label="다음"]');
-                    if (btn) {
-                        btn.click();
-                        return true;
-                    } else {
-                        return false;
-                    }
-                ''')
+                        var btn = document.querySelector('button[aria-label="다음"]');
+                        if (btn) {
+                            btn.click();
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    ''')
 
-        #time.sleep(1.5)
+        time.sleep(1.5)
 
         if clicked:
             # print("클릭됨")
@@ -195,20 +192,16 @@ if __name__ == "__main__":
             break
 
     # 두 값을 출력
-    # print("게시글 생략")
-    print("".join(contents.text.split()))
-    print("KST Datetime:", kst_time)
-    # print("Title:", title_value)
+    # print("".join(contents.text.split()))
+    # print("KST Datetime:", kst_time)
 
     time.sleep(1.5)
-
-
 
     ################################################################################################################################################################################################################################
 
     # 첫 게시글 클릭 후 두번째부터 진행과정
     cnt = 0
-    while cnt < 3:
+    while cnt < title_cnt-1:
         print("#########################################################################")
         # next_btn = driver.find_element(By.CSS_SELECTOR, '.x1lliihq.x1n2onr6.x175jnsf')
         next_btn = driver.find_element(By.CSS_SELECTOR,
@@ -216,14 +209,14 @@ if __name__ == "__main__":
         next_btn.click()
 
         contents = driver.find_element(By.CSS_SELECTOR,
-                                             'body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x78zum5.xdt5ytf.x1iyjqo2.xs83m0k.x2lwn1j.x1odjw0f.x1n2onr6.x9ek82g.x6ikm8r.xdj266r.x11i5rnm.x4ii5y1.x1mh8g0r.xexx8yu.x1pi30zi.x18d9i69.x1swvt13 > ul > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x2lah0s.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.xggy1nq.x11njtxf > li > div > div > div._a9zr > div._a9zs > h1')
+                                       'body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x78zum5.xdt5ytf.x1iyjqo2.xs83m0k.x2lwn1j.x1odjw0f.x1n2onr6.x9ek82g.x6ikm8r.xdj266r.x11i5rnm.x4ii5y1.x1mh8g0r.xexx8yu.x1pi30zi.x18d9i69.x1swvt13 > ul > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x2lah0s.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.xggy1nq.x11njtxf > li > div > div > div._a9zr > div._a9zs > h1')
         time_info = driver.find_element(By.CSS_SELECTOR,
                                         "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x1yztbdb.x1h3rv7z.x1swvt13 > div > div > a > span > time")
 
-        photo_next_btn = driver.execute_script('return document.querySelector(\'button[aria-label="다음"]\') ? true : false;')
+        photo_next_btn = driver.execute_script(
+            'return document.querySelector(\'button[aria-label="다음"]\') ? true : false;')
 
-
-        #print("현재URL: ", extract_last_part(driver.current_url))
+        # print("현재URL: ", extract_last_part(driver.current_url))
 
         # datetime 속성과 title 속성 값을 추출
         datetime_value = time_info.get_attribute("datetime")
@@ -246,18 +239,17 @@ if __name__ == "__main__":
         save_path = os.path.join(folder_path, image_name)
         download_image(img_url, save_path)
 
-
         img_cnt = 1
         while True:
             clicked = driver.execute_script('''
-                var btn = document.querySelector('button[aria-label="다음"]');
-                if (btn) {
-                    btn.click();
-                    return true;
-                } else {
-                    return false;
-                }
-            ''')
+                    var btn = document.querySelector('button[aria-label="다음"]');
+                    if (btn) {
+                        btn.click();
+                        return true;
+                    } else {
+                        return false;
+                    }
+                ''')
 
             time.sleep(1.5)
 
@@ -273,22 +265,18 @@ if __name__ == "__main__":
                 download_image(img_url, save_path)
                 time.sleep(1.5)
 
-                img_cnt+=1
+                img_cnt += 1
             else:
                 break
 
-
         # 두 값을 출력
-        #print("게시글 생략")
-        print("".join(contents.text.split()))
-        print("KST Datetime:", kst_time)
+        # print("게시글 생략")
+        # print("".join(contents.text.split()))
+        # print("KST Datetime:", kst_time)
         # print("Title:", title_value)
 
         time.sleep(1.5)
         cnt += 1
-
-
-
 
     print("입력: ")
     n = input()
@@ -297,6 +285,11 @@ if __name__ == "__main__":
     else:
         print("강제종료")
         driver.quit()
+
+
+# 시간 , 내용, 사진
+if __name__ == "__main__":
+    insta_crawl(4)
 
 
 
