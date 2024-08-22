@@ -8,10 +8,14 @@ import time
 from datetime import datetime, timezone, timedelta
 import requests
 import os
+import re
+from korean_romanizer.romanizer import Romanizer
 
 ## warning
 # brew install openssl@1.1
 # pip3 install urllib3==1.26.15
+
+# [시간, 게시글, url, [이미지리스트]]
 
 def extract_last_part(url):
     # URL을 '/'로 분리
@@ -100,12 +104,12 @@ def driver_Settings():
 
     return driver
 
-
-def insta_crawl(title_cnt):
+def isnta_crawl(title_cnt):
     driver = driver_Settings()
     driver.get("https://www.instagram.com/")
     driver.implicitly_wait(15)
 
+    # 쿠키를 통한 로그인
     cookies = pickle.load(open('insta_cookies.pkl', 'rb'))
     for cookie in cookies:
         driver.add_cookie(cookie)
@@ -115,55 +119,98 @@ def insta_crawl(title_cnt):
     driver.implicitly_wait(15)
     time.sleep(1.5)
 
-    # target profile
+    # 대상 프로필
     driver.get("https://www.instagram.com/salt_ent/")
+    # driver.get("https://www.instagram.com/jichangwook/")
     driver.implicitly_wait(15)
     time.sleep(3)
 
-    first_title = driver.find_element(By.CSS_SELECTOR, "._aagw")
-    first_title.click()
-    time.sleep(2)
 
-    # 게시글
-    contents = driver.find_element(By.CSS_SELECTOR, '._ap3a._aaco._aacu._aacx._aad7._aade')
+    # 게시글 수집
+    all_contents = []
 
-    # 시간정보
-    time_info = driver.find_element(By.CSS_SELECTOR,
-                                    "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x1yztbdb.x1h3rv7z.x1swvt13 > div > div > a > span > time")
+    first = True
+    cnt = 0
+    while cnt < title_cnt:
+        # 계정의 첫 게시글이라면
+        if first:
+            # 첫 게시글 클릭
+            first_title = driver.find_element(By.CSS_SELECTOR, "._aagw")
+            first_title.click()
+            time.sleep(1.5)
+            first = False
+        else:
+            # 첫 게시글이 아니라면
+            next_btn = driver.find_element(By.CSS_SELECTOR,
+                                           'body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div:nth-child(1) > div > div > div._aaqg._aaqh > button')
 
-    # datetime 속성과 title 속성 값을 추출
-    datetime_value = time_info.get_attribute("datetime")
-    title_value = time_info.get_attribute("title")
+            next_btn.click()
+            time.sleep(1.5)
 
-    # KST 시간으로 변환하여 출력
-    kst_time = convert_to_kst(datetime_value)
 
-    # print("게시글 생략")
-    print("#########################################################################")
-    # print("".join(contents.text.split()))
-    # print("KST Datetime:", kst_time)
-    # print("Title:", title_value)
+        # 게시글
+        contents = "".join(driver.find_element(By.CSS_SELECTOR,
+                                       'body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x78zum5.xdt5ytf.x1iyjqo2.xs83m0k.x2lwn1j.x1odjw0f.x1n2onr6.x9ek82g.x6ikm8r.xdj266r.x11i5rnm.x4ii5y1.x1mh8g0r.xexx8yu.x1pi30zi.x18d9i69.x1swvt13 > ul > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x2lah0s.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.xggy1nq.x11njtxf > li > div > div > div._a9zr > div._a9zs > h1').text.split())
 
-    ################################################################################################################################################################################################################################
-    # 첫 게시글 하드코딩
-    # 폴더 생성
-    folder_path = f"image/{convert_to_kst_folder(datetime_value)}"
-    create_folder(folder_path)
+        actor_name = re.search(r'#([^#]+)#', contents).group(1)
+        #print("테스트!!!!!!!!!!!!", actor_name)
 
-    # while문에 존재하는 img_selector와 다르기 때문에 중복되는 코드 필요.
-    img_selector = "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div._aatk._aatl > div > div.x1lliihq.x1n2onr6 > div.x9f619.xjbqb8w.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x10l6tqk.x1ey2m1c.x13vifvy.x17qophe.xds687c.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.xdt5ytf.xqjyukv.x1qjc9v5.x1oa3qoh.x1nhvcw1 > div > div > div > ul > li:nth-child(2) > div > div > div > div > div > div > img"
-    img_element = driver.find_element(By.CSS_SELECTOR, img_selector)
-    img_url = img_element.get_attribute("src")
+        # 시간정보
+        time_info = driver.find_element(By.CSS_SELECTOR,
+                                        "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x1yztbdb.x1h3rv7z.x1swvt13 > div > div > a > span > time")
 
-    # 여기에 다운로드 로직
-    image_name = f"image{0}.jpg"
-    save_path = os.path.join(folder_path, image_name)
-    download_image(img_url, save_path)
+        # datetime 속성과 title 속성 값을 추출
+        datetime_value = time_info.get_attribute("datetime")
 
-    ###
-    img_cnt = 1
-    while True:
-        clicked = driver.execute_script('''
+        # KST 시간으로 변환하여 출력
+        kst_time = convert_to_kst(datetime_value)
+
+        # 현재url
+        cur_url = driver.current_url
+
+        romanizer = Romanizer(actor_name)
+        romanized_name = romanizer.romanize()
+
+        #print(romanized_name)
+
+        # 폴더 생성
+        folder_path = f"image/insta/@salt_ent/{romanized_name}/{convert_to_kst_folder(datetime_value)}"
+        create_folder(folder_path)
+
+        # 이미지 존재여부 확인
+        img_cnt = 0
+
+        # 이미지들 경로 저장
+        images_path = []
+
+        image_first = True
+        while True:
+            if image_first:
+                # 이미지 존재하는지 확인
+                image_alived = driver.execute_script('''
+                                var image = document.querySelector('body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div._aatk._aatl > div > div.x1lliihq.x1n2onr6 > div.x9f619.xjbqb8w.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x10l6tqk.x1ey2m1c.x13vifvy.x17qophe.xds687c.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.xdt5ytf.xqjyukv.x1qjc9v5.x1oa3qoh.x1nhvcw1 > div > div > div > ul > li:nth-child(2) > div > div > div > div > div > div > img');
+                                if (image) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            ''')
+
+                if image_alived:
+                    img_selector = "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div._aatk._aatl > div > div.x1lliihq.x1n2onr6 > div.x9f619.xjbqb8w.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x10l6tqk.x1ey2m1c.x13vifvy.x17qophe.xds687c.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.xdt5ytf.xqjyukv.x1qjc9v5.x1oa3qoh.x1nhvcw1 > div > div > div > ul > li:nth-child(2) > div > div > div > div > div > div > img"
+                    img_element = driver.find_element(By.CSS_SELECTOR, img_selector)
+                    img_url = img_element.get_attribute("src")
+
+                    # 여기에 다운로드 로직
+                    image_name = f"image{img_cnt}.jpg"
+                    save_path = os.path.join(folder_path, image_name)
+                    download_image(img_url, save_path)
+
+                    # 이미지 경로 추가
+                    images_path.append(save_path)
+
+                    # 다음 이미지 버튼 누르기
+                    clicked = driver.execute_script('''
                         var btn = document.querySelector('button[aria-label="다음"]');
                         if (btn) {
                             btn.click();
@@ -173,88 +220,38 @@ def insta_crawl(title_cnt):
                         }
                     ''')
 
-        time.sleep(1.5)
 
-        if clicked:
-            # print("클릭됨")
-            img_selector = "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div._aatk._aatl > div > div.x1lliihq.x1n2onr6 > div.x9f619.xjbqb8w.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x10l6tqk.x1ey2m1c.x13vifvy.x17qophe.xds687c.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.xdt5ytf.xqjyukv.x1qjc9v5.x1oa3qoh.x1nhvcw1 > div > div > div > ul > li:nth-child(3) > div > div > div > div > div > div > img"
-            img_element = driver.find_element(By.CSS_SELECTOR, img_selector)
-            img_url = img_element.get_attribute("src")
+                    img_cnt += 1
 
-            # 여기에 다운로드 로직
-            image_name = f"image{img_cnt}.jpg"
-            save_path = os.path.join(folder_path, image_name)
-            download_image(img_url, save_path)
+                else:
+                    # 다음 이미지 버튼 누르고 종료
+                    clicked = driver.execute_script('''
+                        var btn = document.querySelector('button[aria-label="다음"]');
+                        if (btn) {
+                            btn.click();
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    ''')
+
+
+                image_first = False
+                continue
+
+            # 이미지 존재하는지 확인
+            image_alived = driver.execute_script('''
+                var image = document.querySelector('body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div._aatk._aatl > div > div.x1lliihq.x1n2onr6 > div.x9f619.xjbqb8w.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x10l6tqk.x1ey2m1c.x13vifvy.x17qophe.xds687c.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.xdt5ytf.xqjyukv.x1qjc9v5.x1oa3qoh.x1nhvcw1 > div > div > div > ul > li:nth-child(3) > div > div > div > div > div > div > img');
+                if (image) {
+                    return true;
+                } else {
+                    return false;
+                }
+            ''')
             time.sleep(1.5)
 
-            img_cnt += 1
-        else:
-            break
-
-    # 두 값을 출력
-    # print("".join(contents.text.split()))
-    # print("KST Datetime:", kst_time)
-
-    time.sleep(1.5)
-
-    ################################################################################################################################################################################################################################
-
-    # 첫 게시글 클릭 후 두번째부터 진행과정
-    cnt = 0
-    while cnt < title_cnt-1:
-        print("#########################################################################")
-        # next_btn = driver.find_element(By.CSS_SELECTOR, '.x1lliihq.x1n2onr6.x175jnsf')
-        next_btn = driver.find_element(By.CSS_SELECTOR,
-                                       'body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div:nth-child(1) > div > div > div._aaqg._aaqh > button')
-        next_btn.click()
-
-        contents = driver.find_element(By.CSS_SELECTOR,
-                                       'body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x78zum5.xdt5ytf.x1iyjqo2.xs83m0k.x2lwn1j.x1odjw0f.x1n2onr6.x9ek82g.x6ikm8r.xdj266r.x11i5rnm.x4ii5y1.x1mh8g0r.xexx8yu.x1pi30zi.x18d9i69.x1swvt13 > ul > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x2lah0s.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.xggy1nq.x11njtxf > li > div > div > div._a9zr > div._a9zs > h1')
-        time_info = driver.find_element(By.CSS_SELECTOR,
-                                        "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div.x1qjc9v5.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x78zum5.xdt5ytf.x1iyjqo2.x5wqa0o.xln7xf2.xk390pu.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x65f84u.x1vq45kp.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x11njtxf > div > div > div.x78zum5.xdt5ytf.x1q2y9iw.x1n2onr6.xh8yej3.x9f619.x1iyjqo2.x18l3tf1.x26u7qi.xy80clv.xexx8yu.x4uap5.x18d9i69.xkhd6sd > div.x1yztbdb.x1h3rv7z.x1swvt13 > div > div > a > span > time")
-
-        photo_next_btn = driver.execute_script(
-            'return document.querySelector(\'button[aria-label="다음"]\') ? true : false;')
-
-        # print("현재URL: ", extract_last_part(driver.current_url))
-
-        # datetime 속성과 title 속성 값을 추출
-        datetime_value = time_info.get_attribute("datetime")
-        title_value = time_info.get_attribute("title")
-
-        # KST 시간으로 변환하여 출력
-        kst_time = convert_to_kst(datetime_value)
-
-        # 폴더 생성
-        folder_path = f"image/{convert_to_kst_folder(datetime_value)}"
-        create_folder(folder_path)
-
-        # while문에 존재하는 img_selector와 다르기 때문에 중복되는 코드 필요.
-        img_selector = "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div._aatk._aatl > div > div.x1lliihq.x1n2onr6 > div.x9f619.xjbqb8w.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x10l6tqk.x1ey2m1c.x13vifvy.x17qophe.xds687c.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.xdt5ytf.xqjyukv.x1qjc9v5.x1oa3qoh.x1nhvcw1 > div > div > div > ul > li:nth-child(2) > div > div > div > div > div > div > img"
-        img_element = driver.find_element(By.CSS_SELECTOR, img_selector)
-        img_url = img_element.get_attribute("src")
-
-        # 여기에 다운로드 로직
-        image_name = f"image{0}.jpg"
-        save_path = os.path.join(folder_path, image_name)
-        download_image(img_url, save_path)
-
-        img_cnt = 1
-        while True:
-            clicked = driver.execute_script('''
-                    var btn = document.querySelector('button[aria-label="다음"]');
-                    if (btn) {
-                        btn.click();
-                        return true;
-                    } else {
-                        return false;
-                    }
-                ''')
-
-            time.sleep(1.5)
-
-            if clicked:
-                # print("클릭됨")
+            # 이미지가 존재한다면
+            if image_alived:
                 img_selector = "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe.x1qjc9v5.xjbqb8w.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xr1yuqi.xkrivgy.x4ii5y1.x1gryazu.x15h9jz8.x47corl.xh8yej3.xir0mxb.x1juhsu6 > div > article > div > div._aatk._aatl > div > div.x1lliihq.x1n2onr6 > div.x9f619.xjbqb8w.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x10l6tqk.x1ey2m1c.x13vifvy.x17qophe.xds687c.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.xdt5ytf.xqjyukv.x1qjc9v5.x1oa3qoh.x1nhvcw1 > div > div > div > ul > li:nth-child(3) > div > div > div > div > div > div > img"
                 img_element = driver.find_element(By.CSS_SELECTOR, img_selector)
                 img_url = img_element.get_attribute("src")
@@ -263,33 +260,55 @@ def insta_crawl(title_cnt):
                 image_name = f"image{img_cnt}.jpg"
                 save_path = os.path.join(folder_path, image_name)
                 download_image(img_url, save_path)
-                time.sleep(1.5)
 
+                # 이미지 경로 추가
+                images_path.append(save_path)
+                time.sleep(1.5)
                 img_cnt += 1
+
+            else:
+                print("image: 이미지 없음")
+
+            # 이미지가 존재하든 존재하지 않든 다음 버튼을 클릭한다
+            clicked = driver.execute_script('''
+                var btn = document.querySelector('button[aria-label="다음"]');
+                if (btn) {
+                    btn.click();
+                    return true;
+                } else {
+                    return false;
+                }
+            ''')
+
+            if clicked:
+                #print("클릭됨")
+                time.sleep(1.5)
             else:
                 break
 
-        # 두 값을 출력
-        # print("게시글 생략")
-        # print("".join(contents.text.split()))
-        # print("KST Datetime:", kst_time)
-        # print("Title:", title_value)
+        all_contents.append(["@salt_ent", kst_time, contents, cur_url, images_path])
+        # print(contents)
+        # print(kst_time)
+        # print(cur_url)
+        # print(images_path)
+        # print()
 
-        time.sleep(1.5)
-        cnt += 1
+        # 만약 image가 추가되지 않은 폴더면 해당 폴더 삭제
+        if img_cnt == 0:
+            try:
+                os.rmdir(folder_path)  # 폴더가 비어 있으면 삭제
+                print(f"이미지가 없어 폴더를 삭제했습니다: {folder_path}")
+            except Exception as e:
+                print(f"폴더 삭제 중 오류 발생: {e}")
 
-    print("입력: ")
-    n = input()
-    if n == 1:
-        driver.quit()
-    else:
-        print("강제종료")
-        driver.quit()
-
-
-# 시간 , 내용, 사진
-if __name__ == "__main__":
-    insta_crawl(4)
+        cnt +=1
 
 
+    with open("insta_output.txt", "w", encoding="utf-8") as file:
+        file.write('\n'.join([str(res) for res in all_contents]))
+
+
+
+if __name__ == '__main__':
+    isnta_crawl(10)
 
