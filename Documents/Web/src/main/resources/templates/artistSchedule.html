@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -68,11 +69,11 @@
                         var events = [];
                         $(data).each(function () {
                             events.push({
-                                title: this.singer,  // 캘린더에서 제목으로 사용
+                                title: this.artist,  // 캘린더에서 제목으로 사용
                                 start: this.event_date,  // 이벤트 시작 날짜 (캘린더에서 날짜로 사용)
                                 detail: this.detail,  // 이벤트 세부 정보
                                 photo: this.photo, // 사진 경로
-                                backgroundColor: getColorBySinger(this.singer)  // 가수에 따라 색상 설정
+                                backgroundColor: getColorByArtsit(this.artist)  // 가수에 따라 색상 설정
                             });
                         });
                         successCallback(events);
@@ -90,8 +91,8 @@
         });
         calendar.render();
 
-        function getColorBySinger(singer) {
-            switch (singer) {
+        function getColorByArtsit(artist) {
+            switch (artist) {
                 case '아이브':
                     return '#15326c'; // IVE의 색상
                 case '뉴진스':

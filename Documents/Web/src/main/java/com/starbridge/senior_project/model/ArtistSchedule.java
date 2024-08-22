@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-@Table(name = "blipdb")
+@Table(name = "x_db")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArtistSchedule {
 
@@ -27,11 +27,11 @@ public class ArtistSchedule {
     @Column(name = "detail")
     private String detail;
 
-    @Column(name = "singer")
-    private String singer;
+    @Column(name = "artist")
+    private String artist;
 
-    @Column(name = "x_id")
-    private String x_id;
+    @Column(name = "id")
+    private String id;
 
     @Column(name = "event_date")
     private LocalDate event_date;
@@ -44,7 +44,6 @@ public class ArtistSchedule {
 
     @Column(name = "photo")
     private String photo;
-
 
 }
 
