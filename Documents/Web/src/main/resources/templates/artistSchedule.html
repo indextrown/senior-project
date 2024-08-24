@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -63,17 +62,17 @@
             locale: 'ko',
             events: function (fetchInfo, successCallback, failureCallback) {
                 $.ajax({
-                    url: '/schedules', // Controller 'endpoint'와 맞추기
+                    url: '/api/schedules', // Controller 'endpoint'와 맞추기
                     dataType: 'json',
                     success: function (data) {
                         var events = [];
                         $(data).each(function () {
                             events.push({
-                                title: this.artist,  // 캘린더에서 제목으로 사용
+                                title: this.artist,  // 캘린더에서 제목으로 사용 (artist를 title로 설정)
                                 start: this.event_date,  // 이벤트 시작 날짜 (캘린더에서 날짜로 사용)
                                 detail: this.detail,  // 이벤트 세부 정보
                                 photo: this.photo, // 사진 경로
-                                backgroundColor: getColorByArtsit(this.artist)  // 가수에 따라 색상 설정
+                                backgroundColor: getColorByArtist(this.artist)  // 가수에 따라 색상 설정
                             });
                         });
                         successCallback(events);
@@ -85,13 +84,24 @@
                     }
                 });
             },
+            eventDisplay: 'block', // 이벤트 제목만 표시
+            eventTimeFormat: { // 시간 포맷을 지정하지 않음
+                hour: undefined,
+                minute: undefined,
+                meridiem: false
+            },
+            eventContent: function (arg) {
+                let customContent = document.createElement('div');
+                customContent.innerHTML = arg.event.title; // 오직 title만 출력
+                return { domNodes: [customContent] };
+            },
             eventClick: function (info) {
                 alert('Event: ' + info.event.title + '\n' + info.event.extendedProps.detail);
             }
         });
         calendar.render();
 
-        function getColorByArtsit(artist) {
+        function getColorByArtist(artist) {
             switch (artist) {
                 case '아이브':
                     return '#15326c'; // IVE의 색상
@@ -146,8 +156,14 @@
             sortedEvents.forEach(event => {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'sorted-event-item';
+
+                // LocalDateTime을 표시할 형식으로 변환
+                const eventDate = new Date(event.start);
+                const formattedDate = eventDate.toLocaleDateString(); // 날짜만 표시
+                const formattedTime = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 시간과 분만 표시
+
                 eventItem.innerHTML = `
-                    <h3>${event.title} (${event.start})</h3>
+                    <h3>${event.title} (${formattedDate} ${formattedTime})</h3>
                     <p>${event.detail}</p>
                     ${event.photo ? `<img src="/${event.photo}" alt="${event.title}" style="max-width: 200px;">` : ''}
                 `;

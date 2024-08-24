@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -34,10 +34,10 @@ public class ArtistSchedule {
     private String id;
 
     @Column(name = "event_date")
-    private LocalDate event_date;
+    private LocalDateTime event_date;
 
     @Column(name = "post_date")
-    private LocalDate post_date;
+    private LocalDateTime post_date;
 
     @Column(name = "url")
     private String url;

@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class BirthdayCafeController {
 
     @GetMapping("/birthdayCafe")
-    public String birthCafe(){
+    public String birthCafe() {
         return "birthdayCafe";
+
     }
 }
+

@@ -3,7 +3,7 @@ package com.starbridge.senior_project.dto;
 import com.starbridge.senior_project.model.ArtistSchedule;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,8 +17,8 @@ public class ArtistScheduleDTO {
     private String detail;
     private String artist;
     private String id;
-    private LocalDate event_date;
-    private LocalDate post_date;
+    private LocalDateTime event_date;
+    private LocalDateTime post_date;
     private String url;
     private String photo;
 
