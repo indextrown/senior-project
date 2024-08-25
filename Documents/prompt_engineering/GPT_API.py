@@ -13,6 +13,7 @@ def gpt_api(file_path):
         msg.append(line)
     f.close()
     formatted_text = f"제목:{msg}"
+    formatted_text = formatted_text.replace('"', '')
     print(formatted_text)
 
     completion = client.chat.completions.create(
