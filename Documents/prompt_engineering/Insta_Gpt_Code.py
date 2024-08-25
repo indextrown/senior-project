@@ -13,6 +13,7 @@ def gpt_api(file_path):
         msg.append(line)
     f.close()
     formatted_text = f"제목:{msg}"
+    formatted_text = formatted_text.replace('"', '')
     print(formatted_text)
 
     completion = client.chat.completions.create(
@@ -22,7 +23,7 @@ def gpt_api(file_path):
         messages=[
             {
                 "role": "system",
-                "content": """[게시자아이디, 게시글작성시간, 게시글내용, 게시글링크, [사진의 경로]]의  인스타 크롤링 데이터가 주어지는데 데이터를 방송/행사/사진 의 종류를 판단하여 제목, 내용, 게시자아이디, 배우, 행사날짜시간(없다면 게시글날짜시간과 똑같이 출력),게시글날짜시간,url,종류,사진의경로의 json형식의 데이터로 출력해줘 데이터가 없다면 NULL을 넣어줘 날짜 데이터는 모두 yyyy-mm-dd /time 형식으로 출력해줘 제목은 왠만하면 겹치지 않았으면 좋겠어. 다음은 출력 예시야
+                "content": """[게시자아이디, 게시글작성시간, 게시글내용, 게시글링크, [사진의 경로]]의  인스타 크롤링 데이터가 주어지는데 데이터를 방송/행사/사진 의 종류를 판단하여 제목, 내용, 게시자아이디, 배우, 행사날짜시간(없다면 게시글날짜시간과 똑같이 출력),게시글날짜시간,url,종류,사진의경로의 json형식의 데이터로 출력해줘 모든 데이터를 해줘 데이터가 없다면 NULL을 넣어줘 단 행사날짜시간은 없다면 게시글날짜 시간과 똑같이 출력해 날짜 데이터는 모두 yyyy-mm-dd /time 형식으로 출력해줘 제목은 왠만하면 겹치지 않았으면 좋겠어. 다음은 출력 예시야
 {
     "1": {
         "title": "<폭군> 홍보 일정 비하인드 모음집",
