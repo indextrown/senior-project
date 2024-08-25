@@ -13,6 +13,7 @@ def gpt_api(file_path):
         msg.append(line)
     f.close()
     formatted_text = f"제목:{msg}"
+    formatted_text = formatted_text.replace('"', '')
     print(formatted_text)
 
     completion = client.chat.completions.create(
@@ -125,7 +126,7 @@ def gpt_api(file_path):
     # 결과 출력
     print(json_data)
 
-    file_path = 'Output.json'
+    file_path = 'X_Output.json'
 
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(json_data, file, ensure_ascii=False, indent=4)
