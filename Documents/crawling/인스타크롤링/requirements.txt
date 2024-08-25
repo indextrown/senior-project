@@ -1,1 +1,6 @@
-.
+selenium==4.17.2
+webdriver-manager==4.0.0
+requests==2.30.0
+korean-romanizer==0.2.1
+urllib3==1.26.15
+korean-romanizer==0.2.1
