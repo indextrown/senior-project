@@ -1,11 +1,14 @@
 import openai
 import json
 import re
+from datetime import datetime
 client = openai.OpenAI(api_key = 'API_KEY')
 
 def gpt_api(file_path):
     msg = []
 
+    now = datetime.now()
+    msg.append(now.strftime('%Y-%m-%d %H:%M:%S'))
     f = open(file_path, 'r', encoding='UTF8')
     lines = f.readlines()
     for line in lines:
@@ -23,7 +26,7 @@ def gpt_api(file_path):
         messages=[
             {
                 "role": "system",
-                "content": """[게시자아이디, 게시글작성시간, 게시글내용, 게시글링크, [사진의 경로]]의 x 크롤링 데이터가 주어지는데 데이터를 방송/행사/사진 의 종류를 판단하여  제목, 내용, 게시자아이디, 가수(아이브, 뉴진스, 방탄소년단), 행사날짜시간(없다면 게시글날짜시간과 똑같이 출력),게시글날짜시간,url,종류,사진의경로의 json형식의 데이터로 출력해줘 데이터가 없다면 NULL을 넣어줘날짜 데이터는 모두 yyyy-mm-dd /time 형식으로 출력해줘 다음은 출력 예시야
+                "content": """[현재시간, 게시자아이디, 게시글작성시간, 게시글내용, 게시글링크, [사진의 경로]]의 x 크롤링 데이터가 주어지는데 데이터를 방송/행사/사진 의 종류를 판단하여  제목, 내용, 게시자아이디, 가수(아이브, 뉴진스, 방탄소년단), 행사날짜시간(없다면 게시글날짜시간과 똑같이 출력),게시글날짜시간,url,종류,사진의경로의 json형식의 데이터로 출력해줘 날짜 게시글 날짜시간은 현재시간에서 글을 올린시간을 빼서 구해줘. 데이터는 모두 yyyy-mm-dd /time 형식으로 출력해줘 다음은 출력 예시야
 {
     "1": {
         "title": "IVE THE 1ST WORLD TOUR <SHOW WHAT I HAVE> - ENCORE 현장 운영 안내",
@@ -67,7 +70,7 @@ def gpt_api(file_path):
         "post_date": "2024-08-01 / 12:00",
         "url": "https://x.com/HYBE_MERCH/status/1818572315476504957",
         "kind": "행사",
-        "photo": ["NULL"]
+        "photo": ["https://pbs.twimg.com/media/GTzSM_tbwAIlxZW?format=jpg&name=900x900"]
     },
     "5": {
         "title": "Congratulation! 'Attention' 스포티파이 4억 스트리밍 달성을 축하합니다!",
@@ -126,7 +129,7 @@ def gpt_api(file_path):
     # 결과 출력
     print(json_data)
 
-    file_path = 'X_Output.json'
+    file_path = 'Output.json'
 
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(json_data, file, ensure_ascii=False, indent=4)
