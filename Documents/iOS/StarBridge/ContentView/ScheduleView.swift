@@ -14,20 +14,19 @@ struct ScheduleView: View{
     private let today: Date = Date()
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
     
-    @State private var isExpanded: Bool = false     //  캘린더 확장 여부 변수
-    @State private var selectDate: Date = Date()    //  캘린더에서 사용자가 선택하는 날짜
-    @State private var showDate: Date = Date()      //  캘린더에서 현재 보여지고 있는 날짜
-    @State private var maxEventsCountOnEachWeeks: [Date:Int] = [:]    // 그 주에 있는 가장 행사가 많은 날: 그 날의 행사 갯수
-    @State private var noEventsComing = true        //  다가오는 스케줄 뷰에서 2주간 이벤트가 있는지 없는지 저장
-    
-
-    // --- api 관련 변수들 ---
-    @State private var schedules: [String:[ResponseData]] = [:]
-    
-    // --- 기준이 되는 디바이스에 대한 비율 반환
-    func stdRatio(_ geoProxy: GeometryProxy) -> CGFloat{
-        return geoProxy.size.width / iPhonePointRes.iPhoneXSMax.width
-    }
+    //  캘린더 확장 여부 변수
+    @State private var isExpanded: Bool = false
+    //  캘린더에서 사용자가 선택하는 날짜
+    @State private var selectDate: Date = Date()
+    //  캘린더에서 현재 보여지고 있는 날짜
+    @State private var showDate: Date = Date()
+    //  그 주에 있는 가장 행사가 많은 날: 그 날의 행사 갯수
+    @State private var maxEventsCountOnEachWeeks: [Date:Int] = [:]
+    //  다가오는 스케줄 뷰에서 2주간 이벤트가 있는지 없는지 저장
+    @State private var noEventsComing = true
+    //  api로 받아오는 데이터 저장 (형태: "\(이벤트 날짜)": 데이터 배열)
+    //  Api.SnsData는 api.swift 참고
+    @State private var schedules: [String:[Api.SnsData]] = [:]
 
     var body: some View{
         GeometryReader{ geometry in
@@ -38,14 +37,14 @@ struct ScheduleView: View{
                         LazyVStack(spacing: 10){
                             HStack(alignment: .bottom){
                                 Text(showDate, formatter: DateFormatter.krFormatter)
-                                    .font(.system(size: 30 * stdRatio(geometry), weight: .bold))
+                                    .font(.system(size: 30 , weight: .bold))
                                     .foregroundColor(.black)
                                 Spacer()
-                                TextView("오늘", size: 17 * stdRatio(geometry), weight: .bold, color: .white)
-                                    .frame(width: 60 * stdRatio(geometry), height: 40 * stdRatio(geometry))
+                                TextView("오늘", size: 17, weight: .bold, color: .white)
+                                    .frame(width: 60 , height: 40 )
                                     .background(isSameDay(date1: today, date2: showDate) &&
-                                                isSameDay(date1: today, date2: selectDate) ? .p3SlateGray : .p3CharcoalBlue)
-                                    .cornerRadius(5 * stdRatio(geometry))
+                                                isSameDay(date1: today, date2: selectDate) ? .pink.opacity(0.7) : .pink)
+                                    .cornerRadius(5 )
                                     .onTapGesture {
                                         selectDate = today
                                         showDate = today
@@ -53,9 +52,9 @@ struct ScheduleView: View{
                                 Image(systemName: "chevron.left")
                                     .foregroundColor(.white)
                                     .font(.system(size: 20, weight: .medium))
-                                    .frame(width: 40 * stdRatio(geometry), height: 40 * stdRatio(geometry))
-                                    .background(.p3CharcoalBlue)
-                                    .cornerRadius(5 * stdRatio(geometry))
+                                    .frame(width: 40 , height: 40 )
+                                    .background(.pink)
+                                    .cornerRadius(5 )
                                     .onTapGesture {
                                         if let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: showDate){
                                             showDate = prevMonthDate
@@ -67,10 +66,10 @@ struct ScheduleView: View{
                                 
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.white)
-                                    .font(.system(size: 20 * stdRatio(geometry), weight: .medium))
-                                    .frame(width: 40 * stdRatio(geometry), height: 40 * stdRatio(geometry))
-                                    .background(.p3CharcoalBlue)
-                                    .cornerRadius(5 * stdRatio(geometry))
+                                    .font(.system(size: 20 , weight: .medium))
+                                    .frame(width: 40 , height: 40 )
+                                    .background(.pink)
+                                    .cornerRadius(5 )
                                     .onTapGesture {
                                         if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: showDate){
                                             showDate = nextMonthDate
@@ -95,7 +94,7 @@ struct ScheduleView: View{
                             
                             LazyVGrid(columns: columns) {
                                 ForEach(calendarDates(date: selectDate), id: \.self) { date in
-                                    LazyVStack(spacing: 0){
+                                    LazyVStack(spacing: 2){
                                         TextView("\(calendar.component(.day, from: date))", weight: .medium, color: setDayforegroundColor(date: date))
                                             .frame(width: 30, height: 30)
                                             .background(setDayBackgroundColor(date: date))
@@ -111,21 +110,19 @@ struct ScheduleView: View{
                                         if isExpanded{
                                             let maxEventCountOnWeek: CGFloat = getMaxEventCountOnWeek(date: date)
                                                 VStack(spacing: 2){
-                                                    let events: [ResponseData] = schedules[dateToString(date)] ?? []
+                                                    let events: [Api.SnsData] = schedules[dateToString(date)] ?? []
                                                         ForEach(events, id: \.self) { event in
-                                                            if let singer = event.singer{
-                                                                NavigationLink(destination: ScheduleDetailView(detail: event.detail ?? "")){
-                                                                Text(singer)
-                                                                    .font(.system(size: CGFloat(min(20, 50 / max(singer.count, 1)))))
-                                                                    .foregroundColor(dotColor(event.kind))
-                                                                    .lineLimit(1)
-                                                                    .frame(width: 50, height: 20)
-                                                                    .border(dotColor(event.kind))
-                                                                    .navigationTitle("")
-                                                                    
+                                                            if let artist = event.artist{
+                                                                NavigationLink(destination: ScheduleDetailView(detail: event)){
+                                                                    Text(artist)
+                                                                        .font(.system(size: CGFloat(min(20, 50 / max(artist.count, 1)))))
+                                                                        .foregroundColor(dotColor(event.kind))
+                                                                        .lineLimit(1)
+                                                                        .frame(width: 50, height: 20)
+                                                                        .border(dotColor(event.kind))
+                                                                }
                                                             }
                                                         }
-                                                    }
                                                     if events.count < Int(maxEventCountOnWeek){
                                                         Spacer()
                                                     }
@@ -147,8 +144,7 @@ struct ScheduleView: View{
                                                 }
                                             }
                                             .frame(height: 8)
-                                            .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity),
-                                                                    removal: .move(edge: .bottom).combined(with: .opacity)))
+                                            .transition(.move(edge: .bottom).combined(with: .opacity))
                                         }
                                     }
                                     .frame(width: 50)
@@ -183,14 +179,14 @@ struct ScheduleView: View{
                     }
                     .onAppear{
                         Task{
-                            if let data = await loadData(for: dateToString(showDate, format: "yyyy-MM")){
+                            if let data = await api.fetchData(for: dateToString(showDate, format: "yyyy-MM"), url: "API_X_URL"){
                                 schedules = data
                             }
                         }
                     }
                     .onChange(of: showDate) { newDate in
                         Task{
-                            if let data = await loadData(for: dateToString(newDate, format: "yyyy-MM")){
+                            if let data = await api.fetchData(for: dateToString(newDate, format: "yyyy-MM"), url: "API_X_URL"){
                                 schedules = data
                             }
                         }
@@ -203,28 +199,32 @@ struct ScheduleView: View{
                         Group{
                             HStack{ // 오늘 or 선택한 날에 있는 스케줄
                                 TextView("\(selectDateDate)일 (\(selectDateDay))", size: 20, weight: .bold)
-                                    .padding()
+                                    .padding(.vertical)
                                 Spacer()
                             }
                             .frame(height: 25)
                             .padding(.horizontal)
                             
-                            if let events: [ResponseData] = schedules[dateToString(selectDate)] {
+                            if let events: [Api.SnsData] = schedules[dateToString(selectDate)] {
                                 LazyVStack{
                                     ForEach(events, id: \.self) { event in
-                                        HStack{
-                                            VStack(alignment: .leading){
-                                                Text(event.title ?? "")
-                                                    .lineLimit(2)
-                                                Text(event.x_id ?? "")
+                                        NavigationLink(destination: ScheduleDetailView(detail: event)){
+                                            HStack{
+                                                VStack(alignment: .leading){
+                                                    Text(event.title ?? "")
+                                                        .lineLimit(2)
+                                                        .multilineTextAlignment(.leading)
+                                                    Text(event.id ?? "")
+                                                }
+                                                .foregroundStyle(Color.black)
+                                                Spacer()
                                             }
-                                            .foregroundStyle(Color.black)
                                             .padding(.horizontal)
-                                            Spacer()
+                                            .frame(height: 100)
+                                            .background(.white)
+                                            .cornerRadius(15)
+                                            .navigationTitle("")
                                         }
-                                        .frame(height: 100)
-                                        .background(.white)
-                                        .cornerRadius(15)
                                     }
                                 }
                                 .padding([.horizontal, .bottom])
@@ -244,7 +244,7 @@ struct ScheduleView: View{
                         Group{
                             HStack{ //  selecteDate 기준으로 2주간의 이벤트
                                 TextView("다가오는 스케줄", size: 20, weight: .bold)
-                                    .padding()
+                                    .padding(.vertical)
                                 Spacer()
                             }
                             .frame(height: 25)
@@ -254,22 +254,25 @@ struct ScheduleView: View{
                             let dates: [Date] = (1...14).compactMap { calendar.date(byAdding: .day, value: $0, to: selectDate) }
                             VStack{
                                 ForEach(dates, id: \.self) { date in
-                                    if let events: [ResponseData] = schedules[dateToString(date)] {
+                                    if let events: [Api.SnsData] = schedules[dateToString(date)] {
                                         ForEach(events, id: \.self) { event in
-                                            HStack{
-                                                VStack(alignment: .leading){
-                                                    Text(event.title ?? "")
-                                                        .lineLimit(2)
-                                                    Text(event.x_id ?? "")
-                                                    Text(event.event_date ?? "")
+                                            NavigationLink(destination: ScheduleDetailView(detail: event)){
+                                                HStack{
+                                                    VStack(alignment: .leading){
+                                                        Text(event.title ?? "")
+                                                            .lineLimit(2)
+                                                            .multilineTextAlignment(.leading)
+                                                        Text(event.id ?? "")
+                                                        Text(event.event_date ?? "")
+                                                    }
+                                                    .foregroundStyle(Color.black)
+                                                    Spacer()
                                                 }
-                                                .foregroundStyle(Color.black)
                                                 .padding(.horizontal)
-                                                Spacer()
+                                                .frame(height: 100)
+                                                .background(.white)
+                                                .cornerRadius(15)
                                             }
-                                            .frame(height: 100)
-                                            .background(.white)
-                                            .cornerRadius(15)
                                         }
                                         .onAppear{
                                             noEventsComing = false
@@ -445,64 +448,6 @@ struct ScheduleView: View{
         default:
             return Color.black
         }
-    }
-    
-    // --- api 관련 함수들 및 자료형 ---
-    @MainActor
-    @discardableResult
-    func loadData(for date: String) async -> [String: [ResponseData]]? {
-        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_MAIN_URL") as? String else {
-            fatalError("Wrong API key.")
-        }
-        
-        guard let url = URL(string: apiKey) else {
-            fatalError("Wrong URL.")
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let parameters: [String: Any] = ["date": date]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
-        
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                let decoder = JSONDecoder()
-                let decodedData = try decoder.decode([String: [ResponseData]].self, from: data)
-                return decodedData
-            } else {
-                print("Failed to receive valid response.")
-                await loadData(for: date)
-                return nil
-            }
-            
-        } catch {
-            print("Failed to load data: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
-    func loadImage(from base64String: String) -> UIImage?{
-        guard let imageData = Data(base64Encoded: base64String) else {
-            print("Failed to decode base64 string.")
-            return nil
-        }
-        return UIImage(data: imageData)
-    }
-    
-    struct ResponseData: Codable, Hashable {    // 절대 바꾸지 말것
-        let kind: String?
-        let title: String?
-        let detail: String?
-        let singer: String?
-        let x_id: String?
-        let event_date: String?
-        let post_date: String?
-        let url: String?
-        let photos: [String]?
     }
 }
 

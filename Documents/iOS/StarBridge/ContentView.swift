@@ -19,90 +19,124 @@ struct ContentView: View {
         return isLoggedIn ? "로그인 상태" : "로그아웃 상태"
     }
      
-    
-    @State var currentView = "ArtistView"
+    @State private var currentView: activeView = .ArtistView
     
     var body: some View {
         GeometryReader { geometry in
-            ScrollViewReader{ scrollViewProxy in
-                NavigationView{
-                    VStack{
-                        HStack{
-                            Button{
-                                currentView = "blipView"
-                            } label:{
-                                TextView("blip", size: 30, weight: .bold)
-                            }
-                            TextView("Artists", size: 18, weight: currentView == "ArtistView" ? .bold : .regular)
-                                .onTapGesture {
-                                    scrollViewProxy.scrollTo("ArtistView")
-                                    //                                currentView = "ArtistView"
-                                }
-                            TextView("Schedule", size: 18, weight: currentView == "ScheduleView" ? .bold : .regular)
-                                .onTapGesture {
-                                    scrollViewProxy.scrollTo("ScheduleView")
-                                    //                                currentView = "ScheduleView"
-                                }
-                            TextView("Cafe", size: 18, weight: currentView == "CafeView" ? .bold : .regular)
-                                .onTapGesture {
-                                    scrollViewProxy.scrollTo("CafeView")
-                                    //                                currentView = "CafeView"
-                                }
-                            Spacer()
-                            Button{
+            NavigationView{
+                VStack{
+                    HStack{
+                        Image("emojiLogo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25)
+                            .onTapGesture { //  팔로우한 아티스트들을 sheet 방식으로 보여줌(상단에 검색창 포함해야함)
                                 
-                            }label: {
-                                TextView("kpop radar", weight: .bold, color: Color.white)
                             }
-                            .frame(width: 100, height: 40) //가로 세로 비율: 5: 2
-                            .background(Color.black)
-                            .clipShape(RoundedRectangle(cornerRadius: 25))
+                            .padding()
+                        Spacer()
+                        Image(systemName: "bell")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20)
+                            .onTapGesture {
+                                
+                            }
+                            .padding()
+                        NavigationLink(destination: ProfileView()) {
+                            Image(systemName: "gearshape")
+                                .resizable()
+                                .scaledToFit()
                         }
-                        .frame(height: geometry.size.height / 20)
-                        .padding()
+                        .frame(width: 25, height: 25)
+                        .padding(.trailing)
+                    }
                     
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 0) {
-                                ArtistView()
-                                    .frame(width: geometry.size.width)
-                                    .id("ArtistView")
-                                    .background(GeometryReader { geo in
-                                        Color.clear.onChange(of: geo.frame(in: .global).minX) { newX in
-                                            if abs(newX) < geometry.size.width / 2 {
-                                                currentView = "ArtistView"
-                                            }
-                                        }
-                                    })
-                                
-                                ScheduleView()
-                                    .frame(width: geometry.size.width)
-                                    .id("ScheduleView")
-                                    .background(GeometryReader { geo in
-                                        Color.clear.onChange(of: geo.frame(in: .global).minX) { newX in
-                                            if abs(newX) < geometry.size.width / 2 {
-                                                currentView = "ScheduleView"
-                                            }
-                                        }
-                                    })
-                            }
-                        }
-                        .onChange(of: currentView) { newView in
-                            withAnimation{
-                                scrollViewProxy.scrollTo(newView)
-                            }
+                    Group {
+                        switch currentView {
+                        case .ArtistView:
+                            ArtistView()
+                        case .ScheduleView:
+                            ScheduleView()
+                        case .CafeView:
+                            CafeView()
+                        case .BulletinBoardView:
+                            BulletinBoardView()
                         }
                     }
                     .frame(width: geometry.size.width)
-                    .background(.p3LightGray)
-                    .padding(.top,  iPhonePointRes.currentDevicePortraitSafeArea()?.top)
-                    .ignoresSafeArea()
-                    .navigationBarHidden(true)
+                    
+                    HStack{
+                        Group{
+                            VStack{
+                                Group{
+                                    Image(systemName: "play.tv")
+                                        .font(.system(size: 20))
+                                    Text("아티스트")
+                                        .font(.system(size: 10))
+                                }
+                                .foregroundColor(currentView == .ArtistView ? .pink : .black)
+                            }
+                            .onTapGesture {
+                                currentView = .ArtistView
+                            }
+                            Spacer()
+                            VStack{
+                                Group{
+                                    Image(systemName: "calendar.badge.clock")
+                                        .font(.system(size: 20))
+                                    Text("스케줄")
+                                        .font(.system(size: 10))
+                                }
+                                .foregroundColor(currentView == .ScheduleView ? .pink : .black)
+                            }
+                            .onTapGesture {
+                                currentView = .ScheduleView
+                            }
+                            Spacer()
+                            VStack{
+                                Group{
+                                    Image(systemName: "gift")
+                                        .font(.system(size: 20))
+                                    Text("생일카페")
+                                        .font(.system(size: 10))
+                                }
+                                .foregroundColor(currentView == .CafeView ? .pink : .black)
+                            }
+                            .onTapGesture {
+                                currentView = .CafeView
+                            }
+                            Spacer()
+                            VStack{
+                                Group{
+                                    Image(systemName: "note.text")
+                                        .font(.system(size: 20))
+                                    Text("게시판")
+                                        .font(.system(size: 10))
+                                }
+                                .foregroundColor(currentView == .BulletinBoardView ? .pink : .black)
+                            }
+                            .onTapGesture {
+                                currentView = .BulletinBoardView
+                            }
+                        }
+                        .foregroundColor(.black)
+                    }
+                    .frame(height: geometry.size.height / 20)
+                    .padding(.horizontal)
+                    .padding(.horizontal)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom)
+                    .background(.white)
                 }
+                .frame(width: geometry.size.width)
+                .background(.p3LightGray)
+                .padding(.top,  geometry.safeAreaInsets.top / 2)
+                .ignoresSafeArea()
+                .navigationBarHidden(true)
+                
             }
+            .accentColor(.black)
         }
-   
-        
-        //
 //        Button("카카오 로그아웃", action: {
 //            kakaoAuthVM.kakaoLogout()
 //        })
@@ -117,10 +151,28 @@ struct ContentView: View {
     }
 }
 
-// MARK: ContentView가 kakaoAuthVM 객체를 필요로 함
-#Preview {
-    ContentView(kakaoAuthVM: KakaoAuthVM())
+enum activeView {
+    case ArtistView, ScheduleView, CafeView, BulletinBoardView
 }
+
+// Remove navigationTitle permanently all views
+//extension UINavigationController: ObservableObject, UIGestureRecognizerDelegate {
+//    override open func viewDidLoad() {
+//        super.viewDidLoad()
+//        interactivePopGestureRecognizer?.delegate = self
+//    }
+//
+//    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return viewControllers.count > 1
+//    }
+//}
+
+
+
+// MARK: ContentView가 kakaoAuthVM 객체를 필요로 함
+//#Preview {
+//    ContentView(kakaoAuthVM: KakaoAuthVM())
+//}
 
 //#Preview {
 //    ContentView()
