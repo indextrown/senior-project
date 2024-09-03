@@ -7,26 +7,56 @@
 
 import SwiftUI
 
-
 @main
 struct StarBridgeApp: App {
-    // MARK: AppDelegate 사용
+    
+    // 상태 객체를 생성
+    @ObservedObject private var kakaoAuthVM = KakaoAuthVM.shared
+    
+    // AppDelegate 사용
     @UIApplicationDelegateAdaptor var appDelegate: MyAppDelegate
-    
-    // MARK: 앱 전체에서 로그인 상태를 관리
-    @StateObject var kakaoAuthVM = KakaoAuthVM()
-    
+
     var body: some Scene {
         WindowGroup {
-            if kakaoAuthVM.isLoggedIn {
-                ContentView(kakaoAuthVM: kakaoAuthVM)
-            } else {
-                LoginView(kakaoAuthVM: kakaoAuthVM)
+            Group {
+                if kakaoAuthVM.isLoggedIn {
+                    if !kakaoAuthVM.isLoading {
+                        if kakaoAuthVM.hasProfile {
+                            ContentView(kakaoAuthVM: kakaoAuthVM)
+                        } else {
+                            ProfileSetupView()
+                        }
+                    }
+                } else {
+                    LoginView()
+                }
             }
+            .environmentObject(kakaoAuthVM)
         }
-//                WindowGroup {
-//                    ContentView()
-//        
-//                }
     }
 }
+
+
+
+//@main
+//struct StarBridgeApp: App {
+//    // MARK: AppDelegate 사용
+//    @UIApplicationDelegateAdaptor var appDelegate: MyAppDelegate
+//    
+//    // MARK: 앱 전체에서 로그인 상태를 관리
+//    @StateObject var kakaoAuthVM = KakaoAuthVM()
+//    
+//    var body: some Scene {
+////        WindowGroup {
+////            if kakaoAuthVM.isLoggedIn {
+////                ContentView(kakaoAuthVM: kakaoAuthVM)
+////            } else {
+////                LoginView(kakaoAuthVM: kakaoAuthVM)
+////            }
+////        }
+//        WindowGroup{
+//            ContentView(kakaoAuthVM: kakaoAuthVM)
+////            ContentView()
+//        }
+//    }
+//}

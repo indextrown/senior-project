@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 import KakaoSDKCommon
 import KakaoSDKAuth
+import Firebase
+
 
 class MyAppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -19,6 +21,9 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
         // Kakao SDK 초기화
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         
+        // firebase 초기화
+        FirebaseApp.configure()
+        
         return true
     }
     
@@ -28,11 +33,11 @@ class MyAppDelegate: UIResponder, UIApplicationDelegate {
         if (AuthApi.isKakaoTalkLoginUrl(url)) {
             return AuthController.handleOpenUrl(url: url)
         }
-
+ 
         return false
     }
     
-    // MyappDelegate에서 SceneDelegate 클래스를 사용하도록 confiration 서정 필요
+    // MyappDelegate에서 SceneDelegate 클래스를 사용하도록 confiration 설정 필요
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         let sceneConfiguration =  UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
         
