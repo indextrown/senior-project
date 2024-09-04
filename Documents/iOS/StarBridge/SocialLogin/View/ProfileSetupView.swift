@@ -15,12 +15,20 @@ struct ProfileSetupView: View {
     @State private var nickname: String = ""
     @State private var birthDate: Date = Date()
     @State private var isAgreed: Bool = false
-    @State private var isCompleteButtonEnabled: Bool = false
     @State private var showDatePicker: Bool = false
+    @FocusState private var focusNicknameField: Bool
     
-    private let fieldHeight: CGFloat = 17 // 높이를 명시적으로 설정
-    //private let horizontalPadding: CGFloat = 20 // 양옆 여백
-
+    private var isCompleteButtonEnabled: Bool {
+        var reg = false
+        let regex = try? NSRegularExpression(pattern: "^[a-zA-Z0-9]+$", options: [])
+            
+        if let match = regex?.firstMatch(in: nickname, options: [], range: NSRange(location: 0, length: nickname.count)) {
+            // 매칭된 범위가 전체 문자열 길이와 같은지 확인
+            reg = match.range.length == nickname.count
+        }
+            
+        return reg && isAgreed
+    }
 
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -41,16 +49,14 @@ struct ProfileSetupView: View {
                     .font(.system(size: 18, weight: .bold))
                     .multilineTextAlignment(.leading)
 
-                Text("닉네임")
+                Text("닉네임 *")
                     .font(.system(size: 14, weight: .bold))
 
-//                    TextField("언제든 바꿀 수 있어요", text: $nickname)
-//                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                TextField("언제든 바꿀 수 있어요", text: $nickname)
+                TextField("언제든 바꿀 수 있어요 (영문과 숫자만 가능해요)", text: $nickname)
                     .textFieldStyle(PlainTextFieldStyle()) // 기본 스타일 사용
-                    .padding(fieldHeight)
+                    .padding()
                     .background(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
-                    //.frame(height: fieldHeight) // 높이 설정
+                    .focused($focusNicknameField)   //  focus 되었는지 추적
 
 
                 Text("생년월일")
@@ -58,17 +64,16 @@ struct ProfileSetupView: View {
 
                 Button(action: {
                     showDatePicker.toggle()
+                    focusNicknameField = false
                 }) {
                     Text(dateFormatter.string(from: birthDate))
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(fieldHeight)
+                        .padding()
                         .background(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
-                        //.frame(height: fieldHeight) // 높이 설정
                 }
 
                 
-
                 Text("서비스 약관 동의 *")
                     .font(.system(size: 14, weight: .bold))
 
@@ -80,7 +85,6 @@ struct ProfileSetupView: View {
                     Image(systemName: isAgreed ? "checkmark.square" : "square")
                         .onTapGesture {
                             isAgreed.toggle()
-                            isCompleteButtonEnabled = isAgreed
                         }
 
                     Text("이용약관 및 개인정보처리방침")
@@ -92,7 +96,7 @@ struct ProfileSetupView: View {
                 Button(action: completeButtonTapped) {
                     Text("완료")
                         .frame(maxWidth: .infinity, minHeight: 44)
-                        .background(isCompleteButtonEnabled ? Color.blue : Color.gray)
+                        .background(isCompleteButtonEnabled ? Color.pink : Color.gray)
                         .foregroundColor(.white)
                         .cornerRadius(22)
                 }
@@ -136,6 +140,7 @@ struct ProfileSetupView: View {
                 .zIndex(1) // 상단에 위치하도록 설정
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 
     private func completeButtonTapped() {

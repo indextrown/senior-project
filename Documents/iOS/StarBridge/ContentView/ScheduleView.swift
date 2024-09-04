@@ -397,7 +397,7 @@ struct ScheduleView: View{
             return .black
         }
         else if isSameDay(date1: date, date2: today){
-            return .red
+            return .pink
         }
         return .clear
     }

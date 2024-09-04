@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCTtmXPsWgpHv0nmoTL9gxKA-I6JudaxF0</string>
+	<string>AIzaSyBvqG4HNIhfMF_3rUmW7gHfn7ddIjWa1GY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>300262724288</string>
+	<string>545301215931</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>starbridge.opfic</string>
+	<string>starbridge0.opfic</string>
 	<key>PROJECT_ID</key>
-	<string>starbridge-f61c0</string>
+	<string>starbridgebeta</string>
 	<key>STORAGE_BUCKET</key>
-	<string>starbridge-f61c0.appspot.com</string>
+	<string>starbridgebeta.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:300262724288:ios:c3ab06d11bb66d74cd1325</string>
+	<string>1:545301215931:ios:76bad0ff867512ad41879e</string>
 </dict>
 </plist>

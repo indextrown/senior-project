@@ -67,8 +67,6 @@ struct BulletinBoardView: View {
                 }
                 .animation(.easeInOut, value: isfocusedTextField)
                 
-            
-                
                 ScrollView {
                     LazyVStack {
                         HStack {
@@ -79,6 +77,7 @@ struct BulletinBoardView: View {
                                 .foregroundColor(searchFilter == .detail ? .pink : .black)
                                 .onTapGesture {
                                     searchFilter = .detail
+                                    print("detail")
                                 }
                             Spacer()
                             Text("제목")
@@ -87,6 +86,7 @@ struct BulletinBoardView: View {
                                 .foregroundColor(searchFilter == .title ? .pink : .black)
                                 .onTapGesture {
                                     searchFilter = .title
+                                    print("title")
                                 }
                             Spacer()
                             Text("작성자")
@@ -99,6 +99,7 @@ struct BulletinBoardView: View {
                                 .foregroundColor(searchFilter == .nickname ? .pink : .black)
                                 .onTapGesture {
                                     searchFilter = .nickname
+                                    print("nickname")
                                 }
                             Spacer()
                         }
@@ -174,6 +175,7 @@ struct BulletinBoardView: View {
                 .background(.p3LightGray)
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .onChange(of: isfocusedTextField) { focused in
             withAnimation {
                 showCancelButton = focused
