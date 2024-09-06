@@ -1,7 +1,7 @@
 #pip3 install mypysql
 #pip3 install cryptography
 
-#mysql> desc test_table;
+#mysql> desc insta_db;
 #+------------+--------------+------+-----+---------+----------------+
 #| Field      | Type         | Null | Key | Default | Extra          |
 #+------------+--------------+------+-----+---------+----------------+
@@ -9,18 +9,19 @@
 #| kind       | varchar(30)  | YES  |     | NULL    |                |
 #| title      | varchar(255) | YES  |     | NULL    |                |
 #| detail     | text         | YES  |     | NULL    |                |
-#| x_id       | varchar(15)  | YES  |     | NULL    |                |
-#| event_date | date         | YES  |     | NULL    |                |
-#| post_date  | date         | YES  |     | NULL    |                |
+#| artist     | varchar(255) | YES  |     | NULL    |                |
+#| id         | varchar(15)  | YES  |     | NULL    |                |
+#| event_date | datetime     | YES  |     | NULL    |                |
+#| post_date  | datetime     | YES  |     | NULL    |                |
 #| url        | varchar(255) | YES  |     | NULL    |                |
 #| photo      | text         | YES  |     | NULL    |                |
-#| singer     | varchar(255) | YES  |     | NULL    |                |
 #+------------+--------------+------+-----+---------+----------------+
 
 import pymysql
 import os
 import json
 import platform
+from datetime import datetime
 
 class mySQL:
     os_name = platform.system()
@@ -41,19 +42,9 @@ class mySQL:
         database="db"
     )
     CUR = CONN.cursor()
-    #ko to en
-    KEYS = {
-        "종류": "kind",
-        "제목": "title",
-        "내용": "detail",
-        "게시자아이디": "x_id",
-        "가수": "singer",
-        "행사날짜시간": "event_date",
-        "게시글날짜시간": "post_date",
-        "url": "url",
-        "사진의경로": "photo"
-    }
+    KEYS = ["title", "detail", "id", "artist", "event_date", "post_date", "url", "kind", "photo"]
 
+    #ko to en
     @staticmethod
     def setVariables():
         mySQL.CONN = pymysql.connect(
@@ -71,10 +62,10 @@ class mySQL:
             kind VARCHAR(30),
             title VARCHAR(255),
             detail TEXT,
-            singer VARCHAR(255),
-            x_id VARCHAR(15),
-            event_date DATE,
-            post_date DATE,
+            artist VARCHAR(255),
+            id VARCHAR(15),
+            event_date DATETIME,
+            post_date DATETIME,
             url VARCHAR(255),
             photo TEXT,
             PRIMARY KEY (number)
@@ -84,18 +75,20 @@ class mySQL:
         mySQL.CONN.commit()
 
     @staticmethod
-    def insertData(name, js_data): #name: Table Name, js_data:
+    def insertData(name, newData): #name: Table Name, js_data:
+        if len(newData) == 0:
+            return
         columns = []
         input_data = ""
-        for idx0, data in enumerate(js_data):
+        for idx0, data in enumerate(newData):
             input_data += "("
             for idx1, key in enumerate(data.keys()):
                 if key in mySQL.KEYS:
                     if idx0 == 0:
-                        columns.append(mySQL.KEYS[key])
-                    if data[key] is None or data[key] == ["NULL"]:
+                        columns.append(key)
+                    if data[key] == "NULL" or data[key] == ["NULL"]:
                         input_data += "NULL"
-                    elif key == "사진의경로":
+                    elif key == "photo":
                         input_data += "'"
                         for idx2, link in enumerate(data[key]):
                             input_data += f"{link}"
@@ -107,7 +100,7 @@ class mySQL:
                     if idx1 < len(mySQL.KEYS) - 1:
                         input_data += ","
             input_data += ")"
-            if idx0 < len(js_data) - 1:
+            if idx0 < len(newData) - 1:
                 input_data += ",\n"
 
 
@@ -115,19 +108,59 @@ class mySQL:
         mySQL.CUR.execute(sql)
         mySQL.CONN.commit()
 
+    @staticmethod
+    def isValidDate(date_str):
+        try:
+            datetime.strptime(date_str, "%Y-%m-%d / %H:%M:%S")
+            return True
+        except ValueError:
+            return False
 
     @staticmethod
-    def mysql():
-        with open("Output.json", "r") as file:
+    def correctDateFormat(arr) -> list:
+        if len(arr) == 0:  # 입력에 데이터가 없으면 그냥 끝
+            return
+        data = []
+
+        for i in arr:
+            if mySQL.isValidDate(i["event_date"]) and mySQL.isValidDate(i["post_date"]):
+                data.append(i)
+
+        return data
+
+    @staticmethod
+    def Log(arr, sns):
+        fout = open(f"{sns}_db_log.txt", "a")
+        t = datetime.now().strftime("%Y-%m-%d %H:%M")
+        tmp = ""
+        for idx, value in enumerate(arr):
+            tmp += "\n\t\"{}\": {{".format(idx)
+            for j in value.keys():
+                tmp += "\n\t\t\"{}\": \"{}\",".format(j, value[j])
+            tmp = tmp[:-1] + "\n\t},"
+        res = "{{\"{}\": {{".format(t) + tmp[:-1] + "\n}}"
+        if tmp == "":
+            res = "{{\"{}\"".format(t) + ": {}}"
+        fout.write("\n" + res + "\n")
+
+
+    @staticmethod
+    def mysql(sns):
+        if sns != "x" and sns != "insta":
+            return
+        with open("Output_" + sns + ".json", "r") as file:
             # read .json file
             js_data = json.load(file)
             js_data = list(js_data.values())
 
         # print(js_data)
         print("\nmysql started")
-        name = "blipdb"   #Table name
+        name = sns + "_db"   #Table name
         mySQL.createTable(name)
-        mySQL.insertData(name, js_data)
+        data = mySQL.correctDateFormat(js_data)
+        mySQL.insertData(name, data)
+        mySQL.Log(data, sns)
 
 if __name__ == "__main__":  # Call if this file is main
-    mySQL.mysql()
+    #mySQL.mysql("x")
+    mySQL.mysql("insta")

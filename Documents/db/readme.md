@@ -39,3 +39,4 @@
 1. blipdb -> sns_db 이름 변경(x_db, insta_db 겸용 스키마)
 2. db -> cafe_db 이름 변경(생일카페용 db 스키마)
 3. cafe_db에서 기존 date 속성이 start_date, end_date로 분리됨으로서 해당 내용 코드 변경 및 GPT에서 Date 자료형에 맞지 않는 문자열을 생성한 경우 해당 데이터는 db에 insert 되지 않도록 처리
+3. sns_db에 Log기능 및 post_date, event_date에 대해 Datetime 형태를 준수하지 않는 데이터면 db에 insert 되지 않도록 처리
