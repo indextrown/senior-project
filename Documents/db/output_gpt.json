@@ -1,16 +1,18 @@
 {
-    "1": {
-        "가수": "밤비",
-        "작성자": "@___xxxx___01",
-        "일정": "13,14",
-        "장소": "서울 홍대, 합정",
-        "게시글_url": "https://x.com/___xxxx___01/status/1806586408473440754"
-    },
     "2": {
-         "가수": "김범",
-        "작성자": "@buaang_boo",
-        "일정": "7/7",
-        "장소": "카페 스윗피",
-        "게시글_url": "https://x.com/buaang_boo/status/1806604082314088609"
+        "celebrity": "채봉구",
+        "uploader": "@1101_GOTP",
+        "start_date": "2024-07-13",
+        "end_date": "2024-07-16",
+        "place": "부산 카페 비전문",
+        "post_url": "https://x.com/1101_GOTP/status/1797270083083116902"
+    },
+     "4": {
+        "celebrity": "유민",
+        "uploader": "@yemkio",
+        "start_date": "2024-09-02",
+        "end_date": "2024-09-03",
+        "place": "카페 헤르츠",
+        "post_url": "https://x.com/yemkio/status/1797284570926346385"
     }
 }

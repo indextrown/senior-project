@@ -34,3 +34,8 @@
 1. blipdb용 py 파일 수정
 2. blipdb용 입력 데이터 파일 추가
 3. blipdb에 들어간 데이터 예시 이미지 추가
+
+### 2024/09/06
+1. blipdb -> sns_db 이름 변경(x_db, insta_db 겸용 스키마)
+2. db -> cafe_db 이름 변경(생일카페용 db 스키마)
+3. cafe_db에서 기존 date 속성이 start_date, end_date로 분리됨으로서 해당 내용 코드 변경 및 GPT에서 Date 자료형에 맞지 않는 문자열을 생성한 경우 해당 데이터는 db에 insert 되지 않도록 처리

@@ -1,25 +1,27 @@
 # pip3 install mypysql
 # pip3 install cryptography
 
-# mysql> desc data;
+# mysql> desc cafe_db;
 # +-----------+--------------+------+-----+---------+----------------+
 # | Field     | Type         | Null | Key | Default | Extra          |
 # +-----------+--------------+------+-----+---------+----------------+
 # | NUMBER    | int          | NO   | PRI | NULL    | auto_increment |
 # | celebrity | varchar(20)  | YES  |     | NULL    |                |
 # | uploader  | varchar(30)  | YES  |     | NULL    |                |
-# | date      | varchar(100) | YES  |     | NULL    |                |
+# | start_date| date         | YES  |     | NULL    |                |
+# | end_date  | date         | YES  |     | NULL    |                |
 # | place     | varchar(100  | YES  |     | NULL    |                |
 # | post_url  | varchar(100) | YES  |     | NULL    |                |
 # +-----------+--------------+------+-----+---------+----------------+
 
 # output_data.json 예시
 # "1": {
-#         "가수": "슈가",
-#         "작성자": "@bts_thelove_min",
-#         "일정": "3/8~3/9",
-#         "장소": "서울 해피벌스데이: 서울특별시 마포구 동교로 34길 82층"
-#         "게시물_url": "https://fandomship.com/bbs/link.php?bo_table=bts&wr_id=206&no=1&page=1"
+#     "celebrity": "채봉구",
+#     "uploader": "@1101_GOTP",
+#     "start_date": "2024-07-13",
+#     "end_date": "2024-07-15",
+#     "place": "부산 카페 비전문",
+#     "post_url": "https://x.com/1101_GOTP/status/1797270083083116902"
 # }
 #
 # 중복에 관여하는 필터링은 (필터링) 키워드를 검색하면 됨
@@ -51,15 +53,17 @@ class mySQL:
         database="db"
     )
     cur = conn.cursor()
-    keys = {
-        "가수": "celebrity",
-        "작성자": "uploader",
-        "일정": "date",
-        "장소": "place",
-        "게시글_url": "post_url"
-    }
 
-    filter_keys = ["가수", "일정", "장소"]  # 해당 키들이 모두 같아야 중복으로 처리(필터링)
+    keys = [
+        "celebrity",
+        "uploader",
+        "start_date",
+        "end_date",
+        "place",
+        "post_url"
+    ]
+
+    filter_keys = ["celebrity", "start_date", "end_date", "place"]  # 해당 키들이 모두 같아야 중복으로 처리(필터링)
 
     @staticmethod
     def mysql():
@@ -70,14 +74,15 @@ class mySQL:
 
         print("\nmysql 진행 시작")
 
-        mySQL.makeTable("data")
-        data = mySQL.pureData(js_data)  # 새로 들어오는 데이터 내에서 중복 제거
+        mySQL.makeTable("cafe_db")
+        data = mySQL.correctDateFormat(js_data)
+        data = mySQL.pureData(data)  # 새로 들어오는 데이터 내에서 중복 제거
         data = mySQL.getfromTable(data)  # 새로 들어오는 데이터가 테이블 내의 데이터와 중복되는것 제거
         data = mySQL.filter_url_with_X(data) # 게시글url이 x가 아니면 필터링
-        mySQL.insertData(data, "data")  # 중복이 전혀 없는 데이터들만 테이블에 추가
+        mySQL.insertData(data, "cafe_db")  # 중복이 전혀 없고 NULL을 포함하지 않는 데이터들만 테이블에 추가
         mySQL.Log(data)
-        # reset_auto_increment() #데이터가 삭제될 일이 없으면 호출하지 않아도 됨
-
+        # reset_auto_increment("cafe_db") #데이터가 삭제될 일이 없으면 호출하지 않아도 됨
+        mySQL.cur.close()
         mySQL.conn.close()
         print("mysql 진행 종료")
 
@@ -87,7 +92,8 @@ class mySQL:
         NUMBER INT AUTO_INCREMENT PRIMARY KEY,
         celebrity VARCHAR(20),
         uploader VARCHAR(30),
-        date VARCHAR(100),
+        start_date DATE,
+        end_date DATE,
         place VARCHAR(100),
         post_url VARCHAR(100)
         );""".format(name)
@@ -95,20 +101,48 @@ class mySQL:
         mySQL.conn.commit()
 
     @staticmethod
+    def isCorrectFormatDate(date):
+        try:
+            datetime.strptime(date, '%Y-%m-%d')
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
+    def isValidDate(date_str):
+        try:
+            datetime.strptime(date_str, '%Y-%m-%d')
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
+    def correctDateFormat(dic) -> dict:
+        if len(dic) == 0:  # 입력에 데이터가 없으면 그냥 끝
+            return
+        num = 1
+        data = {}
+
+        for i in dic.values():
+            if mySQL.isValidDate(i["start_date"]) and mySQL.isValidDate(i["end_date"]):
+                data[str(num)] = i
+                num += 1
+
+        return data
+    @staticmethod
     def insertData(dic, name):  # 데이터 추가 쿼리
         if len(dic) == 0:  # 입력에 데이터가 없으면 그냥 끝
             return
-        columns = ",".join(map(str, list(mySQL.keys.values())))
+        columns = ",".join(map(str, list(mySQL.keys)))
 
-        columns_list = tuple(mySQL.keys.keys())
         data = ""
         for i in dic.values():
             row_data = ["NULL" for _ in range(len(mySQL.keys))]
-            for j in i:  # i의 key들을 순차적으로 갖고옴
+            for j in i:  # i의 key들을 순차적으로 갖고옴, i는 딕셔너리임
                 if i[j] != None:  # None 처리 이유: reset_auto_increment()에서 NULL값을 None으로 가져와서
-                    row_data[columns_list.index(j)] = "'" + i[j] + "'"
+                    row_data[mySQL.keys.index(j)] = "'" + i[j] + "'"
 
-            if row_data[0] == "NULL" or row_data[2] == "NULL" or row_data[3] == "NULL":
+            if "NULL" in row_data:
                 continue
             data += "(" + ",".join(map(str, row_data)) + "),"
 
@@ -123,7 +157,7 @@ class mySQL:
         data, tmp = {}, {}
         for i in dic.values():
             _i = copy(i);
-            for j in mySQL.keys.keys():
+            for j in mySQL.keys:
                 if j not in mySQL.filter_keys:
                     del _i[j]  # 중복에 비교되지 않는 데이터는 제거 후 비교(필터링)
 
@@ -139,15 +173,11 @@ class mySQL:
         num = 1
         for i in dic.values():
             sql = "WHERE  "
-            for j in i.keys():
-                if j in mySQL.filter_keys:  # 해당 key들 일때만 필터링 하기 위해 sql문에 추가(필터링)
-                    sql += mySQL.keys[j] + " = \'" + i[j] + "\' AND "
-
-            if sql == "WHERE  ":
-                raise "Input data's all values are None."
+            for j in mySQL.filter_keys:
+                sql += j + " = \'" + i[j] + "\' AND "
 
             sql = sql[:-5]  # 맨 뒤에 AND가 공란 포함 5글자임
-            mySQL.cur.execute("SELECT * FROM data " + sql + ";")
+            mySQL.cur.execute("SELECT * FROM cafe_db " + sql + ";")
             row = mySQL.cur.fetchone()
             if row == None:  # 테이블에 자료 없음
                 data[str(num)] = i
@@ -159,22 +189,22 @@ class mySQL:
     def filter_url_with_X(data): #X가 아닌 url이면 거름
         newdata = {}
         for i in data:
-            if "https://x.com" in data[i]["게시글_url"]:
+            if "https://x.com" in data[i]["post_url"]:
                 newdata[i] = data[i]
         return newdata
 
     @staticmethod
-    def reset_auto_increment():
+    def reset_auto_increment(name):
         mySQL.makeTable("tmp")  # 기존 테이블의 내용을 백업할 테이블
-        mySQL.cur.execute("SELECT * FROM data;")
+        mySQL.cur.execute(f"SELECT * FROM {name};")
         dic, data = dict(), mySQL.cur.fetchall()
 
         for idx, value in enumerate(data):
-            dic[str(idx + 1)] = {_value: value[_idx + 1] for _idx, _value in enumerate(mySQL.keys.keys())}
+            dic[str(idx + 1)] = {_value: value[_idx + 1] for _idx, _value in enumerate(mySQL.keys)}
 
         mySQL.insertData(dic, "tmp")
-        mySQL.cur.execute("DROP TABLE data;")
-        mySQL.cur.execute("RENAME TABLE tmp TO data;")
+        mySQL.cur.execute(f"DROP TABLE {name};")
+        mySQL.cur.execute(f"RENAME TABLE tmp TO {name};")
         mySQL.conn.commit()
 
     @staticmethod
@@ -191,6 +221,7 @@ class mySQL:
         if tmp == "":
             res = "{{\"{}\"".format(t) + ": {}}"
         fout.write("\n" + res + "\n")
+
 
     def __init__(self):  # 생성자
         pass
