@@ -17,6 +17,8 @@ def gpt_api(file_path):
     client = openai.OpenAI(api_key='API_KEY')
     msg = []
 
+    now = datetime.now()
+    msg.append(now.strftime('%Y-%m-%d %H:%M:%S'))
     f = open(file_path, 'r', encoding='UTF8')
     lines = f.readlines()
     for line in lines:
