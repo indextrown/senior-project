@@ -1,5 +1,6 @@
 package com.starbridge.senior_project.model;
 
+import com.starbridge.senior_project.dto.CreateBulletinBoardDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

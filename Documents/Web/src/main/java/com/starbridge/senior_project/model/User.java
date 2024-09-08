@@ -1,5 +1,7 @@
 package com.starbridge.senior_project.model;
 
+import com.starbridge.senior_project.dto.UserLoginDTO;
+import com.starbridge.senior_project.dto.UserSignupDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
