@@ -28,6 +28,21 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+// sourceSets, tasks.withType -> static 설정
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/main/resources'
+            srcDir 'src/main/static' // static 리소스 폴더 추가
+        }
+    }
+}
+tasks.withType(Copy) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE  // 중복된 파일을 무시하고 하나만 사용
+}
+
+
+
 tasks.named('test') {
     useJUnitPlatform()
 }

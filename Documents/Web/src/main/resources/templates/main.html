@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StarBridge</title>
     <link href="/css/main.css" rel="stylesheet">
-
 </head>
 <body>
 <!-- 첫 번째 화면 -->
@@ -19,8 +18,14 @@
             <a href="#">Artists</a>
             <a href="/artistSchedule">Schedule</a>
             <a href="/birthdayCafe">Birthday Cafe</a>
+            <a href="/bulletinBoard">Community</a>
         </nav>
-        <div class="kpop-radar">kpop radar</div>
+        <div class="user-section">
+            <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+            <form id="logoutForm" th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-button">로그아웃</button>
+            </form>
+        </div>
     </header>
     <div class="breadcrumb">StarBridge > Artists</div>
     <main>

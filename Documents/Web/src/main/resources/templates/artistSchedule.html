@@ -9,7 +9,7 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    1
 </head>
 <body>
 <div class="container">
@@ -19,10 +19,11 @@
         </div>
         <nav>
             <a href="#">Artists</a>
-            <a href="#">Schedule</a>
+            <a href="/artistSchedule">Schedule</a>
             <a href="/birthdayCafe">Birthday Cafe</a>
+            <a href="/bulletinBoard">Community</a>
         </nav>
-        <div class="kpop-radar">kpop radar</div>
+        <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
     </header>
     <div class="subtitle">
         음악 방송, 예능, 앨범 발매, 기념일까지 컴백 시즌 모든 일정 한 눈에
