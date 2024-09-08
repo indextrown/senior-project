@@ -112,7 +112,7 @@ public class APIController {
 //        return ResponseEntity.ok(bulletinResponseDTO);
 
     }
-
+}
 //    @PostMapping("/api/bulletinBoard")
 //    public ResponseEntity<BulletinResponseDTO> createBoard(@RequestBody CreateBulletinBoardDTO createBulletinBoardDTO,
 //                                                           HttpSession session) {
@@ -133,7 +133,7 @@ public class APIController {
 //        BulletinResponseDTO bulletinResponseDTO = new BulletinResponseDTO(savedBulletinBoard);
 //
 //        return ResponseEntity.ok(bulletinResponseDTO);
-}
 
 
-}
+
+
