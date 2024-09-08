@@ -1,0 +1,87 @@
+/* 전체 컨테이너 설정 */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 헤더 스타일 설정 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    max-height: 40px;
+    margin-left: 10px;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+/* 페이지 경로(브레드크럼) 스타일 */
+.breadcrumb {
+    margin: 20px 0;
+    font-size: 14px;
+    color: #777;
+}
+
+/* 메인 콘텐츠 설정 */
+main {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.post-info {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.post-info span {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+/* 게시글 내용 스타일 */
+.post-content {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* 버튼 스타일 */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
