@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 작성하기</title>
+    <link href="/css/bulletinBoardNew.css" rel="stylesheet"> <!-- CSS 파일 링크 -->
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            StarBridge<img src="/images/logo.png" alt="로고">
+        </div>
+        <nav>
+            <a href="#">Artists</a>
+            <a href="/artistSchedule">Schedule</a>
+            <a href="/birthdayCafe">Birthday Cafe</a>
+            <a href="/bulletinBoard">게시판</a>
+        </nav>
+        <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+    </header>
+
+    <h1>게시글 작성하기</h1>
+    <form id="boardForm">
+        닉네임: <input type="text" name="nickname" id="nickname" th:value="${nickname}" readonly><br>
+        제목: <input type="text" name="title" id="title"><br>
+        내용: <textarea name="content" id="content"></textarea><br>
+        아티스트:
+        <select name="artist" id="artist">
+            <option value="아이브">아이브</option>
+            <option value="뉴진스">뉴진스</option>
+            <option value="방탄소년단">방탄소년단</option>
+            <!-- 다른 아티스트 추가 -->
+        </select><br>
+        <button type="button" onclick="submitForm()">작성하기</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            const formData = {
+                nickname: document.getElementById('nickname').value,
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value,
+                artist: document.getElementById('artist').value
+            };
+
+            fetch('/api/bulletinBoard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('게시글이 성공적으로 작성되었습니다.');
+                        window.location.href = '/bulletinBoard'; // 게시판으로 리디렉션
+                    } else {
+                        alert('게시글 작성에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('게시글 작성 중 오류가 발생했습니다.');
+                });
+        }
+    </script>
+</div>
+</body>
+</html>

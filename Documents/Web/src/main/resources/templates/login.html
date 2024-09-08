@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="header">
+    <img src="/images/logo.png" alt="StarBridge 로고" class="logo">
+    <h1>StarBridge</h1>
+</div>
+<form id="loginForm">
+    <h1>로그인</h1>
+    아이디  <input type="text" name="userId" id="userId" placeholder="아이디"><br>
+    비밀번호  <input type="password" name="password" id="password" placeholder="비밀번호"><br>
+    <button type="button" id="user-login-btn">로그인</button>
+    <a href="/signup">회원가입</a>
+</form>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

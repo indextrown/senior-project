@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세보기</title>
+    <link href="/css/bulletinBoardDetail.css" rel="stylesheet"> <!-- 기본 스타일시트 링크 -->
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            StarBridge
+            <img src="/images/logo.png" alt="로고">
+        </div>
+        <nav>
+            <a href="#">Artists</a>
+            <a href="/artistSchedule">Schedule</a>
+            <a href="/birthdayCafe">Birthday Cafe</a>
+            <a href="/community">게시판</a>
+        </nav>
+        <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+    </header>
+
+    <div class="breadcrumb">StarBridge > Community > 게시글 상세보기</div>
+
+    <main>
+        <h1 th:text="${post.title}">게시글 제목</h1>
+        <div class="post-info">
+            <span th:text="'작성자: ' + ${post.nickname}">작성자: 사용자</span>
+            <span th:text="'작성일: ' + ${post.postDate}">작성일: 2024-08-01</span>
+            <span th:text="'조회수: ' + ${post.view}">조회수: 0</span>
+        </div>
+        <div class="post-content">
+            <p th:text="${post.content}">여기에 게시글 내용이 표시됩니다.</p>
+        </div>
+
+        <div class="post-actions">
+            <a href="/bulletinBoard" class="button">목록으로 돌아가기</a>
+        </div>
+    </main>
+</div>
+
+<!-- 기본적으로 필요한 스크립트가 있다면 추가 -->
+</body>
+</html>

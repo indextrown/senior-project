@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarBridge - Community</title>
+    <link href="/css/bulletinBoard.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            StarBridge
+            <img src="/images/logo.png" alt="로고">
+        </div>
+        <nav>
+            <a href="#">Artists</a>
+            <a href="/artistSchedule">Schedule</a>
+            <a href="/birthdayCafe">Birthday Cafe</a>
+            <a href="/bulletinBoard">Community</a>
+        </nav>
+        <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+    </header>
+    <div class="breadcrumb">StarBridge > Community</div>
+    <main>
+        <h1>Community</h1>
+        <p>아티스트별로 게시글을 작성하고 서로 소통해보세요.</p>
+
+        <div class="board-filter">
+            <label for="artist-filter">아티스트 선택:</label>
+            <select id="artist-filter">
+                <option value="all">모두 보기</option>
+                <option value="아이브">아이브</option>
+                <option value="뉴진스">뉴진스</option>
+                <option value="방탄소년단">방탄소년단</option>
+                <!-- 필요에 따라 추가 -->
+            </select>
+        </div>
+
+        <div class="board">
+            <ul id="board-list">
+                <!-- 여기에 Thymeleaf를 이용해 게시글을 동적으로 렌더링 -->
+                <li th:each="post : ${posts}" th:data-artist="${post.artist}">
+                    <a th:href="@{/bulletinBoard/{number}(number=${post.number})}">
+                        <span th:text="|[${post.artist}] ${post.title}|"></span>
+                    </a>
+                    <span th:text="${post.postDate}"></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="board-write">
+            <a href="/bulletinBoardNew" class="new-post-button">새 글 작성하기</a>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.getElementById('artist-filter').addEventListener('change', function() {
+        var filter = this.value;
+        var boardList = document.getElementById('board-list');
+        var posts = boardList.getElementsByTagName('li');
+
+        for (var i = 0; i < posts.length; i++) {
+            var artist = posts[i].getAttribute('data-artist');
+            if (filter === 'all' || artist === filter) {
+                posts[i].style.display = '';
+            } else {
+                posts[i].style.display = 'none';
+            }
+        }
+    });
+</script>
+</body>
+</html>
