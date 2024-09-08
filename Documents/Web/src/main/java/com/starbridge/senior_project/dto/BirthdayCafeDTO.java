@@ -1,5 +1,6 @@
 package com.starbridge.senior_project.dto;
 
+import com.starbridge.senior_project.model.BirthdayCafe;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
