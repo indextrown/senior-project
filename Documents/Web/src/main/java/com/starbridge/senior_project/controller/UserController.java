@@ -1,5 +1,6 @@
 package com.starbridge.senior_project.controller;
 
+import com.starbridge.senior_project.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

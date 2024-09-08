@@ -1,5 +1,7 @@
 package com.starbridge.senior_project.controller;
 
+import com.starbridge.senior_project.model.BulletinBoard;
+import com.starbridge.senior_project.service.BulletinBoardService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

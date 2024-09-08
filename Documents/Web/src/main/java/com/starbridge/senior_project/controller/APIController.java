@@ -1,7 +1,11 @@
 package com.starbridge.senior_project.controller;
 
-import com.starbridge.senior_project.dto.ArtistScheduleDTO;
+import com.starbridge.senior_project.dto.*;
+import com.starbridge.senior_project.model.BulletinBoard;
+import com.starbridge.senior_project.model.User;
 import com.starbridge.senior_project.service.ArtistScheduleService;
+import com.starbridge.senior_project.service.BulletinBoardService;
+import com.starbridge.senior_project.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
