@@ -102,22 +102,25 @@ class KakaoAuthVM: ObservableObject {
     }
         
     // 로그아웃
-    @MainActor
-    func handleKakaoLogout() async -> Bool {
-        await withCheckedContinuation { continuation in
-            UserApi.shared.logout {(error) in
-                if let error = error {
-                    print(error)
-                    continuation.resume(returning: false)
-                }
-                else {
-                    print("logout() success.")
-                    self.isLoggedIn = false
-                    continuation.resume(returning: true)
+        @MainActor
+        func handleKakaoLogout() async -> Bool {
+            await withCheckedContinuation { continuation in
+                UserApi.shared.logout {(error) in
+                    if let error = error {
+                        print(error)
+                        continuation.resume(returning: false)
+                    }
+                    else {
+                        print("logout() success.")
+                        // 메인 스레드에서 상태 업데이트
+                        DispatchQueue.main.async {
+                            self.isLoggedIn = false
+                        }
+                        continuation.resume(returning: true)
+                    }
                 }
             }
         }
-    }
     
     
     // UIApplication.connectedScenes must be used from main thread only

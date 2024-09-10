@@ -22,7 +22,7 @@ struct StarBridgeApp: App {
                 if kakaoAuthVM.isLoggedIn {
                     if !kakaoAuthVM.isLoading {
                         if kakaoAuthVM.hasProfile {
-                            ContentView(kakaoAuthVM: kakaoAuthVM)
+                            ContentView()
                         } else {
                             ProfileSetupView()
                         }

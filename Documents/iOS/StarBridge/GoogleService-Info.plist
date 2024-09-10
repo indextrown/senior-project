@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBWVt4RNi9nhTHfEPZshaDARYtgnmSNijY</string>
+	<string>AIzaSyBvqG4HNIhfMF_3rUmW7gHfn7ddIjWa1GY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>195069105261</string>
+	<string>545301215931</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.indextrown.Social-Login-SwiftUI</string>
+	<string>starbridge0.opfic</string>
 	<key>PROJECT_ID</key>
-	<string>socialloginswiftui</string>
+	<string>starbridgebeta</string>
 	<key>STORAGE_BUCKET</key>
-	<string>socialloginswiftui.appspot.com</string>
+	<string>starbridgebeta.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:195069105261:ios:5f09e9b89925d5918d5b64</string>
+	<string>1:545301215931:ios:76bad0ff867512ad41879e</string>
 </dict>
 </plist>

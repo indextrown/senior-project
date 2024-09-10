@@ -4,47 +4,84 @@ import AuthenticationServices
 struct LoginView: View {
     
     //@ObservedObject var kakaoAuthVM: KakaoAuthVM
-    @EnvironmentObject var kakaoAuthVM: KakaoAuthVM
+//    @EnvironmentObject var kakaoAuthVM: KakaoAuthVM
     
     @State private var buttonSize: CGSize = .zero
-    
 
     
     var body: some View {
-        VStack(spacing: 20) {
-            Image("StarBridgeLogo").padding(130)
-            Button(action: {
-                kakaoAuthVM.handleKakaoLogin()
-            }) {
-                HStack {
-                    
-                    Image("kakao_login_large_wide")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .background(
-                            GeometryReader { geometry in
-                                Color.clear
-                                    .onAppear {
-                                // 카카오 로그인 버튼의 크기를 가져와서 저장
-                                buttonSize = geometry.size
-                            }
+        GeometryReader { geometry in
+            VStack(spacing: 20) {
+                Spacer()
+                Image("StarBridgeLogo")
+                    .resizable()
+                    .scaledToFit()
+                Spacer()
+                
+                Button(action: {
+                    KakaoAuthVM.shared.handleKakaoLogin()
+                }) {
+                    ZStack {
+                        HStack {
+                            Image("kakao_logo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: buttonSize.height * 0.4)
+                                .padding(.leading)
+                            Spacer()
                         }
-                    )
+                        Text("카카오 로그인")
+                            .foregroundColor(.black.opacity(0.85))
+                    }
+                    .frame(height: geometry.size.width * 0.15)
+                    .background{
+                        GeometryReader { geo in
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.kakaoBg)
+                                .onAppear {
+                                    buttonSize = geo.size
+                                }
+                        }
+                    }
                 }
+                Button(action: {
+                    //KakaoAuthVM.shared.handleKakaoLogin()
+                }) {
+                    ZStack {
+                        HStack {
+                            Image("google_logo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: buttonSize.height * 0.4)
+                                .padding(.leading)
+                            Spacer()
+                        }
+                        Text("구글 로그인")
+                            .foregroundColor(.black)
+                    }
+                    .frame(height: geometry.size.width * 0.15)
+                    .background{
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.googleBg)
+                    }
+                }
+                Text("회원가입 없이 둘러보기")
+                    .foregroundColor(.black)
+                    .padding(.bottom)
+        //        Button("회원가입 없이 둘러보기", action: {
+        //            kakaoAuthVM.kakaoLogout()
+        //        })
             }
+            .padding()
+            .frame(width: geometry.size.width)
+            .background(.white)
         }
-        .padding()
-        
-        Text("회원가입 없이 둘러보기")
-//        Button("회원가입 없이 둘러보기", action: {
-//            kakaoAuthVM.kakaoLogout()
-//        })
-        
     }
 }
 
 
 
-//#Preview {
+#Preview {
 //    LoginView(kakaoAuthVM: KakaoAuthVM())
-//}
+    LoginView()
+}

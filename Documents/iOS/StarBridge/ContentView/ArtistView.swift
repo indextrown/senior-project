@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ArtistView: View {
-    @State private var artistArr: [Api.ArtistData] = []
+    @State private var artistArr: [Api.ImageData] = []
+    @State private var isLoading = true
     private var artistlist = [
         "ive", "nct", "newjeans", "bts"
     ]
@@ -30,22 +31,33 @@ struct ArtistView: View {
                 .font(.system(size: 15, weight: .medium))
                 .foregroundColor(.gray)
                 .padding(.vertical, 20)
-                
-                ScrollView(.horizontal){    // 자동으로 돌아가는 가로형 ScrollView 구현 예정
-                    HStack(spacing: 10){
-                        ForEach(artistArr, id: \.self){ artist in
-                            VStack{
-                                if let imageString = artist.profileImage {
-                                    if let image = api.loadImage(from: imageString) {
-                                        Image(uiImage: image)
-                                            .frame(width: 80, height: 80)
-                                            .cornerRadius(40)
+                if isLoading {
+                    VStack {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .gray))
+                            .scaleEffect(1.5)  // ProgressView 크기 조정
+                            .padding(.top, 100)
+                        Text("아티스트 데이터를 불러오는 중...")
+                            .foregroundColor(.gray)
+                            .padding(.top, 20)
+                    }
+                }
+                else {
+                    ScrollView(.horizontal){    // 자동으로 돌아가는 가로형 ScrollView 구현 예정
+                        HStack(spacing: 10){
+                            ForEach(artistArr, id: \.self){ artist in
+                                VStack{
+                                    if let imageData = artist.imageData {
+                                        if let image = api.loadImage(from: imageData) {
+                                            Image(uiImage: image)
+                                                .frame(width: 80, height: 80)
+                                                .cornerRadius(40)
+                                        }
                                     }
                                 }
-                                TextView(artist.name ?? "")
-                            }
-                            .onTapGesture { //  sheet 형식으로 그룹에 대한 정보 뜨게할 예정
-                                
+                                .onTapGesture { //  sheet 형식으로 그룹에 대한 정보 뜨게할 예정
+                                    
+                                }
                             }
                         }
                     }
@@ -56,12 +68,14 @@ struct ArtistView: View {
         }
         .onAppear{
             Task{
-//                for _artist in artistlist {
-//                    if let artist = await api.fetchd(for: _artist) {
-//                        artistArr.append(artist)
-//                        
-//                    }
-//                }
+                for artist in artistlist {
+                    if let imageData = await api.fetchData(for: ["Content": "image", "filename": "\(artist)"]){
+                        if let tmp: Api.ImageData = imageData.values.first?.first?.imageData {
+                            artistArr.append(tmp)
+                        }
+                    }
+                }
+                isLoading = false
             }
         }
     }

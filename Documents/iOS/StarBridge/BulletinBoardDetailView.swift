@@ -7,16 +7,15 @@
 
 import SwiftUI
 
-let testData = Api.BBoardData(
-    id: "1",
-    title: "New Album Release",
-    content: "The new album is amazing! Every track is a hit.",
-    post_date: "2024-08-25 14:30:00",
-    artist: "StarGroup",
-    nickname: "Fan123",
-    likes: "150"
+let test_bboardData = Api.BBoardData(
+    nickname: "user1",
+    title: "First Post",
+    content: "This is the content of the first post.",
+    post_date: "2024-09-09 10:00:00",
+    artist: "Artist One",
+    likes: "5",
+    view: "100"
 )
-
 
 struct BulletinBoardDetailView: View {
     var detail: Api.BBoardData
@@ -78,5 +77,5 @@ struct BulletinBoardDetailView: View {
 
 
 #Preview {
-    BulletinBoardDetailView(detail: testData)
+    BulletinBoardDetailView(detail: test_bboardData)
 }
