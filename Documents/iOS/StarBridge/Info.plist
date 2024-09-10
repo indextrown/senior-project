@@ -2,14 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>API_BBOARDF_URL</key>
-	<string>$(API_BBOARDF_URL)</string>
-	<key>API_IMAGE_URL</key>
-	<string>$(API_IMAGE_URL)</string>
-	<key>API_INSTA_URL</key>
-	<string>$(API_INSTA_URL)</string>
-	<key>API_X_URL</key>
-	<string>$(API_X_URL)</string>
+	<key>API_ULTI_URL</key>
+	<string>$(API_ULTI_URL)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -34,5 +28,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
 </dict>
 </plist>

@@ -44,23 +44,36 @@ struct ProfileSetupView: View {
                 Text("StarBridge")
                     .font(.system(size: 30, weight: .black))
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .foregroundColor(.black)
 
                 Text("회원가입에 필요한\n정보를 입력해주세요")
                     .font(.system(size: 18, weight: .bold))
                     .multilineTextAlignment(.leading)
+                    .foregroundColor(.black)
 
                 Text("닉네임 *")
                     .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.black)
 
-                TextField("언제든 바꿀 수 있어요 (영문과 숫자만 가능해요)", text: $nickname)
-                    .textFieldStyle(PlainTextFieldStyle()) // 기본 스타일 사용
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
-                    .focused($focusNicknameField)   //  focus 되었는지 추적
+                ZStack(alignment: .leading) {
+                    if nickname.isEmpty {
+                        Text("언제든 바꿀 수 있어요 (영문과 숫자만 가능해요)")
+                            .foregroundColor(.gray)
+                            .padding(.leading)
+                    }
+
+                    TextField("", text: $nickname)
+                        .textFieldStyle(PlainTextFieldStyle()) // 기본 스타일 사용
+                        .padding()
+                        .foregroundColor(.black)
+                        .background(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
+                        .focused($focusNicknameField) // focus 상태 추적
+                }
 
 
                 Text("생년월일")
                     .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.black)
 
                 Button(action: {
                     showDatePicker.toggle()
@@ -76,6 +89,7 @@ struct ProfileSetupView: View {
                 
                 Text("서비스 약관 동의 *")
                     .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.black)
 
                 Text("동의 체크 후 앱을 이용할 수 있어요")
                     .font(.system(size: 14))
@@ -83,12 +97,14 @@ struct ProfileSetupView: View {
 
                 HStack {
                     Image(systemName: isAgreed ? "checkmark.square" : "square")
+                        .foregroundColor(.black)
                         .onTapGesture {
                             isAgreed.toggle()
                         }
 
                     Text("이용약관 및 개인정보처리방침")
                         .font(.system(size: 14))
+                        .foregroundColor(.black)
                 }
 
                 Spacer()
@@ -122,6 +138,8 @@ struct ProfileSetupView: View {
                             displayedComponents: [.date]
                         )
                         .datePickerStyle(WheelDatePickerStyle())
+                        .colorInvert()
+                        .colorMultiply(.black)
                         .environment(\.locale, Locale(identifier: "ko_KR"))
 
                         HStack {
@@ -141,6 +159,7 @@ struct ProfileSetupView: View {
             }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .background(.p3LightGray)
     }
 
     private func completeButtonTapped() {

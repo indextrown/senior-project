@@ -71,6 +71,8 @@
 		DFCD7A172C876E7E00AE0BD7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFCD7A162C876E7E00AE0BD7 /* HomeView.swift */; };
 		DFCD7A192C876E9400AE0BD7 /* ProfileSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFCD7A182C876E9400AE0BD7 /* ProfileSetupView.swift */; };
 		DFCD7A1B2C876F9E00AE0BD7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DFCD7A1A2C876F9E00AE0BD7 /* GoogleService-Info.plist */; };
+		DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DFD0F8342C8D9C7E007F5666 /* google_logo.png */; };
+		DFD0F8372C8D9D38007F5666 /* kakao_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DFD0F8362C8D9D38007F5666 /* kakao_logo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +86,7 @@
 		DF37BB382C633D8D00B8F976 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
 		DF3907EE2C65199C00E17C40 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
+		DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeAlarmCode.swift; sourceTree = "<group>"; };
 		DF6632742C309B87001B3D26 /* StarBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
 		DF6632792C309B87001B3D26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +108,8 @@
 		DFCD7A162C876E7E00AE0BD7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DFCD7A182C876E9400AE0BD7 /* ProfileSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupView.swift; sourceTree = "<group>"; };
 		DFCD7A1A2C876F9E00AE0BD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DFD0F8342C8D9C7E007F5666 /* google_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = google_logo.png; sourceTree = "<group>"; };
+		DFD0F8362C8D9D38007F5666 /* kakao_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kakao_logo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +206,7 @@
 				DF2DB4C72C7398E300A89C1E /* ScheduleDetailView.swift */,
 				DF6C08382C743A30005CC35E /* GlobalVariants.swift */,
 				DF66327D2C309B88001B3D26 /* Preview Content */,
+				DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */,
 			);
 			path = StarBridge;
 			sourceTree = "<group>";
@@ -226,6 +232,8 @@
 		DFC835B92C6FB445006A438B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				DFD0F8342C8D9C7E007F5666 /* google_logo.png */,
+				DFD0F8362C8D9D38007F5666 /* kakao_logo.png */,
 				DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */,
 				DFC835B82C6FB445006A438B /* StarBridge_Logo.png */,
 			);
@@ -362,11 +370,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */,
+				DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */,
 				DF97626B2C6595F900FD8577 /* README.md in Resources */,
 				DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */,
 				DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */,
 				DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */,
 				DF02CAC12C785D8100657AE1 /* Emoji_Logo.png in Resources */,
+				DFD0F8372C8D9D38007F5666 /* kakao_logo.png in Resources */,
 				DFCD7A1B2C876F9E00AE0BD7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

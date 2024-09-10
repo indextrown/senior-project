@@ -140,8 +140,10 @@ struct BulletinBoardView: View {
             .background(.p3LightGray)
             .onAppear{
                 Task{
-                    if let data = await api.fetchData(for: ["debug": "1"]){
-                        contents = data
+                    if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
+                        contents = data.compactMapValues { value in
+                            value.first?.bboardData
+                        }
                     }
                 }
             }

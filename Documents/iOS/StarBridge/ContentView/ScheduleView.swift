@@ -5,7 +5,6 @@
 //  Created by 최윤진 on 2024-08-07.
 //
 
-import Foundation
 import UIKit
 import SwiftUI
 
@@ -94,7 +93,7 @@ struct ScheduleView: View{
                             
                             LazyVGrid(columns: columns) {
                                 ForEach(calendarDates(date: selectDate), id: \.self) { date in
-                                    LazyVStack(spacing: 2){
+                                    VStack(spacing: 2){
                                         TextView("\(calendar.component(.day, from: date))", weight: .medium, color: setDayforegroundColor(date: date))
                                             .frame(width: 30, height: 30)
                                             .background(setDayBackgroundColor(date: date))
@@ -178,16 +177,20 @@ struct ScheduleView: View{
                         }
                     }
                     .onAppear{
-                        Task{
-                            if let data = await api.fetchData(for: dateToString(showDate, format: "yyyy-MM"), url: "API_X_URL"){
-                                schedules = data
+                        Task{   // sql 쿼리가 잘 안되는거 같아서 그냥 여기서 달력 시작과 끝 날짜를 보내는걸로 수정 예정
+                            if let data = await api.fetchData(for: ["Content": "x", "date": dateToString(showDate, format: "yyyy-MM")]) {
+                                schedules = data.mapValues { values in
+                                    values.compactMap {$0.snsData}
+                                }
                             }
                         }
                     }
                     .onChange(of: showDate) { newDate in
                         Task{
-                            if let data = await api.fetchData(for: dateToString(newDate, format: "yyyy-MM"), url: "API_X_URL"){
-                                schedules = data
+                            if let data = await api.fetchData(for: ["Content": "x", "date": dateToString(newDate, format: "yyyy-MM")]) {
+                                schedules = data.mapValues { values in
+                                    values.compactMap {$0.snsData}
+                                }
                             }
                         }
                     }
