@@ -47,3 +47,6 @@ ScheduleViewDetail.Swift
 
 LoginView.swift
 - 기존 ArtistView에서 구현 예정이었던 가로 형태로 무한히 아티스트들의 목록을 보여주는 기능 추가 및 주변 요소 위치 수정
+
+ProfileView.swift
+- 개인 프로필에 대해 정보를 보여주거나 수정할 수 있도록 구현 예정

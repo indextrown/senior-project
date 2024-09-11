@@ -16,7 +16,6 @@
 		DF37BB372C633C2A00B8F976 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB362C633C2A00B8F976 /* ScheduleView.swift */; };
 		DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB382C633D8D00B8F976 /* TextView.swift */; };
 		DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */; };
-		DF3907EF2C65199C00E17C40 /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3907EE2C65199C00E17C40 /* ArtistView.swift */; };
 		DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632772C309B87001B3D26 /* StarBridgeApp.swift */; };
 		DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632792C309B87001B3D26 /* ContentView.swift */; };
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
@@ -40,7 +39,7 @@
 		DF7CC1502C6F18FE00531736 /* KakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC14F2C6F18FE00531736 /* KakaoSDKTalk */; };
 		DF7CC1522C6F18FE00531736 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1512C6F18FE00531736 /* KakaoSDKTemplate */; };
 		DF7CC1542C6F18FE00531736 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1532C6F18FE00531736 /* KakaoSDKUser */; };
-		DF97626B2C6595F900FD8577 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DF97626A2C6595F900FD8577 /* README.md */; };
+		DF97626B2C6595F900FD8577 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = DF97626A2C6595F900FD8577 /* readme.md */; };
 		DFAB66502C7DEADF0019C5C8 /* BulletinBoardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAB664F2C7DEADF0019C5C8 /* BulletinBoardDetailView.swift */; };
 		DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DFC835B82C6FB445006A438B /* StarBridge_Logo.png */; };
 		DFCD79E02C876D3800AE0BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DFCD79DF2C876D3800AE0BD7 /* FirebaseAnalytics */; };
@@ -86,7 +85,6 @@
 		DF37BB362C633C2A00B8F976 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		DF37BB382C633D8D00B8F976 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
-		DF3907EE2C65199C00E17C40 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeAlarmCode.swift; sourceTree = "<group>"; };
 		DF6632742C309B87001B3D26 /* StarBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
@@ -101,7 +99,7 @@
 		DF7CC1332C6F18BE00531736 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF7CC1342C6F18BE00531736 /* MyAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAppDelegate.swift; sourceTree = "<group>"; };
 		DF7CC1352C6F18BE00531736 /* MySceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySceneDelegate.swift; sourceTree = "<group>"; };
-		DF97626A2C6595F900FD8577 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		DF97626A2C6595F900FD8577 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = SOURCE_ROOT; };
 		DFAB664F2C7DEADF0019C5C8 /* BulletinBoardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBoardDetailView.swift; sourceTree = "<group>"; };
 		DFC835B82C6FB445006A438B /* StarBridge_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridge_Logo.png; sourceTree = "<group>"; };
 		DFCD7A102C876DD000AE0BD7 /* FirebaseFirestoreSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFirestoreSwift.swift; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 		DF02CAC72C7A231600657AE1 /* ContentView */ = {
 			isa = PBXGroup;
 			children = (
-				DF3907EE2C65199C00E17C40 /* ArtistView.swift */,
 				DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */,
 				DF02CABC2C781D6400657AE1 /* CafeView.swift */,
 				DF02CABE2C781D7100657AE1 /* ProfileView.swift */,
@@ -176,7 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				DF6632752C309B87001B3D26 /* Products */,
-				DF97626A2C6595F900FD8577 /* README.md */,
+				DF97626A2C6595F900FD8577 /* readme.md */,
 				DF6632762C309B87001B3D26 /* StarBridge */,
 			);
 			sourceTree = "<group>";
@@ -375,7 +372,7 @@
 				DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */,
 				DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */,
 				DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */,
-				DF97626B2C6595F900FD8577 /* README.md in Resources */,
+				DF97626B2C6595F900FD8577 /* readme.md in Resources */,
 				DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */,
 				DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */,
 				DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */,
@@ -413,7 +410,6 @@
 				DFCD7A132C876DE100AE0BD7 /* MyFirestore.swift in Sources */,
 				DF2DB4C82C7398E300A89C1E /* api.swift in Sources */,
 				DF6C08392C743A30005CC35E /* GlobalVariants.swift in Sources */,
-				DF3907EF2C65199C00E17C40 /* ArtistView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
