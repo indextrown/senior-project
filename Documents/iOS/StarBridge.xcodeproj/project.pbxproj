@@ -21,6 +21,7 @@
 		DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632792C309B87001B3D26 /* ContentView.swift */; };
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
 		DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */; };
+		DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */; };
 		DF6C08392C743A30005CC35E /* GlobalVariants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6C08382C743A30005CC35E /* GlobalVariants.swift */; };
 		DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF7CC1312C6F18BE00531736 /* Config.xcconfig */; };
 		DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */; };
@@ -92,6 +93,7 @@
 		DF6632792C309B87001B3D26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DF66327B2C309B88001B3D26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = AppIcon.jpg; sourceTree = "<group>"; };
 		DF6C08382C743A30005CC35E /* GlobalVariants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariants.swift; sourceTree = "<group>"; };
 		DF7B473F2C6D164A000F1B0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DF7CC1312C6F18BE00531736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 		DFCD7A1A2C876F9E00AE0BD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DFD0F8342C8D9C7E007F5666 /* google_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = google_logo.png; sourceTree = "<group>"; };
 		DFD0F8362C8D9D38007F5666 /* kakao_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kakao_logo.png; sourceTree = "<group>"; };
+		DFEBECAA2C9177B300642D75 /* StarBridge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StarBridge.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +193,7 @@
 		DF6632762C309B87001B3D26 /* StarBridge */ = {
 			isa = PBXGroup;
 			children = (
+				DFEBECAA2C9177B300642D75 /* StarBridge.entitlements */,
 				DFC835B92C6FB445006A438B /* images */,
 				DF7CC1362C6F18BE00531736 /* SocialLogin */,
 				DF02CAC72C7A231600657AE1 /* ContentView */,
@@ -232,6 +236,7 @@
 		DFC835B92C6FB445006A438B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */,
 				DFD0F8342C8D9C7E007F5666 /* google_logo.png */,
 				DFD0F8362C8D9D38007F5666 /* kakao_logo.png */,
 				DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */,
@@ -369,6 +374,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */,
 				DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */,
 				DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */,
 				DF97626B2C6595F900FD8577 /* README.md in Resources */,
@@ -544,6 +550,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = StarBridge/StarBridge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -567,7 +575,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = starbridge0.opfic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.indextrown.StarBridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -586,6 +594,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = StarBridge/StarBridge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -609,7 +619,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = starbridge0.opfic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.indextrown.StarBridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

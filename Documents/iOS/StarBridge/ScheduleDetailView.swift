@@ -73,7 +73,6 @@ struct ScheduleDetailView: View {
                 
                 VStack {
                     Group {
-                        Text("해당 데이터는 개발자들이 무단으로 수집했습니다")
                         Text(detail.detail ?? "")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

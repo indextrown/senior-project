@@ -6,13 +6,8 @@
 //
 
 import SwiftUI
-import Firebase
 
 struct ProfileView: View {
-    
-    // MARK: -
-    @State private var kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId")
-    @State private var resultArray: [String] = []
     
     @StateObject private var kakaoAuthVM = KakaoAuthVM.shared
     var body: some View {
@@ -45,51 +40,7 @@ struct ProfileView: View {
                 }
             }
         }
-        .onAppear {
-            Task {
-                do {
-                    let array = try await fetchArrayFromFirestore(forKey: "keyword")
-                    resultArray = array
-                    
-                    array.forEach { item in
-                        print(item)
-                    }
-                    
-                } catch {
-                    print("데이터 가져오기 실패: \(error)")
-                }
-            }
-        }
     }
-
-    
-    
-    // MARK: - firebase에서 정보 받아오기
-    // input:
-    // output: [String]
-    private func fetchArrayFromFirestore(forKey key: String) async throws -> [String] {
-        let db = Firestore.firestore()
-        let docRef = db.collection("user").document("3700121588")
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            docRef.getDocument { document, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                
-                guard let document = document, document.exists else {
-                    continuation.resume(returning: [])
-                    return
-                }
-                
-                let data = document.data()
-                let array = data?[key] as? [String] ?? []
-                continuation.resume(returning: array)
-            }
-        }
-    }
-    
 }
 
 #Preview {

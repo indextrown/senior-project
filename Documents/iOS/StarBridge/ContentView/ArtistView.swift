@@ -55,9 +55,6 @@ struct ArtistView: View {
                                         }
                                     }
                                 }
-                                .onTapGesture { //  sheet 형식으로 그룹에 대한 정보 뜨게할 예정
-                                    
-                                }
                             }
                         }
                     }

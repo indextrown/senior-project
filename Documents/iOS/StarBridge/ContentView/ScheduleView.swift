@@ -217,7 +217,6 @@ struct ScheduleView: View{
                                                     Text(event.title ?? "")
                                                         .lineLimit(2)
                                                         .multilineTextAlignment(.leading)
-                                                    Text(event.id ?? "")
                                                 }
                                                 .foregroundStyle(Color.black)
                                                 Spacer()
@@ -265,7 +264,6 @@ struct ScheduleView: View{
                                                         Text(event.title ?? "")
                                                             .lineLimit(2)
                                                             .multilineTextAlignment(.leading)
-                                                        Text(event.id ?? "")
                                                         Text(event.event_date ?? "")
                                                     }
                                                     .foregroundStyle(Color.black)
