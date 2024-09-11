@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var currentView: activeView = .ArtistView
+    @State private var currentView: activeView = .CafeView
     
     var body: some View {
         GeometryReader { geometry in
@@ -25,32 +25,24 @@ struct ContentView: View {
                             .padding()
                         Spacer()
                         Image(systemName: "bell")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20)
-                            .onTapGesture {
+                            .font(.system(size: 20))
+                            .foregroundColor(.black)
+                            .onTapGesture { //  누적된 알람을 보여주는?
                                 
                             }
                             .padding()
-                        NavigationLink(destination: ProfileView()) {
-                            Image(systemName: "gearshape")
-                                .resizable()
-                                .scaledToFit()
-                        }
-                        .frame(width: 25, height: 25)
-                        .padding(.trailing)
                     }
                     
                     Group {
                         switch currentView {
-                        case .ArtistView:
-                            ArtistView()
-                        case .ScheduleView:
-                            ScheduleView()
-                        case .CafeView:
-                            CafeView()
                         case .BulletinBoardView:
                             BulletinBoardView()
+                        case .CafeView:
+                            CafeView()
+                        case .ProfileView:
+                            ProfileView()
+                        case .ScheduleView:
+                            ScheduleView()
                         }
                     }
                     .frame(width: geometry.size.width)
@@ -59,15 +51,15 @@ struct ContentView: View {
                         Group{
                             VStack{
                                 Group{
-                                    Image(systemName: "play.tv")
+                                    Image(systemName: "gift")
                                         .font(.system(size: 20))
-                                    Text("아티스트")
+                                    Text("생일카페")
                                         .font(.system(size: 10))
                                 }
-                                .foregroundColor(currentView == .ArtistView ? .pink : .black)
+                                .foregroundColor(currentView == .CafeView ? .pink : .black)
                             }
                             .onTapGesture {
-                                currentView = .ArtistView
+                                currentView = .CafeView
                             }
                             Spacer()
                             VStack{
@@ -85,19 +77,6 @@ struct ContentView: View {
                             Spacer()
                             VStack{
                                 Group{
-                                    Image(systemName: "gift")
-                                        .font(.system(size: 20))
-                                    Text("생일카페")
-                                        .font(.system(size: 10))
-                                }
-                                .foregroundColor(currentView == .CafeView ? .pink : .black)
-                            }
-                            .onTapGesture {
-                                currentView = .CafeView
-                            }
-                            Spacer()
-                            VStack{
-                                Group{
                                     Image(systemName: "note.text")
                                         .font(.system(size: 20))
                                     Text("게시판")
@@ -107,6 +86,19 @@ struct ContentView: View {
                             }
                             .onTapGesture {
                                 currentView = .BulletinBoardView
+                            }
+                            Spacer()
+                            VStack{
+                                Group{
+                                    Image(systemName: "gearshape")
+                                        .font(.system(size: 20))
+                                    Text("설정")
+                                        .font(.system(size: 10))
+                                }
+                                .foregroundColor(currentView == .ProfileView ? .pink : .black)
+                            }
+                            .onTapGesture {
+                                currentView = .ProfileView
                             }
                         }
                         .foregroundColor(.black)
@@ -130,7 +122,7 @@ struct ContentView: View {
 }
 
 enum activeView {
-    case ArtistView, ScheduleView, CafeView, BulletinBoardView
+    case  BulletinBoardView, CafeView, ProfileView, ScheduleView
 }
 
 

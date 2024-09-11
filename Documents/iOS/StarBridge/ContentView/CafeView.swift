@@ -11,8 +11,8 @@ import UIKit
 struct CafeView: View {
     @State private var cafeList: [String:[Api.CafeData]] = [:]
     @State private var isLoading = true
-    @State private var celebrities: [String] = []
-    @State private var filterList: [String] = []
+    @State private var celebrities: [String] = []   //  api로 받아온 연예인들 집합
+    @State private var filterList: [String] = []    //  알고싶은 연예인들만 모음
     @State private var filterWordSize: CGFloat = .zero
     
     var body: some View {
@@ -76,8 +76,7 @@ struct CafeView: View {
                                         Group {
                                             Text(cafe.celebrity ?? "")
                                             Text(cafe.uploader ?? "")
-                                            Text(cafe.start_date ?? "")
-                                            Text(cafe.end_date ?? "")
+                                            Text("\(cafe.start_date ?? "") ~ \(cafe.end_date ?? "")")
                                             Text(cafe.place ?? "")
                                         }
                                         .foregroundColor(.black)
@@ -85,7 +84,7 @@ struct CafeView: View {
                                     Spacer()
                                 }
                                 .padding(.horizontal)
-                                .frame(height: 160)
+                                .frame(height: 120)
                                 .background(.white)
                                 .cornerRadius(15)
                                 .padding(.horizontal)
