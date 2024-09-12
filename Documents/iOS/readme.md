@@ -59,6 +59,7 @@ StarBridgeLogo2.png
 
 CafeView.swift
 - sendNotification() 함수 추가
+- CafeView.swift 99% 완료
 
 ProfileView.swift
 - fetchArrayFromFirestore() 함수 추가
