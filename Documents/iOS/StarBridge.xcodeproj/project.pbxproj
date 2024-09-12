@@ -39,7 +39,9 @@
 		DF7CC1502C6F18FE00531736 /* KakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC14F2C6F18FE00531736 /* KakaoSDKTalk */; };
 		DF7CC1522C6F18FE00531736 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1512C6F18FE00531736 /* KakaoSDKTemplate */; };
 		DF7CC1542C6F18FE00531736 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1532C6F18FE00531736 /* KakaoSDKUser */; };
-		DF97626B2C6595F900FD8577 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = DF97626A2C6595F900FD8577 /* readme.md */; };
+		DF97626B2C6595F900FD8577 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DF97626A2C6595F900FD8577 /* README.md */; };
+		DFA32EE92C928CA4009AC7EC /* SocialLoginButtonVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA32EE82C928CA4009AC7EC /* SocialLoginButtonVIew.swift */; };
+		DFA32EEB2C928D14009AC7EC /* StarBridgeLogo2.png in Resources */ = {isa = PBXBuildFile; fileRef = DFA32EEA2C928D14009AC7EC /* StarBridgeLogo2.png */; };
 		DFAB66502C7DEADF0019C5C8 /* BulletinBoardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAB664F2C7DEADF0019C5C8 /* BulletinBoardDetailView.swift */; };
 		DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DFC835B82C6FB445006A438B /* StarBridge_Logo.png */; };
 		DFCD79E02C876D3800AE0BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DFCD79DF2C876D3800AE0BD7 /* FirebaseAnalytics */; };
@@ -85,6 +87,7 @@
 		DF37BB362C633C2A00B8F976 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		DF37BB382C633D8D00B8F976 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
+		DF3907EE2C65199C00E17C40 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeAlarmCode.swift; sourceTree = "<group>"; };
 		DF6632742C309B87001B3D26 /* StarBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
@@ -99,7 +102,9 @@
 		DF7CC1332C6F18BE00531736 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF7CC1342C6F18BE00531736 /* MyAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAppDelegate.swift; sourceTree = "<group>"; };
 		DF7CC1352C6F18BE00531736 /* MySceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySceneDelegate.swift; sourceTree = "<group>"; };
-		DF97626A2C6595F900FD8577 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = SOURCE_ROOT; };
+		DF97626A2C6595F900FD8577 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		DFA32EE82C928CA4009AC7EC /* SocialLoginButtonVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonVIew.swift; sourceTree = "<group>"; };
+		DFA32EEA2C928D14009AC7EC /* StarBridgeLogo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridgeLogo2.png; sourceTree = "<group>"; };
 		DFAB664F2C7DEADF0019C5C8 /* BulletinBoardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBoardDetailView.swift; sourceTree = "<group>"; };
 		DFC835B82C6FB445006A438B /* StarBridge_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridge_Logo.png; sourceTree = "<group>"; };
 		DFCD7A102C876DD000AE0BD7 /* FirebaseFirestoreSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFirestoreSwift.swift; sourceTree = "<group>"; };
@@ -110,6 +115,7 @@
 		DFCD7A1A2C876F9E00AE0BD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DFD0F8342C8D9C7E007F5666 /* google_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = google_logo.png; sourceTree = "<group>"; };
 		DFD0F8362C8D9D38007F5666 /* kakao_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kakao_logo.png; sourceTree = "<group>"; };
+		DFEBECAA2C9177B300642D75 /* StarBridge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StarBridge.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +167,7 @@
 		DF02CAC72C7A231600657AE1 /* ContentView */ = {
 			isa = PBXGroup;
 			children = (
+				DF3907EE2C65199C00E17C40 /* ArtistView.swift */,
 				DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */,
 				DF02CABC2C781D6400657AE1 /* CafeView.swift */,
 				DF02CABE2C781D7100657AE1 /* ProfileView.swift */,
@@ -173,7 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				DF6632752C309B87001B3D26 /* Products */,
-				DF97626A2C6595F900FD8577 /* readme.md */,
+				DF97626A2C6595F900FD8577 /* README.md */,
 				DF6632762C309B87001B3D26 /* StarBridge */,
 			);
 			sourceTree = "<group>";
@@ -189,6 +196,7 @@
 		DF6632762C309B87001B3D26 /* StarBridge */ = {
 			isa = PBXGroup;
 			children = (
+				DFEBECAA2C9177B300642D75 /* StarBridge.entitlements */,
 				DFC835B92C6FB445006A438B /* images */,
 				DF7CC1362C6F18BE00531736 /* SocialLogin */,
 				DF02CAC72C7A231600657AE1 /* ContentView */,
@@ -234,6 +242,7 @@
 				DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */,
 				DFD0F8342C8D9C7E007F5666 /* google_logo.png */,
 				DFD0F8362C8D9D38007F5666 /* kakao_logo.png */,
+				DFA32EEA2C928D14009AC7EC /* StarBridgeLogo2.png */,
 				DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */,
 				DFC835B82C6FB445006A438B /* StarBridge_Logo.png */,
 			);
@@ -257,6 +266,7 @@
 				DF7CC1332C6F18BE00531736 /* LoginView.swift */,
 				DFCD7A162C876E7E00AE0BD7 /* HomeView.swift */,
 				DFCD7A182C876E9400AE0BD7 /* ProfileSetupView.swift */,
+				DFA32EE82C928CA4009AC7EC /* SocialLoginButtonVIew.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -370,9 +380,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */,
+				DFA32EEB2C928D14009AC7EC /* StarBridgeLogo2.png in Resources */,
 				DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */,
 				DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */,
-				DF97626B2C6595F900FD8577 /* readme.md in Resources */,
+				DF97626B2C6595F900FD8577 /* README.md in Resources */,
 				DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */,
 				DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */,
 				DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */,
@@ -406,6 +417,7 @@
 				DFAB66502C7DEADF0019C5C8 /* BulletinBoardDetailView.swift in Sources */,
 				DFCD7A172C876E7E00AE0BD7 /* HomeView.swift in Sources */,
 				DFCD7A192C876E9400AE0BD7 /* ProfileSetupView.swift in Sources */,
+				DFA32EE92C928CA4009AC7EC /* SocialLoginButtonVIew.swift in Sources */,
 				DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */,
 				DFCD7A132C876DE100AE0BD7 /* MyFirestore.swift in Sources */,
 				DF2DB4C82C7398E300A89C1E /* api.swift in Sources */,
@@ -469,7 +481,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -527,7 +539,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -545,11 +557,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = StarBridge/StarBridge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StarBridge/Preview Content\"";
-				DEVELOPMENT_TEAM = 4CPC6N38WA;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LGX4B4WC66;
 				ENABLE_PREVIEWS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
@@ -562,15 +577,16 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = starbridge0.opfic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.indextrown.StarBridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = StarBridge;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -588,11 +604,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = StarBridge/StarBridge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StarBridge/Preview Content\"";
-				DEVELOPMENT_TEAM = 4CPC6N38WA;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LGX4B4WC66;
 				ENABLE_PREVIEWS = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
@@ -605,15 +624,16 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = starbridge0.opfic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.indextrown.StarBridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = StarBridge;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

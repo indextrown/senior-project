@@ -46,7 +46,7 @@ class Api{
                 else if param["Content"] == "bboard" {
                     let decodedData = try decoder.decode([String: BBoardData].self, from: data)
                     let newData = decodedData.mapValues { value in
-                        [apiData(artistData: nil, bboardData: value, cafeData: nil, snsData: nil,imageData: nil)]
+                        [apiData(artistData: nil, bboardData: value, cafeData: nil, snsData: nil, imageData: nil)]
                     }
                     return newData
                 }

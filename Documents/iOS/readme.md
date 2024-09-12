@@ -48,5 +48,39 @@ ScheduleViewDetail.Swift
 LoginView.swift
 - 기존 ArtistView에서 구현 예정이었던 가로 형태로 무한히 아티스트들의 목록을 보여주는 기능 추가 및 주변 요소 위치 수정
 
+
+### 2024/09/12
+.xcodeproj
+- Logo2파일 사용하도록 수정
+- 최소 ios 버전 15에서 16으로 변경
+
+StarBridgeLogo2.png
+- LoginView.swift에서 사용됨
+
+CafeView.swift
+- sendNotification() 함수 추가
+
 ProfileView.swift
-- 개인 프로필에 대해 정보를 보여주거나 수정할 수 있도록 구현 예정
+- fetchArrayFromFirestore() 함수 추가
+
+GoogleService-Info.plist
+- 개발자 계정을 통합하여 기존 분리된 내용을 하나로 합침
+
+info.plist
+- Logo2 asset 추가
+
+LoginView.swift
+- Logo2 asset 사용하도록 코드 변경
+
+SocialLoginButtonView.swift
+- LoginView.swift에 사용되는 커스텀 버튼
+
+StarBridgeApp.swift
+- 주석 제거 및 BackgroundTask 코드 추가
+
+makeAlarmCode.swift
+- 로컬 알람에 대한 권한 설정 및 디바이스에 뜨게 하는 코드
+
+그 외의 파일
+- 서식 변경 및 xcode 파일임
+
