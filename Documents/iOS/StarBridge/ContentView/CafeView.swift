@@ -126,11 +126,11 @@ struct CafeView: View {
     }
 }
 
-func sendNotification() {
+func sendNotification(detail body: String) {
     // 알림 콘텐츠 생성
     let content = UNMutableNotificationContent()
-    content.title = "푸시 알림 제목"
-    content.body = "이것은 버튼을 눌러서 보낸 알림입니다."
+    content.title = "StarBridge"
+    content.body = "키워드: \(body)"
     content.sound = UNNotificationSound.default
     
     // 5초 후에 알림이 뜨도록 트리거 설정

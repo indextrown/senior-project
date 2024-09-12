@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfileView: View {
+    let details = ["NCT", "IVE", "NewJeans"]
     
     @StateObject private var kakaoAuthVM = KakaoAuthVM.shared
     var body: some View {
@@ -27,6 +28,23 @@ struct ProfileView: View {
                             .padding()
                             .background(.blue)
                             .cornerRadius(13)
+                    }
+                    
+                    Button("알림 보내기") {
+                        // 알림 권한 요청
+                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                            if granted {
+                                print("알림 권한 허용됨")
+                                Task {
+                                    for detail in details {
+                                        sendNotification(detail: detail)
+                                        try await Task.sleep(nanoseconds: 500_000_000)
+                                    }
+                                }
+                            } else {
+                                print("알림 권한 거부됨")
+                            }
+                        }
                     }
                 }
             }

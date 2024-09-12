@@ -50,7 +50,7 @@ struct StarBridgeApp: App {
             Task {
                 if let doesNewData = await api.fetchData(for: ["Content": "cafe", "all": "true"]) { //데이터 모두를 가져와서
                     if await dataCount > 0 { // 이때만 알림
-                        sendNotification()
+//                        sendNotification()
                     }
                     await MainActor.run {
                         dataCount = max(dataCount, doesNewData.values.flatMap {$0}.count)
