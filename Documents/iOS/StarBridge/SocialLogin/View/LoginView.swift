@@ -14,6 +14,7 @@ struct LoginView: View {
     private var artistlist = [  //  이거 사실 서버에다 저장해두고 어떻게 좀 하고싶음
         "ive", "nct", "newjeans", "bts"
     ]
+    
     @State private var scrollOffset:CGFloat = 0
     @State private var timer: Timer?
     private let itemWidth: CGFloat = 100 // 각 아이템의 너비와 간격 포함
@@ -21,10 +22,11 @@ struct LoginView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack(spacing: 20) {
+            VStack(spacing: 10) {
                 Spacer()
                 Spacer()
-                Image("StarBridgeLogo")
+                //mage("StarBridgeLogo")
+                Image("Logo")
                     .resizable()
                     .scaledToFit()
                 Spacer()
@@ -73,7 +75,12 @@ struct LoginView: View {
                 }
                 
                 Spacer()
+                Spacer()
+                Spacer()
+                Spacer()
+                /*
                 Group {
+                    /*
                     Button(action: {
                         kakaoAuthVM.handleKakaoLogin()
                     }) {
@@ -121,14 +128,55 @@ struct LoginView: View {
                                 .fill(Color.googleBg)
                         }
                     }
-                    Text("회원가입 없이 둘러보기")
-                        .foregroundColor(.black)
-                        .padding(.bottom)
+                    */
+                    
+                    
                 }
                 .padding(.horizontal)
-        //        Button("회원가입 없이 둘러보기", action: {
-        //            kakaoAuthVM.kakaoLogout()
-        //        })
+                 */
+                Button {
+                    // TODO:
+                    kakaoAuthVM.handleKakaoLogin()
+                } label: {
+                    HStack {
+                        Image("kakao_logo")
+                        Text("Kakao로 로그인")
+                    }
+                    
+                }.buttonStyle(SocialLoginButton(buttontype: "Kakao"))
+                
+                
+                SignInWithAppleButton { request in
+                    // TODO:
+                    //authViewModel.send(action: .appleLogin(request))
+                    
+                    // 인증이 완료됬을때 불려지는 클로저 - 성공시 파이어베이스 인증 진행
+                } onCompletion: { request in
+                    // TODO:
+                   // authViewModel.send(action: .appleLoginCompletion(request))
+                }
+                .frame(height: 55)
+                .padding(.horizontal, 15)
+                .cornerRadius(5)
+                
+                
+                
+                // MARK: - 구글버튼
+                Button {
+                    // TODO:
+                    //authViewModel.send(action: .googleLogin)
+                } label: {
+                    HStack {
+                        Image("google_logo")
+                        Text("Google로 로그인")
+                    }
+                    
+                }.buttonStyle(SocialLoginButton(buttontype: "Google"))
+                Button("회원가입 없이 둘러보기", action: {
+                    kakaoAuthVM.kakaoLogout()
+                }
+                ).foregroundColor(.black)
+                Spacer()
             }
             .frame(width: geometry.size.width)
             .background(.white)
@@ -161,8 +209,6 @@ struct LoginView: View {
         RunLoop.current.add(timer!, forMode: .common)
     }
 }
-
-
 
 #Preview {
 //    LoginView(kakaoAuthVM: KakaoAuthVM())

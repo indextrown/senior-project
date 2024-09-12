@@ -11,12 +11,15 @@
 		DF02CABF2C781D7100657AE1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF02CABE2C781D7100657AE1 /* ProfileView.swift */; };
 		DF02CAC12C785D8100657AE1 /* Emoji_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */; };
 		DF02CAC62C78D64900657AE1 /* BulletinBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */; };
+		DF1996B92C91F283008B11E3 /* StarBridgeLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = DF1996B82C91F283008B11E3 /* StarBridgeLogo.png */; };
+		DF1996BB2C91F4AB008B11E3 /* SocialLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1996BA2C91F4AB008B11E3 /* SocialLoginButton.swift */; };
 		DF2DB4C82C7398E300A89C1E /* api.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2DB4C62C7398E300A89C1E /* api.swift */; };
 		DF2DB4C92C7398E300A89C1E /* ScheduleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2DB4C72C7398E300A89C1E /* ScheduleDetailView.swift */; };
 		DF37BB372C633C2A00B8F976 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB362C633C2A00B8F976 /* ScheduleView.swift */; };
 		DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB382C633D8D00B8F976 /* TextView.swift */; };
 		DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */; };
 		DF3907EF2C65199C00E17C40 /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3907EE2C65199C00E17C40 /* ArtistView.swift */; };
+		DF4A35C12C926F4000739AFF /* StarBridgeLogo2.png in Resources */ = {isa = PBXBuildFile; fileRef = DF4A35C02C926F4000739AFF /* StarBridgeLogo2.png */; };
 		DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632772C309B87001B3D26 /* StarBridgeApp.swift */; };
 		DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632792C309B87001B3D26 /* ContentView.swift */; };
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
@@ -81,6 +84,8 @@
 		DF02CABE2C781D7100657AE1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Emoji_Logo.png; sourceTree = "<group>"; };
 		DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBoardView.swift; sourceTree = "<group>"; };
+		DF1996B82C91F283008B11E3 /* StarBridgeLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridgeLogo.png; sourceTree = "<group>"; };
+		DF1996BA2C91F4AB008B11E3 /* SocialLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButton.swift; sourceTree = "<group>"; };
 		DF2DB4C62C7398E300A89C1E /* api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = api.swift; sourceTree = "<group>"; };
 		DF2DB4C72C7398E300A89C1E /* ScheduleDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailView.swift; sourceTree = "<group>"; };
 		DF37BB362C633C2A00B8F976 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
@@ -88,6 +93,7 @@
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
 		DF3907EE2C65199C00E17C40 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeAlarmCode.swift; sourceTree = "<group>"; };
+		DF4A35C02C926F4000739AFF /* StarBridgeLogo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridgeLogo2.png; sourceTree = "<group>"; };
 		DF6632742C309B87001B3D26 /* StarBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
 		DF6632792C309B87001B3D26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -236,11 +242,13 @@
 		DFC835B92C6FB445006A438B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				DF1996B82C91F283008B11E3 /* StarBridgeLogo.png */,
 				DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */,
 				DFD0F8342C8D9C7E007F5666 /* google_logo.png */,
 				DFD0F8362C8D9D38007F5666 /* kakao_logo.png */,
 				DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */,
 				DFC835B82C6FB445006A438B /* StarBridge_Logo.png */,
+				DF4A35C02C926F4000739AFF /* StarBridgeLogo2.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -250,6 +258,7 @@
 			children = (
 				DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */,
 				DFCD7A142C876E0100AE0BD7 /* UserInfo.swift */,
+				DF1996BA2C91F4AB008B11E3 /* SocialLoginButton.swift */,
 				DFCD7A122C876DE100AE0BD7 /* MyFirestore.swift */,
 				DFCD7A102C876DD000AE0BD7 /* FirebaseFirestoreSwift.swift */,
 			);
@@ -374,6 +383,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF1996B92C91F283008B11E3 /* StarBridgeLogo.png in Resources */,
 				DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */,
 				DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */,
 				DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */,
@@ -381,6 +391,7 @@
 				DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */,
 				DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */,
 				DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */,
+				DF4A35C12C926F4000739AFF /* StarBridgeLogo2.png in Resources */,
 				DF02CAC12C785D8100657AE1 /* Emoji_Logo.png in Resources */,
 				DFD0F8372C8D9D38007F5666 /* kakao_logo.png in Resources */,
 				DFCD7A1B2C876F9E00AE0BD7 /* GoogleService-Info.plist in Resources */,
@@ -394,6 +405,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF1996BB2C91F4AB008B11E3 /* SocialLoginButton.swift in Sources */,
 				DF7CC13B2C6F18BE00531736 /* MySceneDelegate.swift in Sources */,
 				DF37BB372C633C2A00B8F976 /* ScheduleView.swift in Sources */,
 				DFCD7A112C876DD000AE0BD7 /* FirebaseFirestoreSwift.swift in Sources */,
