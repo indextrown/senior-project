@@ -16,6 +16,7 @@
 		DF37BB372C633C2A00B8F976 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB362C633C2A00B8F976 /* ScheduleView.swift */; };
 		DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB382C633D8D00B8F976 /* TextView.swift */; };
 		DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */; };
+		DF3CB33B2C96FBE100E75744 /* UIKitTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */; };
 		DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632772C309B87001B3D26 /* StarBridgeApp.swift */; };
 		DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632792C309B87001B3D26 /* ContentView.swift */; };
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
@@ -88,6 +89,7 @@
 		DF37BB382C633D8D00B8F976 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
 		DF3907EE2C65199C00E17C40 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
+		DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTextEditor.swift; sourceTree = "<group>"; };
 		DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeAlarmCode.swift; sourceTree = "<group>"; };
 		DF6632742C309B87001B3D26 /* StarBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				DF6C08382C743A30005CC35E /* GlobalVariants.swift */,
 				DF66327D2C309B88001B3D26 /* Preview Content */,
 				DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */,
+				DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */,
 			);
 			path = StarBridge;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */,
 				DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */,
 				DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */,
+				DF3CB33B2C96FBE100E75744 /* UIKitTextEditor.swift in Sources */,
 				DF02CAC62C78D64900657AE1 /* BulletinBoardView.swift in Sources */,
 				DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */,
 				DFCD7A152C876E0100AE0BD7 /* UserInfo.swift in Sources */,

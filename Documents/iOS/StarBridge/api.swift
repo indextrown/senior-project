@@ -17,7 +17,7 @@ class Api{
             fatalError("Invalid API key.")
         }
         
-//        guard let url = URL(string: "http://127.0.0.1:5000/api_ulti") else {
+
         guard let url = URL(string: apiKey) else {
             fatalError("Invalid URL.")
         }
@@ -38,23 +38,32 @@ class Api{
                     let decodedData = try decoder.decode([String: [SnsData]].self, from: data)
                     let newData = decodedData.mapValues { values in
                         values.map { value in
-                            apiData(artistData: nil, bboardData: nil, cafeData: nil, snsData: value, imageData: nil)
+                            apiData(artistData: nil, bboardData: nil, cafeData: nil, snsData: value, sqlData: nil, imageData: nil)
                         }
                     }
                     return newData
                 }
                 else if param["Content"] == "bboard" {
-                    let decodedData = try decoder.decode([String: BBoardData].self, from: data)
-                    let newData = decodedData.mapValues { value in
-                        [apiData(artistData: nil, bboardData: value, cafeData: nil, snsData: nil, imageData: nil)]
+                    if param["write"] != nil || param["delete"] != nil {
+                        let decodedData = try decoder.decode([String: SqlData].self, from: data)
+                        let newData = decodedData.mapValues { value in
+                            [apiData(artistData: nil, bboardData: nil, cafeData: nil, snsData: nil, sqlData: value, imageData: nil)]
+                        }
+                        return newData
                     }
-                    return newData
+                    else {
+                        let decodedData = try decoder.decode([String: BBoardData].self, from: data)
+                        let newData = decodedData.mapValues { value in
+                            [apiData(artistData: nil, bboardData: value, cafeData: nil, snsData: nil, sqlData: nil, imageData: nil)]
+                        }
+                        return newData
+                    }
                 }
                 else if param["Content"] == "cafe" {
                     let decodedData = try decoder.decode([String: [CafeData]].self, from: data)
                     let newData = decodedData.mapValues { values in
                         values.map { value in
-                            apiData(artistData: nil, bboardData: nil, cafeData: value, snsData: nil, imageData: nil)
+                            apiData(artistData: nil, bboardData: nil, cafeData: value, snsData: nil, sqlData: nil, imageData: nil)
                         }
                     }
                     return newData
@@ -62,7 +71,7 @@ class Api{
                 else if param["Content"] == "image" {
                     let decodedData = try decoder.decode([String: ImageData].self, from: data)
                     let newData = decodedData.mapValues { value in
-                        [apiData(artistData: nil, bboardData: nil, cafeData: nil, snsData: nil, imageData: value)]
+                        [apiData(artistData: nil, bboardData: nil, cafeData: nil, snsData: nil, sqlData: nil, imageData: value)]
                     }
                     return newData
                 }
@@ -129,15 +138,21 @@ class Api{
         let photos: [String]?
     }
     
+    struct SqlData: Codable, Hashable {
+        let result: Bool?
+    }
+    
     struct ImageData: Codable, Hashable {
         let imageData: String?
     }
+    
     
     struct apiData: Codable, Hashable {
         let artistData: ArtistData?
         let bboardData: BBoardData?
         let cafeData: CafeData?
         let snsData: SnsData?
+        let sqlData: SqlData?
         let imageData: ImageData?
     }
 

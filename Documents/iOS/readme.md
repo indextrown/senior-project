@@ -85,3 +85,22 @@ makeAlarmCode.swift
 그 외의 파일
 - 서식 변경 및 xcode 파일임
 
+### 2024/09/19
+.xcodeproj
+- UIKitTextEditor.swift 파일 추가
+
+BulletinBoardView.Swift
+- 게시글 작성 뷰를 sheet에서 fullScreenCover로 변경
+- DB 서버에 글이 추가되지 않는 버그 존재 -> 해결 예정
+
+CafeView.swift
+- 아티스트 필터링 추가 뷰를 sheet에서 fullScreenCover로 변경
+- 필터링에 추가된 아티스트들을 보여주는 뷰에서 ui적으로 미숙한 부분이 있어 수정 예정
+
+ProfilSetupView.swift
+- 마침 버튼의 텍스트를 'Done' 에서 '완료' 로 수정
+
+UIKitTextEditor.swift
+- SwiftUI의 TextEditor에서 placeholder 구현에 애로사항이 많아 UIKit의 UITextView()를 통해 구현
+
+

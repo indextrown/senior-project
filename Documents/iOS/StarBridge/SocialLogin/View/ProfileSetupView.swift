@@ -145,7 +145,7 @@ struct ProfileSetupView: View {
                         HStack {
                             Spacer()
 
-                            Button("Done") {
+                            Button("완료") {
                                 showDatePicker = false
                             }
                             .font(.system(size: 16, weight: .bold))

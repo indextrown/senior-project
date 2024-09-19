@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct CafeView: View {
     @State private var cafeList: [String:[Api.CafeData]] = [:]
     @State private var isLoading = true
-    @State private var celebrities: [String] = []   //  api로 받아온 연예인들 집합
-    @State private var filterList: [String] = []    //  알고싶은 연예인들만 모음
+    @State private var celebrities: [String] = []
+    @State private var filterList: [String] = []
     @State private var filterWordSize: CGFloat = .zero
     
     @State private var startDate = Date()
@@ -21,11 +20,6 @@ struct CafeView: View {
     @State private var showEndDatePicker: Bool = false
     @State private var showSearchSheet: Bool = false
     
-    @State private var showCancelButton = false
-    @State private var search = ""
-    @FocusState private var isfocusedTextField: Bool
-    
-    @State private var showAlert = false
     @State private var showCelebrity = ""
 
     private let dateFormatter: DateFormatter = {
@@ -59,134 +53,39 @@ struct CafeView: View {
                                 )
                                 .onTapGesture {
                                     showSearchSheet = true
-                                    isfocusedTextField = true
                                 }
-                                .sheet(isPresented: $showSearchSheet) {
-                                    VStack(alignment: .leading) {
-                                            Text("취소")
-                                                .font(.system(size: 17, weight: .bold))
-                                                .foregroundColor(.pink)
-                                                .onTapGesture {
-                                                    showSearchSheet = false
-                                                }
-                                                .padding()
-                                        
-                                        HStack {
-                                            ZStack(alignment: .trailing) {
-                                                TextField("", text: $search, prompt: Text("검색어 입력").foregroundColor(Color(.systemGray3)))
-                                                    .padding(.leading)
-                                                    .foregroundColor(.black)
-                                                    .accentColor(.pink)
-                                                    .frame(height: 30)
-                                                    .background(.white)
-                                                    .cornerRadius(30)
-                                                    .focused($isfocusedTextField)
-                                                
-                                                if search.isEmpty {
-                                                    Image(systemName: "magnifyingglass.circle.fill")
-                                                        .font(.system(size: 20))
-                                                        .foregroundColor(.pink)
-                                                        .padding(.trailing)
-                                                }
-                                                else {
-                                                    Image(systemName: "x.circle.fill")
-                                                        .font(.system(size: 20))
-                                                        .foregroundColor(.pink)
-                                                        .padding(.trailing)
-                                                        .onTapGesture {
-                                                            search = ""
-                                                        }
-                                                }
-                                            }
-                                            .padding(isfocusedTextField ? .leading : .horizontal)
-                                            
-                                            if showCancelButton {
-                                                Button {
-                                                    search = ""
-                                                    withAnimation{
-                                                        isfocusedTextField = false
-                                                    }
-                                                } label: {
-                                                    Text("취소")
-                                                        .foregroundColor(.pink)
-                                                        .padding([.trailing])
-                                                }
-                                                .transition(.move(edge: .trailing))
-                                            }
-                                        }
-                                        .animation(.easeInOut, value: isfocusedTextField)
-                                        .padding(.bottom)
-                                        
-                                        ScrollView {
-                                            LazyVStack {
-                                                ForEach(celebrities.filter {$0.contains(search)}.sorted(), id: \.self) { celebrity in
-                                                    HStack {
-                                                        Text(celebrity)
-                                                            .bold(filterList.contains(celebrity))
-                                                            .foregroundColor(.black)
-                                                        Spacer()
-                                                    }
-                                                    .frame(height: 25)
-                                                    .onTapGesture {
-                                                        if filterList.contains(celebrity) {
-                                                            filterList.removeAll {$0 == celebrity}
-                                                        }
-                                                        else {
-                                                            filterList.append(celebrity)
-                                                        }
-                                                        showAlert = true
-                                                        showCelebrity = celebrity
-                                                    }
-                                                    .alert(isPresented: $showAlert) {
-                                                        Alert(
-                                                            title: Text(filterList.contains(showCelebrity) ? "필터링 추가" : "필터링 삭제" ),
-                                                            message: Text("\(showCelebrity) 필터링 \(filterList.contains(showCelebrity) ? "추가" : "삭제")"),
-                                                            dismissButton: .default(Text("확인"))
-                                                        )
-                                                    }
-                                                    Rectangle()
-                                                        .border(Color.p3LightGray)
-                                                        .frame(width: .infinity, height: 1)
-                                                    
-                                                }
-                                                .padding(.horizontal)
-                                            }
-                                            Spacer()
-                                        }
-                                        
-                                    }
-                                    .background(Color.p3LightGray)
-                                    .ignoresSafeArea(.keyboard, edges: .bottom)
-                                    .onDisappear {
-                                        search = ""
-                                    }
+                                .fullScreenCover(isPresented: $showSearchSheet) {
+                                    SearchFullScreenView(
+                                        celebrities: celebrities,
+                                        filterList: $filterList,
+                                        showCelebrity: $showCelebrity
+                                    )
                                 }
-                               
+
                             if isLoading {
                                 Spacer()
-                            }
+                            } 
                             else {
                                 if filterList.isEmpty {
                                     Spacer()
                                     Text("연예인를 터치해주세요")
                                         .foregroundColor(.gray)
                                         .padding(.trailing)
-                                }
-                                else{
+                                } 
+                                else {
                                     ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(filterList, id: \.self) { celebrity in
-                                                HStack(spacing: 2) {
-                                                    Text(celebrity)
-                                                        .foregroundColor(.black)
-                                                        .padding(.horizontal)
-                                                        .onTapGesture {
-                                                            filterList.removeAll{ $0 == celebrity }
-                                                        }
-                                                }
+                                        HStack(spacing: 10) {
+                                            ForEach(filterList.reversed(), id: \.self) { celebrity in
+                                                Text(celebrity)
+                                                    .foregroundColor(.black)
+                                                    .onTapGesture {
+                                                        filterList.removeAll { $0 == celebrity }
+                                                    }
+                                                    .scaleEffect(x: -1)
                                             }
                                         }
                                     }
+                                    .scaleEffect(x: -1)
                                 }
                             }
                         }
@@ -194,7 +93,7 @@ struct CafeView: View {
                         Rectangle()
                             .frame(width: .infinity, height: 1)
                             .border(Color.gray.opacity(0.4))
-                        HStack() {
+                        HStack {
                             HStack {
                                 Text("날짜")
                                     .font(.system(size: 17, weight: .semibold))
@@ -214,17 +113,16 @@ struct CafeView: View {
                                     .onTapGesture {
                                         showEndDatePicker.toggle()
                                     }
-                                    .onChange(of: startDate) { newStartDate in
-                                        if newStartDate >= endDate {
-                                            startDate = endDate
-                                        }
-                                    }
-                                
-                                    .onChange(of: endDate) { newEndDate in
-                                        if newEndDate <= startDate {
-                                            endDate = startDate
-                                        }
-                                    }
+                            }
+                            .onChange(of: startDate) { newStartDate in
+                                if newStartDate >= endDate {
+                                    startDate = endDate
+                                }
+                            }
+                            .onChange(of: endDate) { newEndDate in
+                                if newEndDate <= startDate {
+                                    endDate = startDate
+                                }
                             }
                             Spacer()
                         }
@@ -235,10 +133,32 @@ struct CafeView: View {
                     .cornerRadius(15)
                     .padding([.horizontal, .bottom])
                     
-                    ScrollView {
-                        LazyVStack {
-                            if !isLoading {
-                                ForEach(cafeList.values.flatMap {$0}, id: \.self) { cafe in
+                    if isLoading {
+                        VStack {
+                            Spacer()
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .gray))
+                                .scaleEffect(1.5)
+                            Text("생일카페 데이터를 불러오는 중...")
+                                .foregroundColor(.gray)
+                                .padding(.top, 20)
+                            Spacer()
+                        }
+                    }
+                    else {
+                        ScrollView {
+                            LazyVStack {
+                                ForEach(cafeList.values
+                                    .flatMap { $0 }
+                                    .sorted {
+                                        let firstCelebrity = $0.celebrity ?? ""
+                                        let secondCelebrity = $1.celebrity ?? ""
+
+                                        if firstCelebrity != secondCelebrity {
+                                            return firstCelebrity < secondCelebrity
+                                        }
+                                        return firstCelebrity.count < secondCelebrity.count
+                                        }, id: \.self) { cafe in
                                     if (filterList.isEmpty || !filterList.filter({ cafe.celebrity?.contains($0) ?? false }).isEmpty) &&
                                         (isSameDay(date1: startDate, date2: Date()) || startDate <= stringToDate(string: cafe.start_date ?? "")! && stringToDate(string: cafe.end_date ?? "")! <= endDate) {
                                         HStack {
@@ -250,6 +170,7 @@ struct CafeView: View {
                                                             .foregroundColor(.pink)
                                                         Text(cafe.celebrity ?? "")
                                                             .bold()
+                                                            .lineLimit(1)
                                                     }
                                                     HStack {
                                                         Image(systemName: "rectangle.and.pencil.and.ellipsis")
@@ -264,6 +185,7 @@ struct CafeView: View {
                                                             .foregroundColor(.purple)
                                                         Text(cafe.place ?? "")
                                                             .font(.system(size: 15))
+                                                            .lineLimit(1)
                                                     }
                                                 }
                                                 .foregroundColor(.black)
@@ -283,30 +205,20 @@ struct CafeView: View {
                                         }
                                     }
                                 }
-                            }
-                            else {
-                                VStack {
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-                                        .scaleEffect(1.5)  // ProgressView 크기 조정
-                                        .padding(.top, 100)
-                                    Text("생일카페 데이터를 불러오는 중...")
-                                        .foregroundColor(.gray)
-                                        .padding(.top, 20)
-                                }
+                                
                             }
                         }
                     }
                 }
                 
-                if showStartDatePicker || showEndDatePicker{
-                    Color.black.opacity(0.3) // 배경을 덮는 반투명 레이어
-                        .edgesIgnoringSafeArea(.all)
+                if showStartDatePicker || showEndDatePicker {
+                    Color.black.opacity(0.3)
                         .onTapGesture {
-                            // 배경을 누르면 DatePicker가 사라지도록 함
                             showStartDatePicker = false
                             showEndDatePicker = false
                         }
+                        .ignoresSafeArea()
+                        .border(.red)
                     
                     HalfSheet(isPresented: $showStartDatePicker) {
                         VStack {
@@ -335,8 +247,7 @@ struct CafeView: View {
 
                             HStack {
                                 Spacer()
-
-                                Button("Done") {
+                                Button("완료") {
                                     showStartDatePicker = false
                                     showEndDatePicker = false
                                 }
@@ -347,7 +258,7 @@ struct CafeView: View {
                         .padding()
                     }
                     .transition(.move(edge: .bottom))
-                    .zIndex(1) // 상단에 위치하도록 설정
+                    .zIndex(1)
                 }
             }
             .frame(width: geometry.size.width)
@@ -368,16 +279,123 @@ struct CafeView: View {
     
     private func stringToDate(string dateString: String) -> Date? {
         let dmt = DateFormatter()
-
-        // DateFormatter 설정
         dmt.dateFormat = "yyyy-MM-dd"
-        dmt.locale = Locale(identifier: "en_US_POSIX") // 정확한 변환을 위해 Locale 설정
-        
+        dmt.locale = Locale(identifier: "en_US_POSIX")
         return dmt.date(from: dateString)
     }
     
-    private func isSameDay(date1: Date, date2: Date) -> Bool {        
+    private func isSameDay(date1: Date, date2: Date) -> Bool {
         return calendar.isDate(date1, inSameDayAs: date2)
+    }
+}
+
+struct SearchFullScreenView: View {
+    let celebrities: [String]
+    @Binding var filterList: [String]
+    @Binding var showCelebrity: String
+    
+    @State private var showAlert = false
+    @State private var search = ""
+    @State private var showCancelButton = false
+    @FocusState private var isTextFieldFocused: Bool
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                ZStack(alignment: .trailing) {
+                    TextField("", text: $search, prompt: Text("검색어 입력").foregroundColor(Color(.systemGray3)))
+                        .padding(.leading)
+                        .foregroundColor(.black)
+                        .accentColor(.pink)
+                        .frame(height: 30)
+                        .background(.white)
+                        .cornerRadius(30)
+                        .textInputAutocapitalization(.never)
+                        .focused($isTextFieldFocused)
+                    
+                    if search.isEmpty {
+                        Image(systemName: "magnifyingglass.circle.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.pink)
+                            .padding(.trailing)
+                    } else {
+                        Image(systemName: "x.circle.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.pink)
+                            .padding(.trailing)
+                            .onTapGesture {
+                                search = ""
+                            }
+                    }
+                }
+                .padding(isTextFieldFocused ? .leading : .horizontal)
+                
+                if showCancelButton {
+                    Button {
+                        search = ""
+                        withAnimation {
+                            isTextFieldFocused = false
+                        }
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Text("취소")
+                            .foregroundColor(.pink)
+                            .padding([.trailing])
+                    }
+                    .transition(.move(edge: .trailing))
+                }
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    isTextFieldFocused = true
+                }
+            }
+            .animation(.easeInOut, value: isTextFieldFocused)
+            .padding(.vertical)
+            
+            ScrollView {
+                LazyVStack {
+                    ForEach(celebrities.filter {$0.contains(search)}.sorted(), id: \.self) { celebrity in
+                        HStack {
+                            Text(celebrity)
+                                .bold(filterList.contains(celebrity))
+                                .foregroundColor(.black)
+                            Spacer()
+                        }
+                        .frame(height: 25)
+                        .onTapGesture {
+                            if filterList.contains(celebrity) {
+                                filterList.removeAll {$0 == celebrity}
+                            } else {
+                                filterList.append(celebrity)
+                            }
+                            showAlert = true
+                            showCelebrity = celebrity
+                        }
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text(filterList.contains(showCelebrity) ? "필터링 추가" : "필터링 삭제" ),
+                                message: Text("\(showCelebrity) 필터링 \(filterList.contains(showCelebrity) ? "추가" : "삭제")"),
+                                dismissButton: .default(Text("확인"))
+                            )
+                        }
+                        Rectangle()
+                            .border(Color.p3LightGray)
+                            .frame(width: .infinity, height: 1)
+                    }
+                    .padding(.horizontal)
+                }
+                Spacer()
+            }
+        }
+        .background(Color.p3LightGray)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onChange(of: isTextFieldFocused) { focused in
+            withAnimation {
+                showCancelButton = focused
+            }
+        }
     }
 }
 
