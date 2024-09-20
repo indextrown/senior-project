@@ -2,7 +2,7 @@ import openai
 import json
 import re
 from datetime import datetime
-
+import requests
 
 def format_date(date_str):
     try:
@@ -13,14 +13,16 @@ def format_date(date_str):
         return date_str  # 변환 실패 시 원본을 반환
 
 def gpt_api(file_path):
-    print("\ngpt 진행 시작")
-    client = openai.OpenAI(api_key='API_KEY')
+    print("\ngpt 진행 시작\n")
+    client = openai.OpenAI(api_key='GPT_API')
     msg = []
 
     now = datetime.now()
     msg.append(now.strftime('%Y-%m-%d %H:%M:%S'))
     f = open(file_path, 'r', encoding='UTF8')
+
     lines = f.readlines()
+    #print("input : " + str(lines))
     for line in lines:
         line = line.strip()  # 줄 끝의 줄 바꿈 문자를 제거한다.
         msg.append(line)
@@ -93,6 +95,7 @@ The following is an example of the output:
     json_str = re.sub(r'"(\w+)"\s+null', r'"\1": null', json_str)
     json_str = json_str.replace("'", "")
     json_str = json_str.replace("\\", "")
+    json_str = json_str.replace("#", "")
     json_str = json_str.rstrip()
     # 끝 부분에 }가 없는 경우에 대해서 처리
     if json_str.endswith('}}'):
@@ -118,9 +121,6 @@ The following is an example of the output:
     else:
         json_data = json_str  # 문자열이 아닌 경우 그대로 반환
 
-    # 결과 출력
-    # print(json_data)
-
     filtered_data = {}
     filtered_pattern = re.compile(r'^\d{4}-\d{1,2}-\d{1,2}$')
 
@@ -135,7 +135,7 @@ The following is an example of the output:
                                 filtered_pattern.match(value['end_date'])\
                                 and value['start_date'] not in ['null', '', '추후 공지', '미정','알수 없음','알 수 없음', '정보 없음', '생략', '미상', '불명','오늘'] \
                                 and value['end_date'] not in ['null', '', '추후 공지', '미정','알수 없음','알 수 없음', '정보 없음', '생략', '미상', '불명','오늘'] \
-                                and value['place'] not in ['null', '', '추후 공지', '미정','알수 없음', '알 수 없음', '정보 없음', '생략', '미상', '불명', '서울', '부산', '대구','광주', '대전', '생일카페']:
+                                and value['place'] not in ['null', '', '추후 공지', '미정','알수 없음', '알 수 없음', ' 정보 없음', '생략', '미상', '불명', '서울', '부산', '대구','광주', '대전', '생일카페']:
                             value['start_date'] = format_date(value['start_date'])
                             value['end_date'] = format_date(value['end_date'])
                             filtered_data[key] = value
@@ -152,10 +152,63 @@ The following is an example of the output:
                     value['end_date'] = format_date(value['end_date'])
                     filtered_data[key] = value
 
-    file_path = 'output_gpt.json'
+    file_path = 'output_no_addr_gpt.json'
 
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(filtered_data, file, ensure_ascii=False, indent=4)
-    print("gpt 진행 종료")
+    for key in filtered_data:
+        print("정제데이터 키 : " + key)
+    print("\ngpt 진행 종료\n")
 
-gpt_api("output2.txt")
+    place_addr()
+
+def get_location(place_name, api_key):
+    if '카페' not in place_name:
+        place_name = '카페 ' + place_name
+    # Google Maps Geocoding API URL
+    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={place_name}&key={api_key}&language=ko'
+
+    # API 호출
+    response = requests.get(url)
+    #print(f"Requesting location for: {place_name}")  # 디버깅용
+    if response.status_code == 200:
+        data = response.json()
+        if len(data['results']) > 0:
+            # 첫 번째 결과에서 위치 데이터 추출
+            address = data['results'][0]['formatted_address']
+            #print("address : " + address+"\n")
+            return {
+                'address': address
+            }
+        else:
+            #print("address not found\n")
+            return {'address': 'X'}
+
+
+def place_addr():
+    print("주소 추가 시작\n")
+    input_file = 'output_no_addr_gpt.json'
+    output_file = 'output_gpt.json'
+
+    with open(input_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    google_api = "Google_API" #Google Maps API
+
+    # 데이터 순회하면서 주소 추가
+    for key, entry in data.items():
+        print(f"Key: {key} 장소 추가")  # 디버깅용
+        if 'place' in entry:
+            place_name = entry['place']
+            #print(f"Place: {place_name}")  # 디버깅용
+            # 주소 가져오기
+            location_data = get_location(place_name, google_api)
+            # 주소를 엔트리에 추가
+            entry['address'] = location_data['address']
+
+    # 변경된 데이터를 새로운 JSON 파일로 저장
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+    print("\n주소 추가 종료\n")
+    #print(f"주소가 추가된 데이터가 {output_file}에 저장되었습니다.")
