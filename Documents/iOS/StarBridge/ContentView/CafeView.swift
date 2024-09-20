@@ -266,11 +266,15 @@ struct CafeView: View {
             .background(.p3LightGray)
             .onAppear {
                 Task {
-                    if let cafeData = await api.fetchData(for: ["Content": "cafe", "all": "_"]) {
-                        cafeList = cafeData.mapValues { values in
-                            values.compactMap {$0.cafeData}
+                    repeat {
+                        if let cafeData = await api.fetchData(for: ["Content": "cafe", "all": "_"]) {
+                            cafeList = cafeData.mapValues { values in
+                                values.compactMap {$0.cafeData}
+                            }
                         }
                     }
+                    while cafeList.isEmpty
+                    
                     celebrities = Array(cafeList.keys)
                     isLoading = false
                 }

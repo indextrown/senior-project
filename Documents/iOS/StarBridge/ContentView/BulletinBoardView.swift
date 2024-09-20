@@ -163,11 +163,14 @@ struct BulletinBoardView: View {
             .background(.p3LightGray)
             .onAppear{
                 Task{
-                    if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
-                        contents = data.compactMapValues { value in
-                            value.first?.bboardData
+                    repeat {
+                        if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
+                            contents = data.compactMapValues { value in
+                                value.first?.bboardData
+                            }
                         }
                     }
+                    while contents.isEmpty
                     isLoading = false
                 }
             }
@@ -192,13 +195,18 @@ struct BulletinBoardView: View {
             .onChange(of: showFullScreen) { newValue in
                 if !newValue {
                     Task{
+                        contents.removeAll()
+                        isLoading = true
                         try? await Task.sleep(nanoseconds: 1_000_000_000) // 딜레이가 꼭 있어야 함
-                        
-                        if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
-                            contents = data.compactMapValues { value in
-                                value.first?.bboardData
+                        repeat {
+                            if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
+                                contents = data.compactMapValues { value in
+                                    value.first?.bboardData
+                                }
                             }
                         }
+                        while contents.isEmpty
+                        isLoading = false
                     }
                 }
             }

@@ -112,13 +112,16 @@ ArtistView.swift
 
 BulletinBoardView.swift
 - api받기 전 딜레이 늘림
+- 뷰가 로딩되었음에도 api로 받아온 정보가 적용되지 않는 버그 수정
 
 CafeView.swift
 - 필요없는 border 제거
+- 뷰가 로딩되었음에도 api로 받아온 정보가 적용되지 않는 버그 수정
 
 ScheduleView.swift
 - 달력 날짜 font크기 및 정렬방식 변경
 - 달력을 LazyVGrid에서 2중 ForEach문으로 변경 (iOS 17 이상 버전에서 UI 오류 해결)
+- 뷰가 로딩되었음에도 api로 받아온 정보가 적용되지 않는 버그 수정
 
 api.swift
 - INSERT 쿼리문이 잘 처리되었는지 반환값을 받아오도록 변경

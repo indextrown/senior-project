@@ -180,35 +180,37 @@ struct ScheduleView: View{
                     }
                     .onAppear{
                         Task{   // sql 쿼리가 잘 안되는거 같아서 그냥 여기서 달력 시작과 끝 날짜를 보내는걸로 수정 예정
-//                            if let data = await api.fetchData(for: ["Content": "x", "date": dateToString(showDate, format: "yyyy-MM")]) {
-//                                schedules = data.mapValues { values in
-//                                    values.compactMap {$0.snsData}
-//                                }
-//                            }
-                            let dates = calendarDates(date: Date())
-                            if let data = await api.fetchData(for: ["Content": "x",
-                                                                    "startDate": dateToString(dates.first!.first!),
-                                                                    "endDate": dateToString(dates.last!.last!)
-                                                                   ]) {
-                                schedules = data.mapValues { values in
-                                    values.compactMap {$0.snsData}
+                            repeat {
+                                let dates = calendarDates(date: Date())
+                                if let data = await api.fetchData(for: ["Content": "x",
+                                                                        "startDate": dateToString(dates.first!.first!),
+                                                                        "endDate": dateToString(dates.last!.last!)
+                                                                       ]) {
+                                    schedules = data.mapValues { values in
+                                        values.compactMap {$0.snsData}
+                                    }
                                 }
                             }
+                            while schedules.isEmpty
                             isLoading = false
                         }
                     }
                     .onChange(of: showDate) { newDate in
                         Task{
                             isLoading = true
-                            let dates = calendarDates(date: newDate)
-                            if let data = await api.fetchData(for: ["Content": "x",
-                                                                    "startDate": dateToString(dates.first!.first!),
-                                                                    "endDate": dateToString(dates.last!.last!)
-                                                                   ]) {
-                                schedules = data.mapValues { values in
-                                    values.compactMap {$0.snsData}
+                            schedules.removeAll()
+                            repeat {
+                                let dates = calendarDates(date: newDate)
+                                if let data = await api.fetchData(for: ["Content": "x",
+                                                                        "startDate": dateToString(dates.first!.first!),
+                                                                        "endDate": dateToString(dates.last!.last!)
+                                                                       ]) {
+                                    schedules = data.mapValues { values in
+                                        values.compactMap {$0.snsData}
+                                    }
                                 }
                             }
+                            while schedules.isEmpty
                             isLoading = false
                         }
                     }
