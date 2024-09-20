@@ -103,4 +103,22 @@ ProfilSetupView.swift
 UIKitTextEditor.swift
 - SwiftUI의 TextEditor에서 placeholder 구현에 애로사항이 많아 UIKit의 UITextView()를 통해 구현
 
+api.swift
+- 게시판 뷰에서 글을 추가 및 반환값을 받아올 수 있도록 수정 중
 
+### 2024/09/20
+ArtistView.swift
+- 필요없는 주석 제거
+
+BulletinBoardView.swift
+- api받기 전 딜레이 늘림
+
+CafeView.swift
+- 필요없는 border 제거
+
+ScheduleView.swift
+- 달력 날짜 font크기 및 정렬방식 변경
+- 달력을 LazyVGrid에서 2중 ForEach문으로 변경 (iOS 17 이상 버전에서 UI 오류 해결)
+
+api.swift
+- INSERT 쿼리문이 잘 처리되었는지 반환값을 받아오도록 변경

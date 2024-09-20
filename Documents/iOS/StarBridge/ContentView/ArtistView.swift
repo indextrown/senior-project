@@ -43,7 +43,7 @@ struct ArtistView: View {
                     }
                 }
                 else {
-                    ScrollView(.horizontal){    // 자동으로 돌아가는 가로형 ScrollView 구현 예정
+                    ScrollView(.horizontal){    
                         HStack(spacing: 10){
                             ForEach(artistArr, id: \.self){ artist in
                                 VStack{

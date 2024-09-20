@@ -148,7 +148,8 @@ struct CafeView: View {
                     else {
                         ScrollView {
                             LazyVStack {
-                                ForEach(cafeList.values
+                                ForEach(
+                                    cafeList.values
                                     .flatMap { $0 }
                                     .sorted {
                                         let firstCelebrity = $0.celebrity ?? ""
@@ -159,6 +160,7 @@ struct CafeView: View {
                                         }
                                         return firstCelebrity.count < secondCelebrity.count
                                         }, id: \.self) { cafe in
+
                                     if (filterList.isEmpty || !filterList.filter({ cafe.celebrity?.contains($0) ?? false }).isEmpty) &&
                                         (isSameDay(date1: startDate, date2: Date()) || startDate <= stringToDate(string: cafe.start_date ?? "")! && stringToDate(string: cafe.end_date ?? "")! <= endDate) {
                                         HStack {
@@ -218,7 +220,6 @@ struct CafeView: View {
                             showEndDatePicker = false
                         }
                         .ignoresSafeArea()
-                        .border(.red)
                     
                     HalfSheet(isPresented: $showStartDatePicker) {
                         VStack {

@@ -23,7 +23,6 @@
 		DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */; };
 		DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */; };
 		DF6C08392C743A30005CC35E /* GlobalVariants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6C08382C743A30005CC35E /* GlobalVariants.swift */; };
-		DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF7CC1312C6F18BE00531736 /* Config.xcconfig */; };
 		DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */; };
 		DF7CC1392C6F18BE00531736 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1332C6F18BE00531736 /* LoginView.swift */; };
 		DF7CC13A2C6F18BE00531736 /* MyAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1342C6F18BE00531736 /* MyAppDelegate.swift */; };
@@ -348,7 +347,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					DF6632732C309B87001B3D26 = {
 						CreatedOnToolsVersion = 15.4;
@@ -384,7 +383,6 @@
 			files = (
 				DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */,
 				DFA32EEB2C928D14009AC7EC /* StarBridgeLogo2.png in Resources */,
-				DF7CC1372C6F18BE00531736 /* Config.xcconfig in Resources */,
 				DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */,
 				DF97626B2C6595F900FD8577 /* README.md in Resources */,
 				DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */,

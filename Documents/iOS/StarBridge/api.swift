@@ -16,7 +16,6 @@ class Api{
         guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_ULTI_URL") as? String else {
             fatalError("Invalid API key.")
         }
-        
 
         guard let url = URL(string: apiKey) else {
             fatalError("Invalid URL.")

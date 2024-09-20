@@ -118,11 +118,17 @@ struct BulletinBoardView: View {
                                     .padding(.top, 20)
                                 Spacer()
                             }
+                            .frame(minHeight: UIScreen.main.bounds.height * 0.6)
                         }
                         else {
-                            ForEach(contents.keys
-                                .sorted()
-                                .compactMap { contents[$0] } , id: \.self) { content in
+                            ForEach(contents
+                                .sorted{
+                                    if let key1 = Int($0.key), let key2 = Int($1.key) {
+                                        return key1 > key2
+                                    }
+                                    return false
+                                }
+                                .compactMap{$0.value}, id: \.self) { content in
                                     if search.isEmpty || (selectFilter(for: content, filter: searchFilter) ?? "").contains(search) {
                                         LazyVStack{
                                             NavigationLink(destination: BulletinBoardDetailView(detail: content)){
@@ -186,7 +192,7 @@ struct BulletinBoardView: View {
             .onChange(of: showFullScreen) { newValue in
                 if !newValue {
                     Task{
-                        try? await Task.sleep(nanoseconds: 500_000_000) // 딜레이가 꼭 있어야 함
+                        try? await Task.sleep(nanoseconds: 1_000_000_000) // 딜레이가 꼭 있어야 함
                         
                         if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
                             contents = data.compactMapValues { value in
@@ -322,10 +328,9 @@ struct RegisterFullScreenView: View {
                                         "post_date": dateToString(Date(), format: "yyyy-MM-dd / HH:mm:ss"),
                                         "artist": artist
                                     ])
-                                    print(result)
-                                    isLoading = false
                                 }
                                 presentationMode.wrappedValue.dismiss()
+                                isLoading = false
                             }),
                             secondaryButton: .cancel(Text("취소"))
                         )
