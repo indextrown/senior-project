@@ -315,7 +315,7 @@ struct SearchFullScreenView: View {
                         .accentColor(.pink)
                         .frame(height: 30)
                         .background(.white)
-                        .cornerRadius(30)
+                        .cornerRadius(15)
                         .textInputAutocapitalization(.never)
                         .focused($isTextFieldFocused)
                     

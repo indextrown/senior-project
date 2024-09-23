@@ -7,7 +7,7 @@
 
 import SwiftUI
 import UIKit
-import FirebaseFirestore
+
 
 struct BulletinBoardView: View {
     @State private var search = ""
@@ -35,7 +35,7 @@ struct BulletinBoardView: View {
                             .accentColor(.pink)
                             .frame(height: 30)
                             .background(.white)
-                            .cornerRadius(30)
+                            .cornerRadius(15)
                             .focused($isTextFieldFocused)
                         
                         if search.isEmpty {
@@ -139,7 +139,8 @@ struct BulletinBoardView: View {
                                                             .multilineTextAlignment(.leading)
                                                         HStack {
                                                             Text(content.nickname ?? "")
-                                                            Text(showDate(date: content.post_date))   //글쓴 날짜가 오늘과 같다면 쓴 시간만 표시하고 반대면 날짜만
+                                                            //글쓴 날짜가 오늘과 같다면 쓴 시간만 표시하고 반대면 날짜만
+                                                            Text(showDate(date: content.post_date))
                                                         }
                                                     }
                                                     .foregroundStyle(Color.black)
@@ -149,8 +150,8 @@ struct BulletinBoardView: View {
                                                 .frame(height: 80)
                                                 .background(.white)
                                                 .cornerRadius(15)
-                                                .navigationTitle("")
                                             }
+                                            .navigationTitle(Text(""))
                                         }
                                     }
                                 }
@@ -262,7 +263,64 @@ struct BulletinBoardView: View {
         
         return "\(String(format: "%02d", year % 100)).\(month).\(day)"
     }
+}
+
+struct BulletinBoardDetailView: View {
+    var detail: Api.BBoardData
     
+    var body: some View {
+        ScrollView {
+            LazyVStack {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(detail.artist ?? "")
+                        Text(detail.title ?? "")
+                    }
+                    Spacer()
+                }
+                .padding([.horizontal, .bottom])
+                
+                HStack {
+                    Image(systemName: "questionmark.circle.fill")
+                        .font(.system(size: 40))
+                        .foregroundColor(.gray)
+                    VStack(alignment: .leading) {
+                        Text(detail.nickname ?? "")
+                        HStack {
+                            Text(detail.post_date ?? "")
+                            Spacer()
+                            Image(systemName: "heart.fill")
+                                .font(.system(size: 20))
+                                .foregroundColor(.pink)
+                            Text(detail.likes ?? "")
+                        }
+                    }
+                    Spacer()
+                }
+                .padding([.horizontal, .bottom])
+                
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(.gray)
+                    .padding([.horizontal, .bottom])
+                
+                HStack {
+                    Text(detail.content ?? "")
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
+        }
+        .background(Color.p3LightGray)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("게시글")
+                    .font(.system(size: 20))
+                    .foregroundColor(.black)
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)  // inline 모드로 변경
+    }
 }
 
 struct RegisterFullScreenView: View {
@@ -278,9 +336,6 @@ struct RegisterFullScreenView: View {
     @State private var isFocusedOnTextEditor = false
     @State private var textEditorHeight: CGFloat = 30
     @Environment(\.presentationMode) var presentationMode
-    
-    // 변수 정의
-    @State private var kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId")
     
     var body: some View {
         VStack {
@@ -327,7 +382,7 @@ struct RegisterFullScreenView: View {
                                         print("데이터 가져오기 실패: \(error)")
                                     }
                                     
-                                    let result = await api.fetchData(for: [
+                                    let _ = await api.fetchData(for: [ //   나중에는 반환값 받아서 쿼리문이 제대로 실행되었는지 안되었는지 확인할 예정
                                         "Content": "bboard",
                                         "write": "_",
                                         "nickname": nickname,
@@ -410,48 +465,12 @@ struct RegisterFullScreenView: View {
         fmt.dateFormat = format
         return fmt.string(from: date)
     }
-    
-    private func fetchArrayFromFirestore(forKey key: String) async throws -> [String] {
-        if kakaoUserId == nil {
-            return [String]()
-        }
-
-        let db = Firestore.firestore()
-        let docRef = db.collection("user").document(kakaoUserId!)
-
-        return try await withCheckedThrowingContinuation { continuation in
-            docRef.getDocument { document, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-
-                guard let document = document, document.exists else {
-                    continuation.resume(returning: [])
-                    return
-                }
-
-                let data = document.data()
-                
-                // key에 해당하는 값을 먼저 배열로 시도하고, 배열이 아니면 문자열로 시도
-                if let array = data?[key] as? [String] {
-                    continuation.resume(returning: array)
-                } else if let stringValue = data?[key] as? String {
-                    // 문자열일 경우, 문자열을 배열에 담아 반환
-                    continuation.resume(returning: [stringValue])
-                } else {
-                    // 값이 없거나 다른 타입일 경우 빈 배열 반환
-                    continuation.resume(returning: [])
-                }
-            }
-        }
-    }
 }
 
 
 
 
 #Preview {
-//    BulletinBoardView()
+    BulletinBoardView()
 //    RegisterFullScreenView()
 }

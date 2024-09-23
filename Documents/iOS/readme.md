@@ -125,3 +125,31 @@ ScheduleView.swift
 
 api.swift
 - INSERT 쿼리문이 잘 처리되었는지 반환값을 받아오도록 변경
+
+2024/09/23
+Content.json
+- Preview Content 위치 변경에 따른 업데이트
+
+ContentView.swift
+- 우측 상단 종 모양 이미지 제거
+
+BulletinBoardView.swift
+- cornerRadius 변경 및 BulletinBoardDetailView.swift 파일 내용 추가 (기존 파일은 제거)
+
+CafeView.swift
+- cornerRadius 변경
+
+ProfileView.swift
+- 로그인 정보, 키워드 알람 On/Off 및 개별 키워드 설정, 내가 올린 글 확인 기능 추가
+
+ScheduleView.swift
+- cornerRadius과 navigationTitle 수정
+
+Global.swift
+- 파일명 변경 및 firebase과 상호 작용할 수 있는 함수 추가
+
+HomeView.swift
+- cornerRadius 변경
+
+UiKitTextEditor.swift
+- 주석 제거

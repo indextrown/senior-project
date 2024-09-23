@@ -4,7 +4,7 @@ import UIKit
 struct UIKitTextEditor: UIViewRepresentable {
     @Binding var text: String
     @Binding var isFocused: Bool
-    @Binding var minHeight: CGFloat // 동적으로 높이를 변경할 바인딩 변수
+    @Binding var minHeight: CGFloat 
     private let placeholder: String
     
     init(text: Binding<String>, isFocused: Binding<Bool>, minHeight: Binding<CGFloat>, placeholder: String = "내용을 입력하세요.") {

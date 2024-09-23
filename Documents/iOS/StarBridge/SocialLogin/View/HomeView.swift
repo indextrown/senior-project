@@ -30,7 +30,7 @@ struct HomeView: View {
                     .foregroundStyle(.black)
                     .padding()
                     .background(.blue)
-                    .cornerRadius(13)
+                    .cornerRadius(15)
             }
         }
         .navigationTitle("Home")

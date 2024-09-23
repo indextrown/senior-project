@@ -12,7 +12,6 @@
 		DF02CAC12C785D8100657AE1 /* Emoji_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */; };
 		DF02CAC62C78D64900657AE1 /* BulletinBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */; };
 		DF2DB4C82C7398E300A89C1E /* api.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2DB4C62C7398E300A89C1E /* api.swift */; };
-		DF2DB4C92C7398E300A89C1E /* ScheduleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2DB4C72C7398E300A89C1E /* ScheduleDetailView.swift */; };
 		DF37BB372C633C2A00B8F976 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB362C633C2A00B8F976 /* ScheduleView.swift */; };
 		DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB382C633D8D00B8F976 /* TextView.swift */; };
 		DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */; };
@@ -20,9 +19,8 @@
 		DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632772C309B87001B3D26 /* StarBridgeApp.swift */; };
 		DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632792C309B87001B3D26 /* ContentView.swift */; };
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
-		DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */; };
 		DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */; };
-		DF6C08392C743A30005CC35E /* GlobalVariants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6C08382C743A30005CC35E /* GlobalVariants.swift */; };
+		DF6C08392C743A30005CC35E /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6C08382C743A30005CC35E /* Global.swift */; };
 		DF7CC1382C6F18BE00531736 /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */; };
 		DF7CC1392C6F18BE00531736 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1332C6F18BE00531736 /* LoginView.swift */; };
 		DF7CC13A2C6F18BE00531736 /* MyAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7CC1342C6F18BE00531736 /* MyAppDelegate.swift */; };
@@ -39,10 +37,10 @@
 		DF7CC1502C6F18FE00531736 /* KakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC14F2C6F18FE00531736 /* KakaoSDKTalk */; };
 		DF7CC1522C6F18FE00531736 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1512C6F18FE00531736 /* KakaoSDKTemplate */; };
 		DF7CC1542C6F18FE00531736 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1532C6F18FE00531736 /* KakaoSDKUser */; };
+		DF7D99722CA0567E00482D25 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF7D99702CA0567E00482D25 /* Preview Assets.xcassets */; };
 		DF97626B2C6595F900FD8577 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DF97626A2C6595F900FD8577 /* README.md */; };
 		DFA32EE92C928CA4009AC7EC /* SocialLoginButtonVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA32EE82C928CA4009AC7EC /* SocialLoginButtonVIew.swift */; };
 		DFA32EEB2C928D14009AC7EC /* StarBridgeLogo2.png in Resources */ = {isa = PBXBuildFile; fileRef = DFA32EEA2C928D14009AC7EC /* StarBridgeLogo2.png */; };
-		DFAB66502C7DEADF0019C5C8 /* BulletinBoardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAB664F2C7DEADF0019C5C8 /* BulletinBoardDetailView.swift */; };
 		DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DFC835B82C6FB445006A438B /* StarBridge_Logo.png */; };
 		DFCD79E02C876D3800AE0BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DFCD79DF2C876D3800AE0BD7 /* FirebaseAnalytics */; };
 		DFCD79E22C876D3800AE0BD7 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = DFCD79E12C876D3800AE0BD7 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -83,7 +81,6 @@
 		DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Emoji_Logo.png; sourceTree = "<group>"; };
 		DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBoardView.swift; sourceTree = "<group>"; };
 		DF2DB4C62C7398E300A89C1E /* api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = api.swift; sourceTree = "<group>"; };
-		DF2DB4C72C7398E300A89C1E /* ScheduleDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailView.swift; sourceTree = "<group>"; };
 		DF37BB362C633C2A00B8F976 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		DF37BB382C633D8D00B8F976 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
@@ -94,19 +91,18 @@
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
 		DF6632792C309B87001B3D26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DF66327B2C309B88001B3D26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DF6BB72C2C9148EB00B8AC7C /* AppIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = AppIcon.jpg; sourceTree = "<group>"; };
-		DF6C08382C743A30005CC35E /* GlobalVariants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariants.swift; sourceTree = "<group>"; };
+		DF6C08382C743A30005CC35E /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		DF7B473F2C6D164A000F1B0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DF7CC1312C6F18BE00531736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		DF7CC1322C6F18BE00531736 /* KakaoAuthVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KakaoAuthVM.swift; sourceTree = "<group>"; };
 		DF7CC1332C6F18BE00531736 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF7CC1342C6F18BE00531736 /* MyAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAppDelegate.swift; sourceTree = "<group>"; };
 		DF7CC1352C6F18BE00531736 /* MySceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySceneDelegate.swift; sourceTree = "<group>"; };
+		DF7D99702CA0567E00482D25 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DF97626A2C6595F900FD8577 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		DFA32EE82C928CA4009AC7EC /* SocialLoginButtonVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonVIew.swift; sourceTree = "<group>"; };
 		DFA32EEA2C928D14009AC7EC /* StarBridgeLogo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridgeLogo2.png; sourceTree = "<group>"; };
-		DFAB664F2C7DEADF0019C5C8 /* BulletinBoardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletinBoardDetailView.swift; sourceTree = "<group>"; };
 		DFC835B82C6FB445006A438B /* StarBridge_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridge_Logo.png; sourceTree = "<group>"; };
 		DFCD7A102C876DD000AE0BD7 /* FirebaseFirestoreSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFirestoreSwift.swift; sourceTree = "<group>"; };
 		DFCD7A122C876DE100AE0BD7 /* MyFirestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFirestore.swift; sourceTree = "<group>"; };
@@ -210,22 +206,12 @@
 				DF37BB382C633D8D00B8F976 /* TextView.swift */,
 				DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */,
 				DF2DB4C62C7398E300A89C1E /* api.swift */,
-				DFAB664F2C7DEADF0019C5C8 /* BulletinBoardDetailView.swift */,
-				DF2DB4C72C7398E300A89C1E /* ScheduleDetailView.swift */,
-				DF6C08382C743A30005CC35E /* GlobalVariants.swift */,
-				DF66327D2C309B88001B3D26 /* Preview Content */,
+				DF6C08382C743A30005CC35E /* Global.swift */,
 				DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */,
 				DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */,
+				DF7D99712CA0567E00482D25 /* Preview Content */,
 			);
 			path = StarBridge;
-			sourceTree = "<group>";
-		};
-		DF66327D2C309B88001B3D26 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				DF66327E2C309B88001B3D26 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		DF7CC1362C6F18BE00531736 /* SocialLogin */ = {
@@ -236,6 +222,14 @@
 				DFCD7A0D2C876D9500AE0BD7 /* Model */,
 			);
 			path = SocialLogin;
+			sourceTree = "<group>";
+		};
+		DF7D99712CA0567E00482D25 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DF7D99702CA0567E00482D25 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		DFC835B92C6FB445006A438B /* images */ = {
@@ -383,10 +377,10 @@
 			files = (
 				DF6BB72D2C9148EB00B8AC7C /* AppIcon.jpg in Resources */,
 				DFA32EEB2C928D14009AC7EC /* StarBridgeLogo2.png in Resources */,
+				DF7D99722CA0567E00482D25 /* Preview Assets.xcassets in Resources */,
 				DFD0F8352C8D9C7E007F5666 /* google_logo.png in Resources */,
 				DF97626B2C6595F900FD8577 /* README.md in Resources */,
 				DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */,
-				DF66327F2C309B88001B3D26 /* Preview Assets.xcassets in Resources */,
 				DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */,
 				DF02CAC12C785D8100657AE1 /* Emoji_Logo.png in Resources */,
 				DFD0F8372C8D9D38007F5666 /* kakao_logo.png in Resources */,
@@ -414,16 +408,14 @@
 				DF7CC13A2C6F18BE00531736 /* MyAppDelegate.swift in Sources */,
 				DF02CABF2C781D7100657AE1 /* ProfileView.swift in Sources */,
 				DF7CC1392C6F18BE00531736 /* LoginView.swift in Sources */,
-				DF2DB4C92C7398E300A89C1E /* ScheduleDetailView.swift in Sources */,
 				DF02CABD2C781D6400657AE1 /* CafeView.swift in Sources */,
-				DFAB66502C7DEADF0019C5C8 /* BulletinBoardDetailView.swift in Sources */,
 				DFCD7A172C876E7E00AE0BD7 /* HomeView.swift in Sources */,
 				DFCD7A192C876E9400AE0BD7 /* ProfileSetupView.swift in Sources */,
 				DFA32EE92C928CA4009AC7EC /* SocialLoginButtonVIew.swift in Sources */,
 				DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */,
 				DFCD7A132C876DE100AE0BD7 /* MyFirestore.swift in Sources */,
 				DF2DB4C82C7398E300A89C1E /* api.swift in Sources */,
-				DF6C08392C743A30005CC35E /* GlobalVariants.swift in Sources */,
+				DF6C08392C743A30005CC35E /* Global.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
