@@ -14,7 +14,8 @@ struct StarBridgeApp: App {
     @ObservedObject private var kakaoAuthVM = KakaoAuthVM.shared
     
     // AppDelegate 사용
-    @UIApplicationDelegateAdaptor var appDelegate: MyAppDelegate
+    //@UIApplicationDelegateAdaptor var appDelegate: MyAppDelegate
+    @UIApplicationDelegateAdaptor(MyAppDelegate.self) var appDelegate
     
     @State private var dataCount = 0
 
