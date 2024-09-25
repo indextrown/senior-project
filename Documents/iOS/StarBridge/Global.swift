@@ -53,7 +53,7 @@ func fetchArrayFromFirestore(forKey key: String) async throws -> [String] {
 }
 
 // --- FireBase에 특정 키워드의 값을 설정하는 함수 ---
-private func saveArrayToFirestore(key: String, array: [String]) async -> Bool {
+func saveArrayToFirestore(key: String, array: [String]) async -> Bool {
     let db = Firestore.firestore()
     
     let kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId")
@@ -72,6 +72,8 @@ private func saveArrayToFirestore(key: String, array: [String]) async -> Bool {
         return false // 저장 실패 시 false 반환
     }
 }
+
+
 
 // 사용법
 //Task {
