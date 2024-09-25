@@ -4,6 +4,10 @@
 <dict>
 	<key>API_ULTI_URL</key>
 	<string>$(API_ULTI_URL)</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>checkNewDataFromServer</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -32,6 +36,7 @@
 	<array>
 		<string>fetch</string>
 		<string>processing</string>
+		<string>remote-notification</string>
 	</array>
 </dict>
 </plist>

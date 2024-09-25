@@ -24,13 +24,13 @@ struct ContentView: View {
                             }
                             .padding()
                         Spacer()
-                        Image(systemName: "bell")
-                            .font(.system(size: 20))
-                            .foregroundColor(.black)
-                            .onTapGesture { //  누적된 알람을 보여주는?
-                                
-                            }
-                            .padding()
+//                        Image(systemName: "bell")
+//                            .font(.system(size: 20))
+//                            .foregroundColor(.black)
+//                            .onTapGesture { //  누적된 알람을 보여주는?
+//                                
+//                            }
+//                            .padding()
                     }
                     
                     Group {

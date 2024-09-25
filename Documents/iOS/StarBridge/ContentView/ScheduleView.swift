@@ -11,7 +11,6 @@ import SwiftUI
 struct ScheduleView: View{
     // -- 달력 관련 변수들 ---
     private let today: Date = Date()
-    private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
     
     //  캘린더 확장 여부 변수
     @State private var isExpanded: Bool = false
@@ -26,237 +25,224 @@ struct ScheduleView: View{
     //  api로 받아오는 데이터 저장 (형태: "\(이벤트 날짜)": 데이터 배열)
     //  Api.SnsData는 api.swift 참고
     @State private var schedules: [String:[Api.SnsData]] = [:]
+    @State private var calendarDefaultHeight: CGFloat = 10
+    @State private var isLoading = true
 
     var body: some View{
-        GeometryReader{ geometry in
-            ScrollView{
-                VStack{
-                    TextView("음악 방송, 예능, 앨범, 기념일까지 컴백 시즌 모드 일정 한 눈에", size: 15, color: Color.gray)
-                    VStack{
-                        LazyVStack(spacing: 10){
-                            HStack(alignment: .bottom){
-                                Text(showDate, formatter: DateFormatter.krFormatter)
-                                    .font(.system(size: 30 , weight: .bold))
-                                    .foregroundColor(.black)
-                                Spacer()
-                                TextView("오늘", size: 17, weight: .bold, color: .white)
-                                    .frame(width: 60 , height: 40 )
-                                    .background(isSameDay(date1: today, date2: showDate) &&
-                                                isSameDay(date1: today, date2: selectDate) ? .pink.opacity(0.7) : .pink)
-                                    .cornerRadius(5 )
-                                    .onTapGesture {
-                                        selectDate = today
-                                        showDate = today
-                                    }
-                                Image(systemName: "chevron.left")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 20, weight: .medium))
-                                    .frame(width: 40 , height: 40 )
-                                    .background(.pink)
-                                    .cornerRadius(5 )
-                                    .onTapGesture {
-                                        if let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: showDate){
-                                            showDate = prevMonthDate
-                                        }
-                                        if let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: selectDate){
-                                            selectDate = prevMonthDate
-                                        }
-                                    }
-                                
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 20 , weight: .medium))
-                                    .frame(width: 40 , height: 40 )
-                                    .background(.pink)
-                                    .cornerRadius(5 )
-                                    .onTapGesture {
-                                        if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: showDate){
-                                            showDate = nextMonthDate
-                                        }
-                                        if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: selectDate){
-                                            selectDate = nextMonthDate
-                                        }
-                                        
-                                    }
-                            }
-                            .padding([.horizontal, .top])
-                            
-                            HStack {    //  요일 표시부분
-                                ForEach(daysOfWeek, id: \.self) { day in
-                                    Text(day)
-                                        .font(.system(size: 20, weight: .medium))
-                                        .foregroundColor(.black)
-                                        .frame(maxWidth: .infinity)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack {
+                    TextView("음악 방송, 예능, 앨범, 기념일까지 컴백 시즌 모드 일정 한 눈에", size: 14.5, color: Color.gray)
+                    VStack(spacing: 10){
+                        HStack {
+                            Text(showDate, formatter: DateFormatter.krFormatter)
+                                .font(.system(size: 28 , weight: .bold))
+                                .foregroundColor(.black)
+                            Spacer()
+                            TextView("오늘", size: 17, weight: .bold, color: .white)
+                                .frame(width: 60 , height: 40 )
+                                .background(isSameDay(date1: today, date2: showDate) &&
+                                            isSameDay(date1: today, date2: selectDate) ? .pink.opacity(0.7) : .pink)
+                                .cornerRadius(5)
+                                .onTapGesture {
+                                    selectDate = today
+                                    showDate = today
                                 }
-                            }
-                            .padding(.horizontal)
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(.white)
+                                .font(.system(size: 20, weight: .medium))
+                                .frame(width: 40 , height: 40 )
+                                .background(.pink)
+                                .cornerRadius(5)
+                                .onTapGesture {
+                                    if let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: showDate){
+                                        showDate = prevMonthDate
+                                    }
+                                    if let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: selectDate){
+                                        selectDate = prevMonthDate
+                                    }
+                                }
                             
-                            LazyVGrid(columns: columns) {
-                                ForEach(calendarDates(date: selectDate), id: \.self) { date in
-                                    VStack(spacing: 2){
-                                        TextView("\(calendar.component(.day, from: date))", weight: .medium, color: setDayforegroundColor(date: date))
-                                            .frame(width: 30, height: 30)
-                                            .background(setDayBackgroundColor(date: date))
-                                            .cornerRadius(15)
-                                            .padding(.bottom, 0)
-                                            .onTapGesture {
-                                                selectDate = date
-                                                if calendar.component(.month, from: selectDate) != showDateMonth{
-                                                    showDate = date
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.white)
+                                .font(.system(size: 20 , weight: .medium))
+                                .frame(width: 40 , height: 40 )
+                                .background(.pink)
+                                .cornerRadius(5)
+                                .onTapGesture {
+                                    if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: showDate){
+                                        showDate = nextMonthDate
+                                    }
+                                    if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: selectDate){
+                                        selectDate = nextMonthDate
+                                    }
+                                    
+                                }
+                        }
+                        .padding([.horizontal, .top])
+                        
+                        HStack {    //  요일 표시부분
+                            ForEach(daysOfWeek, id: \.self) { day in
+                                Text(day)
+                                    .font(.system(size: 20, weight: .medium))
+                                    .foregroundColor(.black)
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        LazyVStack {
+                            ForEach(calendarDates(date: selectDate), id: \.self) { week in
+                                HStack(spacing: 0) {
+                                    ForEach(week, id: \.self) { date in
+                                        VStack(spacing: 2){
+                                            TextView("\(calendar.component(.day, from: date))", weight: .medium, color: setDayforegroundColor(date: date))
+                                                .frame(width: 30, height: 30)
+                                                .background(setDayBackgroundColor(date: date))
+                                                .cornerRadius(15)
+                                                .padding(.bottom, 0)
+                                                .onTapGesture {
+                                                    selectDate = date
+                                                    if calendar.component(.month, from: selectDate) != showDateMonth{
+                                                        showDate = date
+                                                    }
                                                 }
-                                            }
                                             
-                                        if isExpanded{
-                                            let maxEventCountOnWeek: CGFloat = getMaxEventCountOnWeek(date: date)
+                                            if isExpanded{
+                                                let maxEventCountOnWeek: CGFloat = getMaxEventCountOnWeek(date: date)
                                                 VStack(spacing: 2){
                                                     let events: [Api.SnsData] = schedules[dateToString(date)] ?? []
-                                                        ForEach(events, id: \.self) { event in
-                                                            if let artist = event.artist{
-                                                                NavigationLink(destination: ScheduleDetailView(detail: event)){
-                                                                    Text(artist)
-                                                                        .font(.system(size: CGFloat(min(20, 50 / max(artist.count, 1)))))
-                                                                        .foregroundColor(dotColor(event.kind))
-                                                                        .lineLimit(1)
-                                                                        .frame(width: 50, height: 20)
-                                                                        .border(dotColor(event.kind))
-                                                                }
+                                                    ForEach(events, id: \.self) { event in
+                                                        if let artist = event.artist{
+                                                            NavigationLink(destination: ScheduleDetailView(detail: event)){
+                                                                Text(artist)
+                                                                    .font(.system(size: CGFloat(min(20, 50 / max(artist.count, 1)))))
+                                                                    .foregroundColor(dotColor(event.kind))
+                                                                    .lineLimit(1)
+                                                                    .frame(width: 50, height: 20)
+                                                                    .border(dotColor(event.kind))
                                                             }
+                                                            .navigationTitle(Text(""))
                                                         }
+                                                    }
                                                     if events.count < Int(maxEventCountOnWeek){
                                                         Spacer()
                                                     }
                                                 }
                                                 .frame(height: max(22 * maxEventCountOnWeek - 2, 8))
                                                 .transition(.opacity)
-                                        }
-                                        else{
-                                            HStack(spacing: 1){
-                                                if let events = schedules[dateToString(date)]?.prefix(3){
-                                                    ForEach(events, id: \.self) { event in
-                                                        Image(systemName: "circle.fill")
-                                                            .font(.system(size: 5))
-                                                            .foregroundColor(dotColor(event.kind))
+                                            }
+                                            else{
+                                                HStack(spacing: 1){
+                                                    if let events = schedules[dateToString(date)]?.prefix(3){
+                                                        ForEach(events, id: \.self) { event in
+                                                            Image(systemName: "circle.fill")
+                                                                .font(.system(size: 5))
+                                                                .foregroundColor(dotColor(event.kind))
+                                                        }
+                                                    }
+                                                    else{
+                                                        Spacer()
                                                     }
                                                 }
-                                                else{
-                                                    Spacer()
-                                                }
+                                                .frame(height: 8)
+                                                .transition(.move(edge: .bottom).combined(with: .opacity))
                                             }
-                                            .frame(height: 8)
-                                            .transition(.move(edge: .bottom).combined(with: .opacity))
                                         }
-                                    }
-                                    .frame(width: 50)
-                                }
-                            }
-                            .padding(.horizontal)
-                            .onChange(of: schedules){ newSchedules in
-                                for (dateString, events) in newSchedules{
-                                    if let newDate = stringToDate(string: dateString){
-                                        maxEventsCountOnEachWeeks[newDate] = events.count
+                                        .frame(width: 50)
                                     }
                                 }
                             }
-                            
-                            HStack{
-                                Spacer()
-                                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                                    .font(.system(size: 20, weight: .light))
-                                    .foregroundColor(.black)
-                                Spacer()
-                            }
-                            .frame(height: 30)
-                            .padding([.horizontal,.bottom])
-                            .background(.white)
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.25)){
-                                    isExpanded.toggle()
+                        }
+                        .padding(.horizontal)
+                        .onChange(of: schedules){ newSchedules in
+                            for (dateString, events) in newSchedules{
+                                if let newDate = stringToDate(string: dateString){
+                                    maxEventsCountOnEachWeeks[newDate] = events.count
                                 }
                             }
-                            
+                        }
+                        
+                        HStack{
+                            Spacer()
+                            Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                                .font(.system(size: 20, weight: .light))
+                                .foregroundColor(.black)
+                            Spacer()
+                        }
+                        .frame(height: 30)
+                        .padding([.horizontal,.bottom])
+                        .background(.white)
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.25)){
+                                isExpanded.toggle()
+                            }
                         }
                     }
                     .onAppear{
                         Task{   // sql 쿼리가 잘 안되는거 같아서 그냥 여기서 달력 시작과 끝 날짜를 보내는걸로 수정 예정
-                            if let data = await api.fetchData(for: ["Content": "x", "date": dateToString(showDate, format: "yyyy-MM")]) {
-                                schedules = data.mapValues { values in
-                                    values.compactMap {$0.snsData}
+                            repeat {
+                                let dates = calendarDates(date: Date())
+                                if let data = await api.fetchData(for: ["Content": "x",
+                                                                        "startDate": dateToString(dates.first!.first!),
+                                                                        "endDate": dateToString(dates.last!.last!)
+                                                                       ]) {
+                                    schedules = data.mapValues { values in
+                                        values.compactMap {$0.snsData}
+                                    }
                                 }
                             }
+                            while schedules.isEmpty
+                            isLoading = false
                         }
                     }
                     .onChange(of: showDate) { newDate in
                         Task{
-                            if let data = await api.fetchData(for: ["Content": "x", "date": dateToString(newDate, format: "yyyy-MM")]) {
-                                schedules = data.mapValues { values in
-                                    values.compactMap {$0.snsData}
+                            isLoading = true
+                            schedules.removeAll()
+                            repeat {
+                                let dates = calendarDates(date: newDate)
+                                if let data = await api.fetchData(for: ["Content": "x",
+                                                                        "startDate": dateToString(dates.first!.first!),
+                                                                        "endDate": dateToString(dates.last!.last!)
+                                                                       ]) {
+                                    schedules = data.mapValues { values in
+                                        values.compactMap {$0.snsData}
+                                    }
                                 }
                             }
+                            while schedules.isEmpty
+                            isLoading = false
                         }
                     }
                     .background(.white)
                     .cornerRadius(30)
                     .padding()
                     
-                    if !isExpanded{
-                        Group{
-                            HStack{ // 오늘 or 선택한 날에 있는 스케줄
-                                TextView("\(selectDateDate)일 (\(selectDateDay))", size: 20, weight: .bold)
-                                    .padding(.vertical)
-                                Spacer()
-                            }
-                            .frame(height: 25)
-                            .padding(.horizontal)
-                            
-                            if let events: [Api.SnsData] = schedules[dateToString(selectDate)] {
-                                LazyVStack{
-                                    ForEach(events, id: \.self) { event in
-                                        NavigationLink(destination: ScheduleDetailView(detail: event)){
-                                            HStack{
-                                                VStack(alignment: .leading){
-                                                    Text(event.title ?? "")
-                                                        .lineLimit(2)
-                                                        .multilineTextAlignment(.leading)
-                                                }
-                                                .foregroundStyle(Color.black)
-                                                Spacer()
-                                            }
-                                            .padding(.horizontal)
-                                            .frame(height: 100)
-                                            .background(.white)
-                                            .cornerRadius(15)
-                                            .navigationTitle("")
-                                        }
-                                    }
-                                }
-                                .padding([.horizontal, .bottom])
-                                
-                            }
-                            else{
-                                VStack{
-                                    Text("스케줄이 없어요")
-                                        .font(.system(size: 17))
-                                    Text("업데이트될 수 있으니 조금만 기다려주세요")
-                                        .font(.system(size: 15))
-                                }
+                    if isLoading {
+                        VStack {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .gray))
+                                .scaleEffect(1.5)
+                            Text("게시판 데이터를 불러오는 중...")
                                 .foregroundColor(.gray)
-                                .padding()
-                            }
+                                .padding(.top, 20)
                         }
-                        Group{
-                            HStack{ //  selecteDate 기준으로 2주간의 이벤트
-                                TextView("다가오는 스케줄", size: 20, weight: .bold)
-                                    .padding(.vertical)
-                                Spacer()
-                            }
-                            .frame(height: 25)
-                            .padding(.horizontal)
-                            
-                            
-                            let dates: [Date] = (1...14).compactMap { calendar.date(byAdding: .day, value: $0, to: selectDate) }
-                            VStack{
-                                ForEach(dates, id: \.self) { date in
-                                    if let events: [Api.SnsData] = schedules[dateToString(date)] {
+                        .frame(minHeight: UIScreen.main.bounds.height * 0.3)
+                    }
+                    else {
+                        if !isExpanded{
+                            Group{
+                                HStack{ // 오늘 or 선택한 날에 있는 스케줄
+                                    TextView("\(selectDateDate)일 (\(selectDateDay))", size: 20, weight: .bold)
+                                        .padding(.vertical)
+                                    Spacer()
+                                }
+                                .frame(height: 25)
+                                .padding(.horizontal)
+    
+                                if let events: [Api.SnsData] = schedules[dateToString(selectDate)] {
+                                    LazyVStack{
                                         ForEach(events, id: \.self) { event in
                                             NavigationLink(destination: ScheduleDetailView(detail: event)){
                                                 HStack{
@@ -264,7 +250,6 @@ struct ScheduleView: View{
                                                         Text(event.title ?? "")
                                                             .lineLimit(2)
                                                             .multilineTextAlignment(.leading)
-                                                        Text(event.event_date ?? "")
                                                     }
                                                     .foregroundStyle(Color.black)
                                                     Spacer()
@@ -273,30 +258,81 @@ struct ScheduleView: View{
                                                 .frame(height: 100)
                                                 .background(.white)
                                                 .cornerRadius(15)
+                                                .navigationTitle("")
                                             }
+                                            .navigationTitle(Text(""))
                                         }
-                                        .onAppear{
-                                            noEventsComing = false
-                                        }
-                                        .onDisappear{
-                                            noEventsComing = true
+                                    }
+                                    .padding([.horizontal, .bottom])
+    
+                                }
+                                else{
+                                    VStack{
+                                        Text("스케줄이 없어요")
+                                            .font(.system(size: 17))
+                                        Text("업데이트될 수 있으니 조금만 기다려주세요")
+                                            .font(.system(size: 15))
+                                    }
+                                    .foregroundColor(.gray)
+                                    .padding()
+                                }
+                            }
+                            Group{
+                                HStack{ //  selecteDate 기준으로 2주간의 이벤트
+                                    TextView("다가오는 스케줄", size: 20, weight: .bold)
+                                        .padding(.vertical)
+                                    Spacer()
+                                }
+                                .frame(height: 25)
+                                .padding(.horizontal)
+    
+    
+                                let dates: [Date] = (1...14).compactMap { calendar.date(byAdding: .day, value: $0, to: selectDate) }
+                                VStack{
+                                    ForEach(dates, id: \.self) { date in
+                                        if let events: [Api.SnsData] = schedules[dateToString(date)] {
+                                            ForEach(events, id: \.self) { event in
+                                                NavigationLink(destination: ScheduleDetailView(detail: event)){
+                                                    HStack{
+                                                        VStack(alignment: .leading){
+                                                            Text(event.title ?? "")
+                                                                .lineLimit(2)
+                                                                .multilineTextAlignment(.leading)
+                                                            Text(event.event_date ?? "")
+                                                        }
+                                                        .foregroundStyle(Color.black)
+                                                        Spacer()
+                                                    }
+                                                    .padding(.horizontal)
+                                                    .frame(height: 100)
+                                                    .background(.white)
+                                                    .cornerRadius(15)
+                                                }
+                                                .navigationTitle(Text(""))
+                                            }
+                                            .onAppear{
+                                                noEventsComing = false
+                                            }
+                                            .onDisappear{
+                                                noEventsComing = true
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            .padding([.horizontal,.bottom])
-
-                            if noEventsComing{
-                                VStack{
-                                    Text("스케줄이 없어요")
-                                        .font(.system(size: 17))
-                                    Text("업데이트될 수 있으니 조금만 기다려주세요")
-                                        .font(.system(size: 15))
-                                }
-                                .foregroundColor(.gray)
-                                .padding()
-                                .onAppear{
-                                    noEventsComing = true
+                                .padding([.horizontal,.bottom])
+    
+                                if noEventsComing{
+                                    VStack{
+                                        Text("스케줄이 없어요")
+                                            .font(.system(size: 17))
+                                        Text("업데이트될 수 있으니 조금만 기다려주세요")
+                                            .font(.system(size: 15))
+                                    }
+                                    .foregroundColor(.gray)
+                                    .padding()
+                                    .onAppear{
+                                        noEventsComing = true
+                                    }
                                 }
                             }
                         }
@@ -403,35 +439,46 @@ struct ScheduleView: View{
         return .clear
     }
     
-    private func calendarDates(date: Date) -> [Date] {
-        var dates: [Date] = []
+    private func calendarDates(date: Date) -> [[Date]] {
+        var dates: [[Date]] = []
 
         // 이번 달의 첫 번째 날짜와 마지막 날짜 계산
-        guard let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: showDate)),
-              let range = calendar.range(of: .day, in: .month, for: showDate) else { return dates }
+        guard let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date)),
+              let range = calendar.range(of: .day, in: .month, for: date) else { return dates }
         
         let firstWeekday = calendar.component(.weekday, from: firstDayOfMonth) - 1
         
         // 이전 달의 날짜들 계산
         if let previousMonth = calendar.date(byAdding: .month, value: -1, to: firstDayOfMonth),
-           let previousMonthRange = calendar.range(of: .day, in: .month, for: previousMonth) {
+            let previousMonthRange = calendar.range(of: .day, in: .month, for: previousMonth) {
             let previousMonthDays = Array(previousMonthRange.suffix(firstWeekday))
+            var firstWeek: [Date] = []
             for day in previousMonthDays {
-                dates.append(calendar.date(byAdding: .day, value: day - previousMonthRange.count - 1, to: firstDayOfMonth)!)
+                firstWeek.append(calendar.date(byAdding: .day, value: day - previousMonthRange.count - 1, to: firstDayOfMonth)!)
+            }
+            
+            if !firstWeek.isEmpty {
+                dates.append(firstWeek)
             }
         }
 
         // 이번 달의 날짜들 추가
         for day in range {
-            dates.append(calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!)
+            if dates.isEmpty || dates.last!.count == 7 { // 1일이 그 달의 첫번째 일요일일 때 or 그 주에 날짜가 더이상 들어갈 수 없을 때
+                dates.append([Date]())
+            }
+            dates[dates.count - 1].append(calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!)
         }
 
         // 다음 달의 날짜들 추가 (5행을 맞추기 위해)
-        var remainingDays = 42 - dates.count
+        var remainingDays = 42 - dates.flatMap { $0 } .count
         if remainingDays >= 7 { remainingDays -= 7 }
         if remainingDays > 0, let nextMonth = calendar.date(byAdding: .month, value: 1, to: firstDayOfMonth){
             for day in 1...remainingDays {
-                dates.append(calendar.date(byAdding: .day, value: day - 1, to: nextMonth)!)
+                if dates.last!.count == 7 {
+                    dates.append([Date]())
+                }
+                dates[dates.count - 1].append(calendar.date(byAdding: .day, value: day - 1, to: nextMonth)!)
             }
         }
 
@@ -448,6 +495,120 @@ struct ScheduleView: View{
             return Color.teal
         default:
             return Color.black
+        }
+    }
+}
+
+struct ScheduleDetailView: View {
+    var detail: Api.SnsData
+    
+    init(detail: Api.SnsData) {
+        self.detail = detail
+    }
+    
+    var body: some View {
+        ScrollView {
+            VStack {
+                VStack(alignment: .leading) {
+                    Text(detail.title ?? "")
+                        .font(.system(size: 20))
+                        .foregroundColor(.black)
+                        .lineLimit(3)
+                        .padding(.horizontal)
+                    
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(.p3LightGray)
+                        .padding()
+                    
+                    HStack {
+                        VStack {
+                            Group {
+                                Text("날짜")
+                                Text("채널")
+                            }
+                            .foregroundColor(.gray)
+                        }
+                        .padding(.horizontal)
+                        
+                        VStack(alignment: .leading) {
+                            Group {
+                                Text(detail.event_date ?? "")
+                                Text(detail.id ?? "")
+                            }
+                            .foregroundColor(.black)
+                        }
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        Spacer()
+                        Group {
+                            Image(systemName: "bell.badge")
+                            Text("알림 추가")
+                        }
+                        .font(.system(size: 15))
+                        .foregroundColor(.black)
+                        Spacer()
+                    }
+                    .frame(height: 30)
+                    .background(Color.clear)
+                    .cornerRadius(15)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(.gray, lineWidth: 1)
+                    )
+                    .padding()
+                }
+                .background(.white)
+                
+                VStack {
+                    Group {
+                        Text(detail.detail ?? "")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom)
+                    .foregroundColor(.black)
+
+                    Text("👇 보러 가기")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(.black)
+                    
+                    if let link = detail.url {
+                        Link(destination: URL(string: link)!) {
+                            Text(link)
+                                .multilineTextAlignment(.leading)
+                                .foregroundColor(.blue)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.bottom)
+                        }
+                    }
+                    
+                    if let images = detail.photos {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 0) {
+                                ForEach(images, id: \.self) { imageString in
+                                    if let image = api.loadImage(from: imageString) {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .scaledToFit()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .padding()
+            }
+        }
+        .background(.p3LightGray)
+        .navigationBarTitleDisplayMode(.inline) // inline 모드로 설정하여 툴바와 내용이 간격 없이 붙도록 함
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("스케줄")
+        .font(.system(size: 20))
+        .foregroundColor(.black)
+            }
         }
     }
 }
