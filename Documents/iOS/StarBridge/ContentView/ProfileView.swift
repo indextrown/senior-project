@@ -1,7 +1,3 @@
-
-
-
-
 //
 //  ProfileView.swift
 //  StarBridge
@@ -16,7 +12,6 @@ import FirebaseFirestore
 
 struct ProfileView: View {
     @State private var nickname = ""
-    //@State private var keywordAlarm = true // 나중에 Firebase에 설정을 저장해야하지 않을까..
     @State private var keywordAlarm = UserDefaults.standard.bool(forKey: "keywordAlarm") // UserDefaults에서 상태 불러오기
     @State private var logout = false
     @State private var isLoading = true
@@ -182,6 +177,7 @@ struct ProfileView: View {
 
 }
 
+
 struct KeywordSettingView: View {
     @State private var keywords = [String]()
     @State private var newKeyword = ""                  // 새 키워드를 입력받기 위한 상태 변수
@@ -197,7 +193,7 @@ struct KeywordSettingView: View {
                 .swipeActions {
                     Button(role: .destructive) {
                         keywords.removeAll { $0 == keyword }
-                        Task { // 여기다 firebase에 데이터 수정하는 거 넣으면 될듯
+                        Task {
                             await removeKeywordFromFirestore(keyword: keyword)
                         }
                     } label: {
@@ -258,6 +254,7 @@ struct KeywordSettingView: View {
             Text("원하는 키워드를 입력해주세요")
         })
     }
+    
     func removeKeywordFromFirestore(keyword: String) async {
             await withCheckedContinuation { continuation in
                 let db = Firestore.firestore()

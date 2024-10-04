@@ -146,7 +146,6 @@ class Api{
         let imageData: String?
     }
     
-    
     struct apiData: Codable, Hashable {
         let artistData: ArtistData?
         let bboardData: BBoardData?

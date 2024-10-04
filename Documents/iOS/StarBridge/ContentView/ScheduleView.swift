@@ -180,8 +180,8 @@ struct ScheduleView: View{
                         }
                     }
                     .onAppear{
-                        Task{   // sql 쿼리가 잘 안되는거 같아서 그냥 여기서 달력 시작과 끝 날짜를 보내는걸로 수정 예정
-                            repeat {
+                        Task{
+                            while schedules.isEmpty {
                                 let dates = calendarDates(date: Date())
                                 if let data = await api.fetchData(for: ["Content": "x",
                                                                         "startDate": dateToString(dates.first!.first!),
@@ -192,7 +192,6 @@ struct ScheduleView: View{
                                     }
                                 }
                             }
-                            while schedules.isEmpty
                             isLoading = false
                         }
                     }
@@ -383,7 +382,6 @@ struct ScheduleView: View{
         // DateFormatter 설정
         dmt.dateFormat = "yyyy-MM-dd"
         dmt.locale = Locale(identifier: "en_US_POSIX") // 정확한 변환을 위해 Locale 설정
-        dmt.timeZone = TimeZone(secondsFromGMT: 0)
         
         return dmt.date(from: dateString)
     }
@@ -504,6 +502,14 @@ struct ScheduleDetailView: View {
     
     init(detail: Api.SnsData) {
         self.detail = detail
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(.p3LightGray) // 원하는 배경색 설정
+        
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            
     }
     
     var body: some View {
@@ -514,13 +520,10 @@ struct ScheduleDetailView: View {
                         .font(.system(size: 20))
                         .foregroundColor(.black)
                         .lineLimit(3)
-                        .padding(.horizontal)
-                    
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(.p3LightGray)
                         .padding()
                     
+
+                                    
                     HStack {
                         VStack {
                             Group {
@@ -529,7 +532,6 @@ struct ScheduleDetailView: View {
                             }
                             .foregroundColor(.gray)
                         }
-                        .padding(.horizontal)
                         
                         VStack(alignment: .leading) {
                             Group {
@@ -540,6 +542,7 @@ struct ScheduleDetailView: View {
                         }
                         Spacer()
                     }
+                    .padding([.horizontal, .bottom])
                 }
                 .background(.white)
                 
@@ -582,13 +585,13 @@ struct ScheduleDetailView: View {
                 .padding()
             }
         }
-        .background(.p3LightGray)
+        .background(.white)
         .navigationBarTitleDisplayMode(.inline) // inline 모드로 설정하여 툴바와 내용이 간격 없이 붙도록 함
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("스케줄")
-        .font(.system(size: 20))
-        .foregroundColor(.black)
+                    .font(.system(size: 20))
+                    .foregroundColor(.black)
             }
         }
     }

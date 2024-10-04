@@ -1,61 +1,66 @@
 {
-  "2024-09-11": {
-      "xcodeproj": "AppIcon파일 사용하도록 수정",
-      "AppIcon.jpg": "앱 메인 아이콘 이미지",
-      "ContentView.swift": "앱 메인화면을 CafeView로 수정, SF Symbols 크기 조정 수정, 하단 뷰 선택지 변경 및 NavigationLink 제거",
-      "ArtistView.swift": "더 이상 사용되지 않을 예정",
-      "CafeView.swift": "행사 날짜 범위를 yyyy-MM-dd ~ yyyy-MM-dd 형태로 변경 후 .frame(height:) 조절",
-      "ScheduleView.swift": "View에서 작성자 id 제거",
-      "ScheduleViewDetail.swift": "\"해당 데이터는 개발자들이 무단으로 수집했습니다\" 텍스트 제거",
-      "LoginView.swift": "가로 형태로 무한히 아티스트 목록을 보여주는 기능 추가 및 주변 요소 위치 수정"
-  },
-  "2024-09-12": {
-      "xcodeproj": "Logo2파일 사용하도록 수정, 최소 iOS 버전 15에서 16으로 변경",
-      "StarBridgeLogo2.png": "LoginView.swift에서 사용됨",
-      "CafeView.swift": "sendNotification() 함수 추가, CafeView.swift 99% 완료",
-      "ProfileView.swift": "fetchArrayFromFirestore() 함수 추가",
-      "GoogleService-Info.plist": "개발자 계정 통합",
-      "info.plist": "Logo2 asset 추가",
-      "LoginView.swift": "Logo2 asset 사용하도록 코드 변경",
-      "SocialLoginButtonView.swift": "LoginView.swift에 사용되는 커스텀 버튼",
-      "StarBridgeApp.swift": "주석 제거 및 BackgroundTask 코드 추가",
-      "makeAlarmCode.swift": "로컬 알람 권한 설정 및 디바이스 알림 코드 추가"
-  },
-  "2024-09-19": {
-      "xcodeproj": "UIKitTextEditor.swift 파일 추가",
-      "BulletinBoardView.swift": "게시글 작성 뷰를 sheet에서 fullScreenCover로 변경, DB 서버에 글 추가되지 않는 버그 존재",
-      "CafeView.swift": "아티스트 필터링 추가, sheet에서 fullScreenCover로 변경",
-      "ProfilSetupView.swift": "마침 버튼 텍스트를 'Done'에서 '완료'로 수정",
-      "UIKitTextEditor.swift": "SwiftUI의 TextEditor에서 placeholder 문제 해결"
-  },
-  "2024-09-20": {
-      "ArtistView.swift": "필요 없는 주석 제거",
-      "BulletinBoardView.swift": "api 받기 전 딜레이 늘림, 정보 적용 버그 수정",
-      "CafeView.swift": "필요없는 border 제거, 정보 적용 버그 수정",
-      "ScheduleView.swift": "달력 날짜 font 크기 및 정렬방식 변경, ForEach문으로 변경",
-      "api.swift": "INSERT 쿼리 처리 반환값 받아오도록 변경"
-  },
-  "2024-09-23": {
-      "Content.json": "Preview Content 위치 변경에 따른 업데이트",
-      "ContentView.swift": "우측 상단 종 모양 이미지 제거",
-      "BulletinBoardView.swift": "cornerRadius 변경 및 DetailView 내용 추가",
-      "CafeView.swift": "cornerRadius 변경",
-      "ProfileView.swift": "로그인 정보, 키워드 알람 설정 추가",
-      "ScheduleView.swift": "cornerRadius 및 navigationTitle 수정",
-      "Global.swift": "firebase와 상호 작용 함수 추가",
-      "HomeView.swift": "cornerRadius 변경",
-      "UiKitTextEditor.swift": "주석 제거"
-  },
-  "2024-10-04": {
-      "ContentView.swift": "우측 상단에 Bell 모양 추가 및 padding 조절",
-      "CafeView.swift": "Rectangle 색상 변경",
-      "ProfileView.swift": "알람코드 유지 및 주석 제거",
-      "ScheduleView.swift": "timezone 추가 및 알람 추가 뷰 제거",
-      "Global.swift": "주석 변경 및 함수 추가",
-      "KakaoAuthVM.swift": "print문 제거",
-      "LoginView.swift": "frame(width: .infinity) 제거",
-      "StarBridgeApp.swift": "BGTaskSchedular 제거",
-      "api.swift": "생일카페에서 주소 받을 수 있도록 키 추가"
-  }
+    "2024-09-11": {
+        "xcodeproj": "AppIcon파일 사용하도록 수정",
+        "AppIcon.jpg": "앱 메인 아이콘 이미지",
+        "ContentView.swift": "앱 메인화면을 CafeView로 수정, SF Symbols 크기 조정 수정, 하단 뷰 선택지 변경 및 NavigationLink 제거",
+        "ArtistView.swift": "더 이상 사용되지 않을 예정",
+        "CafeView.swift": "행사 날짜 범위를 yyyy-MM-dd ~ yyyy-MM-dd 형태로 변경 후 .frame(height:) 조절",
+        "ScheduleView.swift": "View에서 작성자 id 제거",
+        "ScheduleViewDetail.swift": "\"해당 데이터는 개발자들이 무단으로 수집했습니다\" 텍스트 제거",
+        "LoginView.swift": "가로 형태로 무한히 아티스트 목록을 보여주는 기능 추가 및 주변 요소 위치 수정"
+    },
+    "2024-09-12": {
+        "xcodeproj": "Logo2파일 사용하도록 수정, 최소 iOS 버전 15에서 16으로 변경",
+        "StarBridgeLogo2.png": "LoginView.swift에서 사용됨",
+        "CafeView.swift": "sendNotification() 함수 추가, CafeView.swift 99% 완료",
+        "ProfileView.swift": "fetchArrayFromFirestore() 함수 추가",
+        "GoogleService-Info.plist": "개발자 계정 통합",
+        "info.plist": "Logo2 asset 추가",
+        "LoginView.swift": "Logo2 asset 사용하도록 코드 변경",
+        "SocialLoginButtonView.swift": "LoginView.swift에 사용되는 커스텀 버튼",
+        "StarBridgeApp.swift": "주석 제거 및 BackgroundTask 코드 추가",
+        "makeAlarmCode.swift": "로컬 알람 권한 설정 및 디바이스 알림 코드 추가"
+    },
+    "2024-09-19": {
+        "xcodeproj": "UIKitTextEditor.swift 파일 추가",
+        "BulletinBoardView.swift": "게시글 작성 뷰를 sheet에서 fullScreenCover로 변경, DB 서버에 글 추가되지 않는 버그 존재",
+        "CafeView.swift": "아티스트 필터링 추가, sheet에서 fullScreenCover로 변경",
+        "ProfilSetupView.swift": "마침 버튼 텍스트를 'Done'에서 '완료'로 수정",
+        "UIKitTextEditor.swift": "SwiftUI의 TextEditor에서 placeholder 문제 해결"
+    },
+    "2024-09-20": {
+        "ArtistView.swift": "필요 없는 주석 제거",
+        "BulletinBoardView.swift": "api 받기 전 딜레이 늘림, 정보 적용 버그 수정",
+        "CafeView.swift": "필요없는 border 제거, 정보 적용 버그 수정",
+        "ScheduleView.swift": "달력 날짜 font 크기 및 정렬방식 변경, ForEach문으로 변경",
+        "api.swift": "INSERT 쿼리 처리 반환값 받아오도록 변경"
+    },
+    "2024-09-23": {
+        "Content.json": "Preview Content 위치 변경에 따른 업데이트",
+        "ContentView.swift": "우측 상단 종 모양 이미지 제거",
+        "BulletinBoardView.swift": "cornerRadius 변경 및 DetailView 내용 추가",
+        "CafeView.swift": "cornerRadius 변경",
+        "ProfileView.swift": "로그인 정보, 키워드 알람 설정 추가",
+        "ScheduleView.swift": "cornerRadius 및 navigationTitle 수정",
+        "Global.swift": "firebase와 상호 작용 함수 추가",
+        "HomeView.swift": "cornerRadius 변경",
+        "UiKitTextEditor.swift": "주석 제거"
+    },
+    "2024-10-04": {
+        "ContentView.swift": "우측 상단에 Bell 모양 추가 및 padding 조절",
+        "CafeView.swift": "Rectangle 색상 변경",
+        "ProfileView.swift": "알람코드 유지 및 주석 제거",
+        "ScheduleView.swift": "timezone 추가 및 알람 추가 뷰 제거",
+        "Global.swift": "주석 변경 및 함수 추가",
+        "KakaoAuthVM.swift": "print문 제거",
+        "LoginView.swift": "frame(width: .infinity) 제거",
+        "StarBridgeApp.swift": "BGTaskSchedular 제거",
+        "api.swift": "생일카페에서 주소 받을 수 있도록 키 추가"
+    },
+    "2024-10-05": {
+        "ContentView.swift": "누적 알림 리스트 기능 추가",
+        "ProfileView.swift": "필요없는 주석 제거",
+        "ScheduleView.swift": "필요없는 주석 제거 및 DetailView의 UI 변경"
+    }
 }
 
