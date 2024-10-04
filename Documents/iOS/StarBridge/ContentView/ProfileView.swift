@@ -46,7 +46,6 @@ struct ProfileView: View {
                                 .padding([.horizontal, .bottom])
                             
                             VStack(spacing: 0) {
-                                
                                 Toggle(isOn: $keywordAlarm) {
                                     Text("키워드 알람")
                                         .foregroundColor(.black)
@@ -258,37 +257,6 @@ struct KeywordSettingView: View {
         }, message: {
             Text("원하는 키워드를 입력해주세요")
         })
-
-        /*
-         MARK: - 이거는 커스텀 뷰인데 알람방식이 괜찮아서 필요없다고 판단하면 지워도됨
-        .sheet(isPresented: $showingAddKeywordSheet) {
-            VStack {
-                Text("새 키워드 추가")
-                    .font(.headline)
-                TextField("키워드를 입력하세요", text: $newKeyword)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                HStack {
-                    Button("취소") {
-                        showingAddKeywordSheet = false
-                    }
-                    .padding()
-                    
-                    Button("추가") {
-                        Task {
-                            await addKeywordToFirestore(keyword: newKeyword)
-                            keywords.append(newKeyword)
-                            // keywords.sort()
-                            newKeyword = ""
-                            showingAddKeywordSheet = false
-                        }
-                    }
-                }
-            }
-        }
-         */
-        
     }
     func removeKeywordFromFirestore(keyword: String) async {
             await withCheckedContinuation { continuation in
