@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-// --- 기준이 되는 디바이스(iPhone Xs Max)에 대한 비율
+// --- 기준이 되는 디바이스에 대한 비율
 let ratio = iPhonePointRes.stdRatio()
 // --- api 객체 ---
 let api = Api()
@@ -53,7 +53,7 @@ func fetchArrayFromFirestore(forKey key: String) async throws -> [String] {
 }
 
 // --- FireBase에 특정 키워드의 값을 설정하는 함수 ---
-private func saveArrayToFirestore(key: String, array: [String]) async -> Bool {
+func saveArrayToFirestore(key: String, array: [String]) async -> Bool {
     let db = Firestore.firestore()
     
     let kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId")
@@ -73,15 +73,22 @@ private func saveArrayToFirestore(key: String, array: [String]) async -> Bool {
     }
 }
 
-// 사용법
-//Task {
-//    let dataToSave: [String] = ["value1", "value2", "value3"]
-//    let isSuccess = await saveArrayToFirestore(array: dataToSave)
-//    
-//    if isSuccess {
-//        print("데이터가 성공적으로 저장되었습니다.")
-//    } else {
-//        print("데이터 저장에 실패했습니다.")
-//    }
-//}
-
+// --- FireBase에 특정 키워드의 값을 설정하는 함수 ---
+func saveStringToFirestore(key: String, value: String) async -> Bool {
+    let db = Firestore.firestore()
+    
+    let kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId")
+    
+    if kakaoUserId == nil {
+        return false
+    }
+    
+    let docRef = db.collection("user").document(kakaoUserId!)
+    do {
+        try await docRef.setData([key: value], merge: true)
+        return true // 저장 성공 시 true 반환
+    } catch {
+        print("데이터 저장 실패: \(error)")
+        return false // 저장 실패 시 false 반환
+    }
+}

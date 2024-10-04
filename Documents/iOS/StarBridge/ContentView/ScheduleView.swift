@@ -380,10 +380,10 @@ struct ScheduleView: View{
     
     private func stringToDate(string dateString: String) -> Date? {
         let dmt = DateFormatter()
-
         // DateFormatter 설정
         dmt.dateFormat = "yyyy-MM-dd"
         dmt.locale = Locale(identifier: "en_US_POSIX") // 정확한 변환을 위해 Locale 설정
+        dmt.timeZone = TimeZone(secondsFromGMT: 0)
         
         return dmt.date(from: dateString)
     }
@@ -540,25 +540,6 @@ struct ScheduleDetailView: View {
                         }
                         Spacer()
                     }
-                    
-                    HStack {
-                        Spacer()
-                        Group {
-                            Image(systemName: "bell.badge")
-                            Text("알림 추가")
-                        }
-                        .font(.system(size: 15))
-                        .foregroundColor(.black)
-                        Spacer()
-                    }
-                    .frame(height: 30)
-                    .background(Color.clear)
-                    .cornerRadius(15)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(.gray, lineWidth: 1)
-                    )
-                    .padding()
                 }
                 .background(.white)
                 

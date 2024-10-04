@@ -90,9 +90,11 @@ struct CafeView: View {
                             }
                         }
                         .frame(height: 50)
+                        
                         Rectangle()
-                            .frame(width: .infinity, height: 1)
-                            .border(Color.gray.opacity(0.4))
+                            .fill(Color.gray.opacity(0.4))
+                            .frame(height: 1)
+                        
                         HStack {
                             HStack {
                                 Text("날짜")
@@ -150,19 +152,47 @@ struct CafeView: View {
                             LazyVStack {
                                 ForEach(
                                     cafeList.values
-                                    .flatMap { $0 }
-                                    .sorted {
-                                        let firstCelebrity = $0.celebrity ?? ""
-                                        let secondCelebrity = $1.celebrity ?? ""
+                                        .flatMap { $0 }
+                                        .filter {
+                                            if let start_Date = stringToDate(string: $0.start_date ?? ""),
+                                               let end_Date = stringToDate(string: $0.end_date ?? "") {
+                                                var keyword = true
+                                                if !filterList.isEmpty {
+                                                    keyword = filterList.contains($0.celebrity ?? "")
+                                                }
+                                                return compareDatesIgnoringTime(startDate, start_Date) &&
+                                                compareDatesIgnoringTime(end_Date, endDate) && keyword
+                                            }
+                                            
+                                                return false
+                                            }
+                                        .sorted {
+                                            let firstEndDate = stringToDate(string: $0.end_date ?? "")
+                                            let secondEndDate = stringToDate(string: $1.end_date ?? "")
 
-                                        if firstCelebrity != secondCelebrity {
-                                            return firstCelebrity < secondCelebrity
-                                        }
-                                        return firstCelebrity.count < secondCelebrity.count
+                                            if let first = firstEndDate, let second = secondEndDate {
+                                                if first < second {
+                                                    return false
+                                                }
+                                                else if first > second {
+                                                    return true
+                                                }
+                                            }
+                                            else if firstEndDate != nil {
+                                                return true // firstEndDate가 존재하고, secondEndDate가 nil일 경우 first가 앞으로
+                                            } else if secondEndDate != nil {
+                                                return false // secondEndDate가 존재하고, firstEndDate가 nil일 경우 second가 앞으로
+                                            }
+                                            
+                                            let firstCelebrity = $0.celebrity ?? ""
+                                            let secondCelebrity = $1.celebrity ?? ""
+                                            
+                                            if firstCelebrity != secondCelebrity {
+                                                return firstCelebrity < secondCelebrity
+                                            }
+                                            return firstCelebrity.count < secondCelebrity.count
                                         }, id: \.self) { cafe in
 
-                                    if (filterList.isEmpty || !filterList.filter({ cafe.celebrity?.contains($0) ?? false }).isEmpty) &&
-                                        (isSameDay(date1: startDate, date2: Date()) || startDate <= stringToDate(string: cafe.start_date ?? "")! && stringToDate(string: cafe.end_date ?? "")! <= endDate) {
                                         HStack {
                                             VStack(alignment: .leading) {
                                                 Group {
@@ -185,7 +215,7 @@ struct CafeView: View {
                                                         Image(systemName: "house")
                                                             .frame(width: 17, height: 17)
                                                             .foregroundColor(.purple)
-                                                        Text(cafe.place ?? "")
+                                                        Text(cafe.address ?? "")
                                                             .font(.system(size: 15))
                                                             .lineLimit(1)
                                                     }
@@ -205,7 +235,6 @@ struct CafeView: View {
                                                 UIApplication.shared.open(url)
                                             }
                                         }
-                                    }
                                 }
                                 
                             }
@@ -286,12 +315,43 @@ struct CafeView: View {
         let dmt = DateFormatter()
         dmt.dateFormat = "yyyy-MM-dd"
         dmt.locale = Locale(identifier: "en_US_POSIX")
+        dmt.timeZone = TimeZone(secondsFromGMT: 0)
         return dmt.date(from: dateString)
     }
     
     private func isSameDay(date1: Date, date2: Date) -> Bool {
         return calendar.isDate(date1, inSameDayAs: date2)
     }
+
+    private func compareDatesIgnoringTime(_ date1: Date, _ date2: Date) -> Bool {
+        let calendar = Calendar.current
+
+        // Extract year, month, day components from both dates
+        let date1Components = calendar.dateComponents([.year, .month, .day], from: date1)
+        let date2Components = calendar.dateComponents([.year, .month, .day], from: date2)
+
+        // Compare the components
+        if let year1 = date1Components.year, let year2 = date2Components.year {
+            if year1 != year2 {
+                return year1 < year2
+            }
+        }
+
+        if let month1 = date1Components.month, let month2 = date2Components.month {
+            if month1 != month2 {
+                return month1 < month2
+            }
+        }
+
+        if let day1 = date1Components.day, let day2 = date2Components.day {
+            if day1 != day2 {
+                return day1 < day2
+            }
+        }
+
+        return true
+    }
+
 }
 
 struct SearchFullScreenView: View {
@@ -387,7 +447,7 @@ struct SearchFullScreenView: View {
                         }
                         Rectangle()
                             .border(Color.p3LightGray)
-                            .frame(width: .infinity, height: 1)
+                            .frame(height: 1)
                     }
                     .padding(.horizontal)
                 }
@@ -400,29 +460,6 @@ struct SearchFullScreenView: View {
             withAnimation {
                 showCancelButton = focused
             }
-        }
-    }
-}
-
-func sendNotification(detail body: String) {
-    // 알림 콘텐츠 생성
-    let content = UNMutableNotificationContent()
-    content.title = "StarBridge"
-    content.body = "키워드: \(body)"
-    content.sound = UNNotificationSound.default
-    
-    // 5초 후에 알림이 뜨도록 트리거 설정
-    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-    
-    // 알림 요청 생성
-    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-    
-    // 알림 요청을 Notification Center에 추가
-    UNUserNotificationCenter.current().add(request) { error in
-        if let error = error {
-            print("알림 요청 에러: \(error.localizedDescription)")
-        } else {
-            print("알림이 성공적으로 등록됨")
         }
     }
 }

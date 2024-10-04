@@ -1,3 +1,7 @@
+
+
+
+
 //
 //  ProfileView.swift
 //  StarBridge
@@ -6,14 +10,19 @@
 //
 
 import SwiftUI
+import FirebaseMessaging
+import UserNotifications
+import FirebaseFirestore
 
 struct ProfileView: View {
     @State private var nickname = ""
-    @State private var keywordAlarm = true // 나중에 Firebase에 설정을 저장해야하지 않을까..
+    //@State private var keywordAlarm = true // 나중에 Firebase에 설정을 저장해야하지 않을까..
+    @State private var keywordAlarm = UserDefaults.standard.bool(forKey: "keywordAlarm") // UserDefaults에서 상태 불러오기
     @State private var logout = false
     @State private var isLoading = true
     @StateObject private var kakaoAuthVM = KakaoAuthVM.shared
-    
+    @EnvironmentObject var appDelegate: MyAppDelegate // AppDelegate를 환경 객체로 가져오기
+
     var body: some View {
         GeometryReader{ geometry in
                 ScrollView{
@@ -37,12 +46,37 @@ struct ProfileView: View {
                                 .padding([.horizontal, .bottom])
                             
                             VStack(spacing: 0) {
+                                
                                 Toggle(isOn: $keywordAlarm) {
                                     Text("키워드 알람")
                                         .foregroundColor(.black)
                                         .padding()
                                 }
                                 .padding(.trailing)
+                                // MARK: - Index
+                                .onChange(of: keywordAlarm) { newValue in
+                                    if newValue {
+                                        // 알림 활성화
+                                        UserDefaults.standard.set(true, forKey: "keywordAlarm")
+                                        // print("활성화토글: \(keywordAlarm)")
+                                        // generateFCMToken()
+                                        appDelegate.generateFCMToken()
+
+                                    } else {
+                                        // 알림 비활성화
+                                        UserDefaults.standard.set(false, forKey: "keywordAlarm")
+                                        // print("비활성화토글: \(keywordAlarm)")
+                                        // deleteFCMToken()
+                                
+                                        appDelegate.deleteFCMToken()
+                                        
+                                    }
+                                    
+                                    // MARK: 파이어베이스 관련 함수 살려두기로 결정
+                                    // Task {
+                                    //    await saveKeywordAlarmToFirestore(isEnabled: newValue)
+                                    // }
+                                }
                                 
                                 Rectangle()
                                     .fill(Color.p3LightGray)
@@ -116,8 +150,14 @@ struct ProfileView: View {
                             let array = try await fetchArrayFromFirestore(forKey: "nickname")
                             nickname = array.first ?? ""
                         
-//                            array = try await fetchArrayFromFirestore(forKey: "keywordAlarm")
-//                            keywordAlarm = array.first == "true" ? true : false
+                            // array = try await fetchArrayFromFirestore(forKey: "keywordAlarm")
+                            // keywordAlarm = array.first == "true" ? true : false
+                            
+                            // MARK: - 키워드 알람 설정 불러오기
+                            // let alarmArray = try await fetchArrayFromFirestore(forKey: "keywordAlarm")
+                            // keywordAlarm = alarmArray.first == "true" ? true : false
+                            keywordAlarm = UserDefaults.standard.bool(forKey: "keywordAlarm")
+                            
                             isLoading = false
                         } catch {
                             print("데이터 가져오기 실패: \(error)")
@@ -127,10 +167,26 @@ struct ProfileView: View {
             
         }
     }
+    
+    // MARK: - 파이어베이스에 알람 추가
+    private func saveKeywordAlarmToFirestore(isEnabled: Bool) async {
+        let value = isEnabled ? "true" : "false"
+        _ = await saveArrayToFirestore(key: "keywordAlarm", array: [value])
+    }
+    
+    
+    
+    private func saveFcmTokenToFirestore(token: String) async -> Bool {
+        let key = "fcmtoken"
+        return await saveStringToFirestore(key: key, value: token) // 토큰을 배열로 저장
+    }
+
 }
 
 struct KeywordSettingView: View {
     @State private var keywords = [String]()
+    @State private var newKeyword = ""                  // 새 키워드를 입력받기 위한 상태 변수
+    @State private var showingAddKeywordSheet = false   // 키워드 추가 알림창 표시 상태
     
     var body: some View {
         VStack(spacing: 0) {
@@ -143,7 +199,7 @@ struct KeywordSettingView: View {
                     Button(role: .destructive) {
                         keywords.removeAll { $0 == keyword }
                         Task { // 여기다 firebase에 데이터 수정하는 거 넣으면 될듯
-                            
+                            await removeKeywordFromFirestore(keyword: keyword)
                         }
                     } label: {
                         Image(systemName: "trash")
@@ -179,10 +235,110 @@ struct KeywordSettingView: View {
                     .foregroundColor(.black)
                     .onTapGesture {
                         // 추가할 작업을 여기에 구현
+                        showingAddKeywordSheet = true
                     }
             }
         }
+        // MARK: - 알람방식
+        .alert("키워드 추가", isPresented: $showingAddKeywordSheet, actions: {
+            TextField("키워드 추가", text: $newKeyword)
+            
+            Button("추가", action: {
+                Task {
+                    if !newKeyword.isEmpty {
+                        await addKeywordToFirestore(keyword: newKeyword)
+                        keywords.append(newKeyword)
+                        keywords.sort()
+                        newKeyword = ""
+                    }
+                }
+            })
+
+            Button("취소", role: .cancel, action: {})
+        }, message: {
+            Text("원하는 키워드를 입력해주세요")
+        })
+
+        /*
+         MARK: - 이거는 커스텀 뷰인데 알람방식이 괜찮아서 필요없다고 판단하면 지워도됨
+        .sheet(isPresented: $showingAddKeywordSheet) {
+            VStack {
+                Text("새 키워드 추가")
+                    .font(.headline)
+                TextField("키워드를 입력하세요", text: $newKeyword)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                HStack {
+                    Button("취소") {
+                        showingAddKeywordSheet = false
+                    }
+                    .padding()
+                    
+                    Button("추가") {
+                        Task {
+                            await addKeywordToFirestore(keyword: newKeyword)
+                            keywords.append(newKeyword)
+                            // keywords.sort()
+                            newKeyword = ""
+                            showingAddKeywordSheet = false
+                        }
+                    }
+                }
+            }
+        }
+         */
+        
     }
+    func removeKeywordFromFirestore(keyword: String) async {
+            await withCheckedContinuation { continuation in
+                let db = Firestore.firestore()
+                
+                guard let kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId") else {
+                    print("kakaoUserId가 없습니다")
+                    continuation.resume() // 종료 지점 추가
+                    return
+                }
+                    
+                let docRef = db.collection("user").document(kakaoUserId)
+                
+                docRef.updateData([
+                    "keyword": FieldValue.arrayRemove([keyword])
+                ]) { error in
+                    if let error = error {
+                        print("키워드 제거 중 오류 발생: \(error)")
+                    } else {
+                        print("키워드가 성공적으로 제거되었습니다.")
+                    }
+                    continuation.resume() // 종료 지점 추가
+                }
+            }
+        }
+
+        func addKeywordToFirestore(keyword: String) async {
+            await withCheckedContinuation { continuation in
+                let db = Firestore.firestore()
+                
+                guard let kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId") else {
+                    print("kakaoUserId가 없습니다")
+                    continuation.resume() // 종료 지점 추가
+                    return
+                }
+                
+                let docRef = db.collection("user").document(kakaoUserId)
+                
+                docRef.updateData([
+                    "keyword": FieldValue.arrayUnion([keyword])
+                ]) { error in
+                    if let error = error {
+                        print("키워드 추가 중 오류 발생: \(error)")
+                    } else {
+                        print("키워드가 성공적으로 추가되었습니다.")
+                    }
+                    continuation.resume() // 종료 지점 추가
+                }
+            }
+        }
 }
 
 
@@ -301,24 +457,9 @@ struct UserPostsView: View {
 
 
 
-//Button("알림 보내기") {
-//    // 알림 권한 요청
-//    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-//        if granted {
-//            print("알림 권한 허용됨")
-//            Task {
-//                for detail in details {
-//                    sendNotification(detail: detail)
-//                    try await Task.sleep(nanoseconds: 500_000_000)
-//                }
-//            }
-//        } else {
-//            print("알림 권한 거부됨")
-//        }
-//    }
-//}
-
 #Preview {
-//    ProfileView()
-    KeywordSettingView()
+    ProfileView()
+    //KeywordSettingView()
 }
+
+

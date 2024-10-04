@@ -22,16 +22,18 @@ struct ContentView: View {
                             .onTapGesture { //  팔로우한 아티스트들을 sheet 방식으로 보여줌(상단에 검색창 포함해야함)
                                 
                             }
-                            .padding()
+                            
                         Spacer()
-//                        Image(systemName: "bell")
-//                            .font(.system(size: 20))
-//                            .foregroundColor(.black)
-//                            .onTapGesture { //  누적된 알람을 보여주는?
-//                                
-//                            }
-//                            .padding()
+                        Image(systemName: "bell")
+                            .font(.system(size: 20))
+                            .foregroundColor(.black)
+                            .onTapGesture { //  누적된 알람을 보여주는?
+                                
+                            }
+                            
                     }
+                    .padding(.horizontal)
+                    .padding()
                     
                     Group {
                         switch currentView {
