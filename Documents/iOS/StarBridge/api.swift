@@ -122,6 +122,7 @@ class Api{
         let end_date: String?
         let place: String?
         let post_url: String?
+        let address: String?
     }
     
     struct SnsData: Codable, Hashable {

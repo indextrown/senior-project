@@ -144,12 +144,8 @@ class KakaoAuthVM: ObservableObject {
             } else { // 설치 안되어있을 때
                 isLoggedIn = await handleLoginWithKakaoAccount()
             }
-            print("안녕")
-            
-            
+
             if isLoggedIn {
-                
-                
                 // 카카오 UID
                 kakaoUserId = await fetchUserId()?.id
                 

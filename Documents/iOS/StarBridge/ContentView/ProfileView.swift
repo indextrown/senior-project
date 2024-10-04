@@ -1,3 +1,7 @@
+
+
+
+
 //
 //  ProfileView.swift
 //  StarBridge
@@ -8,7 +12,7 @@
 import SwiftUI
 import FirebaseMessaging
 import UserNotifications
-
+import FirebaseFirestore
 
 struct ProfileView: View {
     @State private var nickname = ""
@@ -42,7 +46,6 @@ struct ProfileView: View {
                                 .padding([.horizontal, .bottom])
                             
                             VStack(spacing: 0) {
-                                
                                 Toggle(isOn: $keywordAlarm) {
                                     Text("키워드 알람")
                                         .foregroundColor(.black)
@@ -59,7 +62,7 @@ struct ProfileView: View {
                                         appDelegate.generateFCMToken()
 
                                     } else {
-                                        // 알림 비활성화 
+                                        // 알림 비활성화
                                         UserDefaults.standard.set(false, forKey: "keywordAlarm")
                                         // print("비활성화토글: \(keywordAlarm)")
                                         // deleteFCMToken()
@@ -179,8 +182,11 @@ struct ProfileView: View {
 
 }
 
+
 struct KeywordSettingView: View {
     @State private var keywords = [String]()
+    @State private var newKeyword = ""                  // 새 키워드를 입력받기 위한 상태 변수
+    @State private var showingAddKeywordSheet = false   // 키워드 추가 알림창 표시 상태
     
     var body: some View {
         VStack(spacing: 0) {
@@ -193,7 +199,7 @@ struct KeywordSettingView: View {
                     Button(role: .destructive) {
                         keywords.removeAll { $0 == keyword }
                         Task { // 여기다 firebase에 데이터 수정하는 거 넣으면 될듯
-                            
+                            await removeKeywordFromFirestore(keyword: keyword)
                         }
                     } label: {
                         Image(systemName: "trash")
@@ -229,10 +235,79 @@ struct KeywordSettingView: View {
                     .foregroundColor(.black)
                     .onTapGesture {
                         // 추가할 작업을 여기에 구현
+                        showingAddKeywordSheet = true
                     }
             }
         }
+        // MARK: - 알람방식
+        .alert("키워드 추가", isPresented: $showingAddKeywordSheet, actions: {
+            TextField("키워드 추가", text: $newKeyword)
+            
+            Button("추가", action: {
+                Task {
+                    if !newKeyword.isEmpty {
+                        await addKeywordToFirestore(keyword: newKeyword)
+                        keywords.append(newKeyword)
+                        keywords.sort()
+                        newKeyword = ""
+                    }
+                }
+            })
+
+            Button("취소", role: .cancel, action: {})
+        }, message: {
+            Text("원하는 키워드를 입력해주세요")
+        })
     }
+    func removeKeywordFromFirestore(keyword: String) async {
+            await withCheckedContinuation { continuation in
+                let db = Firestore.firestore()
+                
+                guard let kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId") else {
+                    print("kakaoUserId가 없습니다")
+                    continuation.resume() // 종료 지점 추가
+                    return
+                }
+                    
+                let docRef = db.collection("user").document(kakaoUserId)
+                
+                docRef.updateData([
+                    "keyword": FieldValue.arrayRemove([keyword])
+                ]) { error in
+                    if let error = error {
+                        print("키워드 제거 중 오류 발생: \(error)")
+                    } else {
+                        print("키워드가 성공적으로 제거되었습니다.")
+                    }
+                    continuation.resume() // 종료 지점 추가
+                }
+            }
+        }
+
+        func addKeywordToFirestore(keyword: String) async {
+            await withCheckedContinuation { continuation in
+                let db = Firestore.firestore()
+                
+                guard let kakaoUserId = UserDefaults.standard.string(forKey: "kakaoUserId") else {
+                    print("kakaoUserId가 없습니다")
+                    continuation.resume() // 종료 지점 추가
+                    return
+                }
+                
+                let docRef = db.collection("user").document(kakaoUserId)
+                
+                docRef.updateData([
+                    "keyword": FieldValue.arrayUnion([keyword])
+                ]) { error in
+                    if let error = error {
+                        print("키워드 추가 중 오류 발생: \(error)")
+                    } else {
+                        print("키워드가 성공적으로 추가되었습니다.")
+                    }
+                    continuation.resume() // 종료 지점 추가
+                }
+            }
+        }
 }
 
 
@@ -351,74 +426,9 @@ struct UserPostsView: View {
 
 
 
-//Button("알림 보내기") {
-//    // 알림 권한 요청
-//    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-//        if granted {
-//            print("알림 권한 허용됨")
-//            Task {
-//                for detail in details {
-//                    sendNotification(detail: detail)
-//                    try await Task.sleep(nanoseconds: 500_000_000)
-//                }
-//            }
-//        } else {
-//            print("알림 권한 거부됨")
-//        }
-//    }
-//}
-
 #Preview {
     ProfileView()
     //KeywordSettingView()
 }
 
 
-
-
-
-
-
-
-
-
-/*
-    MARK: - 파이어베이스 관련 함수 살려두기로 결정 / 추후에 사용할 가능성 존재.
-// 특정 토픽 구독 취소 함수
-private func unsubscribeFromTopic() {
-   let topic = "news" // 예시 토픽 이름
-   Messaging.messaging().unsubscribe(fromTopic: topic) { error in
-       if let error = error {
-           print("토픽 구독 취소 실패: \(error)")
-       } else {
-           print("토픽 '\(topic)' 구독 취소 성공")
-       }
-   }
-}
-// 특정 토픽 구독 함수
-private func subscribeToTopic() {
-    let topic = "news" // 예시 토픽 이름
-    Messaging.messaging().subscribe(toTopic: topic) { error in
-        if let error = error {
-            print("토픽 구독 실패: \(error)")
-        } else {
-            print("토픽 '\(topic)' 구독 성공")
-        }
-    }
-}
- 
- // 알림 권한 요청 함수
- private func requestNotificationPermission() {
-     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-         if granted {
-             print("알림 권한이 허용되었습니다.")
-         } else {
-             print("알림 권한이 거부되었습니다.")
-         }
-         if let error = error {
-             print("알림 권한 요청 중 에러 발생: \(error.localizedDescription)")
-         }
-     }
- }
-
-*/

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-// --- 기준이 되는 디바이스(iPhone Xs Max)에 대한 비율
+// --- 기준이 되는 디바이스에 대한 비율
 let ratio = iPhonePointRes.stdRatio()
 // --- api 객체 ---
 let api = Api()
@@ -92,18 +92,3 @@ func saveStringToFirestore(key: String, value: String) async -> Bool {
         return false // 저장 실패 시 false 반환
     }
 }
-
-
-
-// 사용법
-//Task {
-//    let dataToSave: [String] = ["value1", "value2", "value3"]
-//    let isSuccess = await saveArrayToFirestore(array: dataToSave)
-//    
-//    if isSuccess {
-//        print("데이터가 성공적으로 저장되었습니다.")
-//    } else {
-//        print("데이터 저장에 실패했습니다.")
-//    }
-//}
-

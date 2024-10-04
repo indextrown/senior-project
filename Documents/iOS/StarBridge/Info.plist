@@ -4,10 +4,6 @@
 <dict>
 	<key>API_ULTI_URL</key>
 	<string>$(API_ULTI_URL)</string>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>checkNewDataFromServer</string>
-	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

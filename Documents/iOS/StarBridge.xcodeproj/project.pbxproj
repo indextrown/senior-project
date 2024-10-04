@@ -11,15 +11,17 @@
 		DF02CABF2C781D7100657AE1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF02CABE2C781D7100657AE1 /* ProfileView.swift */; };
 		DF02CAC12C785D8100657AE1 /* Emoji_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DF02CAC02C785D8100657AE1 /* Emoji_Logo.png */; };
 		DF02CAC62C78D64900657AE1 /* BulletinBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */; };
+		DF2399962CA3A7BB0076B75A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DF2399952CA3A7BB0076B75A /* FirebaseAnalytics */; };
+		DF2399982CA3A7BB0076B75A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DF2399972CA3A7BB0076B75A /* FirebaseAuth */; };
+		DF23999A2CA3A7BB0076B75A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DF2399992CA3A7BB0076B75A /* FirebaseDatabase */; };
+		DF23999C2CA3A7BB0076B75A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DF23999B2CA3A7BB0076B75A /* FirebaseFirestore */; };
+		DF23999E2CA3A7BB0076B75A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DF23999D2CA3A7BB0076B75A /* FirebaseMessaging */; };
+		DF2399A02CA3A7BB0076B75A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DF23999F2CA3A7BB0076B75A /* FirebaseStorage */; };
 		DF2DB4C82C7398E300A89C1E /* api.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2DB4C62C7398E300A89C1E /* api.swift */; };
 		DF37BB372C633C2A00B8F976 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB362C633C2A00B8F976 /* ScheduleView.swift */; };
 		DF37BB392C633D8D00B8F976 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF37BB382C633D8D00B8F976 /* TextView.swift */; };
 		DF3907ED2C649E1700E17C40 /* iPhonePointRes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */; };
 		DF3CB33B2C96FBE100E75744 /* UIKitTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */; };
-		DF60E4FF2CA52D2E002C2CE1 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DF60E4FE2CA52D2E002C2CE1 /* FirebaseAnalytics */; };
-		DF60E5012CA52D2E002C2CE1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DF60E5002CA52D2E002C2CE1 /* FirebaseAuth */; };
-		DF60E5032CA52D2E002C2CE1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DF60E5022CA52D2E002C2CE1 /* FirebaseFirestore */; };
-		DF60E5052CA52D2E002C2CE1 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DF60E5042CA52D2E002C2CE1 /* FirebaseMessaging */; };
 		DF6632782C309B87001B3D26 /* StarBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632772C309B87001B3D26 /* StarBridgeApp.swift */; };
 		DF66327A2C309B87001B3D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6632792C309B87001B3D26 /* ContentView.swift */; };
 		DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF66327B2C309B88001B3D26 /* Assets.xcassets */; };
@@ -42,6 +44,7 @@
 		DF7CC1522C6F18FE00531736 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1512C6F18FE00531736 /* KakaoSDKTemplate */; };
 		DF7CC1542C6F18FE00531736 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DF7CC1532C6F18FE00531736 /* KakaoSDKUser */; };
 		DF7D99722CA0567E00482D25 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF7D99702CA0567E00482D25 /* Preview Assets.xcassets */; };
+		DF8FA0282CAA3969009E1C9A /* log.json in Resources */ = {isa = PBXBuildFile; fileRef = DF8FA0272CAA3969009E1C9A /* log.json */; };
 		DF97626B2C6595F900FD8577 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DF97626A2C6595F900FD8577 /* README.md */; };
 		DFA32EE92C928CA4009AC7EC /* SocialLoginButtonVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA32EE82C928CA4009AC7EC /* SocialLoginButtonVIew.swift */; };
 		DFA32EEB2C928D14009AC7EC /* StarBridgeLogo2.png in Resources */ = {isa = PBXBuildFile; fileRef = DFA32EEA2C928D14009AC7EC /* StarBridgeLogo2.png */; };
@@ -67,7 +70,6 @@
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
 		DF3907EE2C65199C00E17C40 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTextEditor.swift; sourceTree = "<group>"; };
-		DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = makeAlarmCode.swift; sourceTree = "<group>"; };
 		DF6632742C309B87001B3D26 /* StarBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
 		DF6632792C309B87001B3D26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 		DF7CC1342C6F18BE00531736 /* MyAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAppDelegate.swift; sourceTree = "<group>"; };
 		DF7CC1352C6F18BE00531736 /* MySceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySceneDelegate.swift; sourceTree = "<group>"; };
 		DF7D99702CA0567E00482D25 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DF8FA0272CAA3969009E1C9A /* log.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = log.json; sourceTree = "<group>"; };
 		DF97626A2C6595F900FD8577 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		DFA32EE82C928CA4009AC7EC /* SocialLoginButtonVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonVIew.swift; sourceTree = "<group>"; };
 		DFA32EEA2C928D14009AC7EC /* StarBridgeLogo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarBridgeLogo2.png; sourceTree = "<group>"; };
@@ -101,16 +104,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DF60E5052CA52D2E002C2CE1 /* FirebaseMessaging in Frameworks */,
+				DF23999A2CA3A7BB0076B75A /* FirebaseDatabase in Frameworks */,
 				DF7CC14A2C6F18FE00531736 /* KakaoSDKFriendCore in Frameworks */,
 				DF7CC1442C6F18FE00531736 /* KakaoSDKCertCore in Frameworks */,
 				DF7CC1422C6F18FE00531736 /* KakaoSDKCert in Frameworks */,
 				DF7CC1522C6F18FE00531736 /* KakaoSDKTemplate in Frameworks */,
-				DF60E4FF2CA52D2E002C2CE1 /* FirebaseAnalytics in Frameworks */,
-				DF60E5012CA52D2E002C2CE1 /* FirebaseAuth in Frameworks */,
+				DF23999C2CA3A7BB0076B75A /* FirebaseFirestore in Frameworks */,
+				DF2399962CA3A7BB0076B75A /* FirebaseAnalytics in Frameworks */,
+				DF2399982CA3A7BB0076B75A /* FirebaseAuth in Frameworks */,
 				DF7CC14C2C6F18FE00531736 /* KakaoSDKNavi in Frameworks */,
+				DF23999E2CA3A7BB0076B75A /* FirebaseMessaging in Frameworks */,
 				DF7CC13E2C6F18FE00531736 /* KakaoSDK in Frameworks */,
-				DF60E5032CA52D2E002C2CE1 /* FirebaseFirestore in Frameworks */,
+				DF2399A02CA3A7BB0076B75A /* FirebaseStorage in Frameworks */,
 				DF7CC1462C6F18FE00531736 /* KakaoSDKCommon in Frameworks */,
 				DF7CC1402C6F18FE00531736 /* KakaoSDKAuth in Frameworks */,
 				DF7CC1542C6F18FE00531736 /* KakaoSDKUser in Frameworks */,
@@ -140,6 +145,7 @@
 			children = (
 				DF6632752C309B87001B3D26 /* Products */,
 				DF97626A2C6595F900FD8577 /* README.md */,
+				DF8FA0272CAA3969009E1C9A /* log.json */,
 				DF6632762C309B87001B3D26 /* StarBridge */,
 			);
 			sourceTree = "<group>";
@@ -169,7 +175,6 @@
 				DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */,
 				DF2DB4C62C7398E300A89C1E /* api.swift */,
 				DF6C08382C743A30005CC35E /* Global.swift */,
-				DF46722F2C8F3C3F00149624 /* makeAlarmCode.swift */,
 				DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */,
 				DF7D99712CA0567E00482D25 /* Preview Content */,
 			);
@@ -267,10 +272,12 @@
 				DF7CC14F2C6F18FE00531736 /* KakaoSDKTalk */,
 				DF7CC1512C6F18FE00531736 /* KakaoSDKTemplate */,
 				DF7CC1532C6F18FE00531736 /* KakaoSDKUser */,
-				DF60E4FE2CA52D2E002C2CE1 /* FirebaseAnalytics */,
-				DF60E5002CA52D2E002C2CE1 /* FirebaseAuth */,
-				DF60E5022CA52D2E002C2CE1 /* FirebaseFirestore */,
-				DF60E5042CA52D2E002C2CE1 /* FirebaseMessaging */,
+				DF2399952CA3A7BB0076B75A /* FirebaseAnalytics */,
+				DF2399972CA3A7BB0076B75A /* FirebaseAuth */,
+				DF2399992CA3A7BB0076B75A /* FirebaseDatabase */,
+				DF23999B2CA3A7BB0076B75A /* FirebaseFirestore */,
+				DF23999D2CA3A7BB0076B75A /* FirebaseMessaging */,
+				DF23999F2CA3A7BB0076B75A /* FirebaseStorage */,
 			);
 			productName = StarBridge;
 			productReference = DF6632742C309B87001B3D26 /* StarBridge.app */;
@@ -302,7 +309,7 @@
 			mainGroup = DF66326B2C309B87001B3D26;
 			packageReferences = (
 				DF7CC13C2C6F18FE00531736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-				DF60E4FD2CA52D2E002C2CE1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = DF6632752C309B87001B3D26 /* Products */;
 			projectDirPath = "";
@@ -325,6 +332,7 @@
 				DF97626B2C6595F900FD8577 /* README.md in Resources */,
 				DFC835BA2C6FB445006A438B /* StarBridge_Logo.png in Resources */,
 				DF66327C2C309B88001B3D26 /* Assets.xcassets in Resources */,
+				DF8FA0282CAA3969009E1C9A /* log.json in Resources */,
 				DFD496CF2CA3CC8200986805 /* GoogleService-Info.plist in Resources */,
 				DF02CAC12C785D8100657AE1 /* Emoji_Logo.png in Resources */,
 				DFD0F8372C8D9D38007F5666 /* kakao_logo.png in Resources */,
@@ -599,7 +607,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		DF60E4FD2CA52D2E002C2CE1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
@@ -618,25 +626,35 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DF60E4FE2CA52D2E002C2CE1 /* FirebaseAnalytics */ = {
+		DF2399952CA3A7BB0076B75A /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DF60E4FD2CA52D2E002C2CE1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		DF60E5002CA52D2E002C2CE1 /* FirebaseAuth */ = {
+		DF2399972CA3A7BB0076B75A /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DF60E4FD2CA52D2E002C2CE1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		DF60E5022CA52D2E002C2CE1 /* FirebaseFirestore */ = {
+		DF2399992CA3A7BB0076B75A /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DF60E4FD2CA52D2E002C2CE1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		DF23999B2CA3A7BB0076B75A /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		DF60E5042CA52D2E002C2CE1 /* FirebaseMessaging */ = {
+		DF23999D2CA3A7BB0076B75A /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DF60E4FD2CA52D2E002C2CE1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		DF23999F2CA3A7BB0076B75A /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DF2399942CA3A7BB0076B75A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 		DF7CC13D2C6F18FE00531736 /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -181,6 +181,7 @@ struct LoginView: View {
     private var artistlist = [  //  이거 사실 서버에다 저장해두고 어떻게 좀 하고싶음
         "ive", "nct", "newjeans", "bts"
     ]
+    
     @State private var scrollOffset:CGFloat = 0
     @State private var timer: Timer?
     private let itemWidth: CGFloat = 100 // 각 아이템의 너비와 간격 포함
@@ -227,7 +228,6 @@ struct LoginView: View {
                             }
                         }
                         .padding(.horizontal)
-                        .frame(width: .infinity)
                         .offset(x: scrollOffset)
                         .onAppear {
                             startAutoScroll()
