@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    @State private var currentView: activeView = .ScheduleView
+    @State private var currentView: activeView = .CafeView
     @State private var showingBellView = false  // 새로운 상태 변수 추가
    
     

@@ -61,6 +61,10 @@
         "ContentView.swift": "누적 알림 리스트 기능 추가",
         "ProfileView.swift": "필요없는 주석 제거",
         "ScheduleView.swift": "필요없는 주석 제거 및 DetailView의 UI 변경"
+    },
+    "2024-10-07": {
+        "ContentView.swift": "첫번째 화면에 ScheduleView였던 오류 수정",
+        "CafeView.swift": "선택한 날짜 범위에 해당하는 카페가 없을 때 알려주는 문구 추가"
     }
 }
 

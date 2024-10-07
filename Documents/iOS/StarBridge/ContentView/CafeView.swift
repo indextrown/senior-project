@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CafeView: View {
-    @State private var cafeList: [String:[Api.CafeData]] = [:]
+    @State private var cafeList: [[Api.CafeData]] = []
     @State private var isLoading = true
     @State private var celebrities: [String] = []
     @State private var filterList: [String] = []
@@ -32,6 +32,49 @@ struct CafeView: View {
         var calendar = Calendar.current
         calendar.locale = Locale(identifier: "ko_KR")
         return calendar
+    }
+    
+    private var filterAndSortList: [Api.CafeData] {
+        return cafeList
+            .flatMap { $0 }
+            .filter {
+                if let start_Date = stringToDate(string: $0.start_date ?? ""),
+                   let end_Date = stringToDate(string: $0.end_date ?? "") {
+                    var keyword = true
+                    if !filterList.isEmpty {
+                        keyword = filterList.contains($0.celebrity ?? "")
+                    }
+                    return compareDatesIgnoringTime(startDate, start_Date) &&
+                    compareDatesIgnoringTime(end_Date, endDate) && keyword
+                }
+                return false
+            }
+            .sorted {
+                let firstEndDate = stringToDate(string: $0.end_date ?? "")
+                let secondEndDate = stringToDate(string: $1.end_date ?? "")
+                
+                if let first = firstEndDate, let second = secondEndDate {
+                    if first < second {
+                        return false
+                    }
+                    else if first > second {
+                        return true
+                    }
+                }
+                else if firstEndDate != nil {
+                    return true
+                } else if secondEndDate != nil {
+                    return false
+                }
+                
+                let firstCelebrity = $0.celebrity ?? ""
+                let secondCelebrity = $1.celebrity ?? ""
+                
+                if firstCelebrity != secondCelebrity {
+                    return firstCelebrity < secondCelebrity
+                }
+                return firstCelebrity.count < secondCelebrity.count
+            }
     }
     
     var body: some View {
@@ -148,51 +191,20 @@ struct CafeView: View {
                         }
                     }
                     else {
-                        ScrollView {
-                            LazyVStack {
-                                ForEach(
-                                    cafeList.values
-                                        .flatMap { $0 }
-                                        .filter {
-                                            if let start_Date = stringToDate(string: $0.start_date ?? ""),
-                                               let end_Date = stringToDate(string: $0.end_date ?? "") {
-                                                var keyword = true
-                                                if !filterList.isEmpty {
-                                                    keyword = filterList.contains($0.celebrity ?? "")
-                                                }
-                                                return compareDatesIgnoringTime(startDate, start_Date) &&
-                                                compareDatesIgnoringTime(end_Date, endDate) && keyword
-                                            }
-                                            
-                                                return false
-                                            }
-                                        .sorted {
-                                            let firstEndDate = stringToDate(string: $0.end_date ?? "")
-                                            let secondEndDate = stringToDate(string: $1.end_date ?? "")
-
-                                            if let first = firstEndDate, let second = secondEndDate {
-                                                if first < second {
-                                                    return false
-                                                }
-                                                else if first > second {
-                                                    return true
-                                                }
-                                            }
-                                            else if firstEndDate != nil {
-                                                return true // firstEndDate가 존재하고, secondEndDate가 nil일 경우 first가 앞으로
-                                            } else if secondEndDate != nil {
-                                                return false // secondEndDate가 존재하고, firstEndDate가 nil일 경우 second가 앞으로
-                                            }
-                                            
-                                            let firstCelebrity = $0.celebrity ?? ""
-                                            let secondCelebrity = $1.celebrity ?? ""
-                                            
-                                            if firstCelebrity != secondCelebrity {
-                                                return firstCelebrity < secondCelebrity
-                                            }
-                                            return firstCelebrity.count < secondCelebrity.count
-                                        }, id: \.self) { cafe in
-
+                        if filterAndSortList.isEmpty {
+                            VStack {
+                                Spacer()
+                                Text("해당 날짜 범위에 포함되는 카페가 없습니다")
+                                    .foregroundColor(.gray)
+                                Spacer()
+                            }
+                        }
+                        else {
+                            ScrollView {
+                                
+                                
+                                LazyVStack {
+                                    ForEach(filterAndSortList, id: \.self) { cafe in
                                         HStack {
                                             VStack(alignment: .leading) {
                                                 Group {
@@ -235,6 +247,7 @@ struct CafeView: View {
                                                 UIApplication.shared.open(url)
                                             }
                                         }
+                                    }
                                 }
                                 
                             }
@@ -297,14 +310,15 @@ struct CafeView: View {
                 Task {
                     repeat {
                         if let cafeData = await api.fetchData(for: ["Content": "cafe", "all": "_"]) {
-                            cafeList = cafeData.mapValues { values in
-                                values.compactMap {$0.cafeData}
+                            cafeList = cafeData.map { values in
+                                values.value.compactMap { $0.cafeData }
                             }
+                            celebrities = Array(cafeData.keys)
                         }
                     }
                     while cafeList.isEmpty
                     
-                    celebrities = Array(cafeList.keys)
+//                    celebrities = Array(cafeList.keys)
                     isLoading = false
                 }
             }
