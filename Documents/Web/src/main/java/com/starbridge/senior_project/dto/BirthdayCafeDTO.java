@@ -18,6 +18,7 @@ public class BirthdayCafeDTO {
     private Date endDate;
     private String place;
     private String postUrl;
+    private String address;
 
     public BirthdayCafeDTO(BirthdayCafe birthdayCafe) {
         this.number = birthdayCafe.getNumber();
@@ -27,5 +28,6 @@ public class BirthdayCafeDTO {
         this.endDate = birthdayCafe.getEndDate();
         this.place = birthdayCafe.getPlace();
         this.postUrl = birthdayCafe.getPostUrl();
+        this.address = birthdayCafe.getAddress();
     }
 }

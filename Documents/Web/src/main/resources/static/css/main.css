@@ -83,3 +83,24 @@ p {
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* 사용자 섹션 (닉네임 + 로그아웃 버튼) */
+.user-section {
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #ff0000;
+}

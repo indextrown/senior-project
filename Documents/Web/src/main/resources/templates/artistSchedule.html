@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Schedule</title>
-    <link href="/css/artistSchedule.css" rel="stylesheet">
+    <link href="/css/ArtistSchedule.css?after" rel="stylesheet">
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet'/>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    1
+
 </head>
 <body>
 <div class="container">
@@ -61,6 +61,8 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'ko',
+            height: 600, // 달력의 전체 높이 고정
+            contentHeight: 500, // 이벤트가 표시되는 영역의 높이 조정
             events: function (fetchInfo, successCallback, failureCallback) {
                 $.ajax({
                     url: '/api/schedules', // Controller 'endpoint'와 맞추기
@@ -94,7 +96,7 @@
             eventContent: function (arg) {
                 let customContent = document.createElement('div');
                 customContent.innerHTML = arg.event.title; // 오직 title만 출력
-                return { domNodes: [customContent] };
+                return {domNodes: [customContent]};
             },
             eventClick: function (info) {
                 alert('Event: ' + info.event.title + '\n' + info.event.extendedProps.detail);
@@ -161,7 +163,7 @@
                 // LocalDateTime을 표시할 형식으로 변환
                 const eventDate = new Date(event.start);
                 const formattedDate = eventDate.toLocaleDateString(); // 날짜만 표시
-                const formattedTime = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 시간과 분만 표시
+                const formattedTime = eventDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); // 시간과 분만 표시
 
                 eventItem.innerHTML = `
                     <h3>${event.title} (${formattedDate} ${formattedTime})</h3>

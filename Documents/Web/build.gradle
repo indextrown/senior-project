@@ -33,7 +33,7 @@ sourceSets {
     main {
         resources {
             srcDir 'src/main/resources'
-            srcDir 'src/main/static' // static 리소스 폴더 추가
+//            srcDir 'src/main/static' // static 리소스 폴더 추가
         }
     }
 }

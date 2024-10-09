@@ -26,16 +26,12 @@ body {
     border-radius: 50%;
     object-fit: cover;
 }
+
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
 }
 
 nav a {
@@ -65,10 +61,18 @@ nav a {
 
 .calendar {
     width: 60%;
+    height: 600px; /* 고정된 높이 */
     background-color: #fff;
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* 달력 내부 넘치는 부분 숨김 */
+}
+
+/* FullCalendar 날짜 칸 크기 고정 및 스크롤 */
+.fc-daygrid-day-frame {
+    height: 100px; /* 각 날짜 칸의 고정된 높이 */
+    overflow: auto; /* 요소가 많을 때 스크롤 활성화 */
 }
 
 .schedule {

@@ -38,4 +38,7 @@ public class BirthdayCafe {
 
     @Column(name = "post_url")
     private String postUrl;
+
+    @Column(name = "address")
+    private String address;
 }
