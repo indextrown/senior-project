@@ -25,7 +25,7 @@ struct BulletinBoardView: View {
     @State private var isLoading = true
     
     var body: some View {
-        GeometryReader{ geometry in
+        ScrollViewReader{ scrollProxy in
             VStack(spacing: 0) {
                 HStack {
                     ZStack(alignment: .trailing) {
@@ -106,6 +106,7 @@ struct BulletinBoardView: View {
                             Spacer()
                         }
                         .padding(.top)
+                        .id("bulletinBoardList")
                         
                         if isLoading {
                             VStack {
@@ -160,7 +161,6 @@ struct BulletinBoardView: View {
                     .padding([.horizontal, .bottom])
                 }
             }
-            .frame(width: geometry.size.width)
             .background(.p3LightGray)
             .onAppear{
                 Task{
@@ -209,8 +209,10 @@ struct BulletinBoardView: View {
                         while contents.isEmpty
                         isLoading = false
                     }
+                    scrollProxy.scrollTo("bulletinBoardList", anchor: .top)
                 }
             }
+            
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onChange(of: isTextFieldFocused) { focused in

@@ -34,20 +34,11 @@ struct CafeView: View {
         return calendar
     }
     
-    private var filterAndSortList: [Api.CafeData] {
+    private var cafefilterAndSortList: [Api.CafeData] {
         return cafeList
             .flatMap { $0 }
             .filter {
-                if let start_Date = stringToDate(string: $0.start_date ?? ""),
-                   let end_Date = stringToDate(string: $0.end_date ?? "") {
-                    var keyword = true
-                    if !filterList.isEmpty {
-                        keyword = filterList.contains($0.celebrity ?? "")
-                    }
-                    return compareDatesIgnoringTime(startDate, start_Date) &&
-                    compareDatesIgnoringTime(end_Date, endDate) && keyword
-                }
-                return false
+                return filterList.isEmpty || filterList.contains($0.celebrity ?? "")
             }
             .sorted {
                 let firstEndDate = stringToDate(string: $0.end_date ?? "")
@@ -78,7 +69,7 @@ struct CafeView: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
+        ScrollViewReader { scrollProxy in
             ZStack {
                 VStack {
                     VStack(spacing: 0) {
@@ -191,7 +182,7 @@ struct CafeView: View {
                         }
                     }
                     else {
-                        if filterAndSortList.isEmpty {
+                        if cafefilterAndSortList.isEmpty {
                             VStack {
                                 Spacer()
                                 Text("해당 날짜 범위에 포함되는 카페가 없습니다")
@@ -201,38 +192,51 @@ struct CafeView: View {
                         }
                         else {
                             ScrollView {
-                                
-                                
                                 LazyVStack {
-                                    ForEach(filterAndSortList, id: \.self) { cafe in
+                                    ForEach(cafefilterAndSortList, id: \.self) { cafe in
                                         HStack {
                                             VStack(alignment: .leading) {
-                                                Group {
-                                                    HStack {
-                                                        Image(systemName: "person.2")
-                                                            .frame(width: 17, height: 17)
-                                                            .foregroundColor(.pink)
-                                                        Text(cafe.celebrity ?? "")
-                                                            .bold()
-                                                            .lineLimit(1)
+                                                if let celebrity = cafe.celebrity {
+                                                    Group {
+                                                        HStack {
+                                                            Image(systemName: "person.2")
+                                                                .frame(width: 17, height: 17)
+                                                                .foregroundColor(.pink)
+                                                            Text(celebrity)
+                                                                .bold()
+                                                                .lineLimit(1)
+                                                        }
+                                                        HStack {
+                                                            Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                                                                .frame(width: 17, height: 17)
+                                                                .foregroundColor(.yellow)
+                                                            if let startdate = cafe.start_date, let enddate = cafe.end_date {
+                                                                if startdate == enddate {
+                                                                    Text(startdate)
+                                                                        .font(.system(size: 15))
+                                                                }
+                                                                else {
+                                                                    Text("\(startdate) ~ \(enddate)")
+                                                                        .font(.system(size: 15))
+                                                                }
+                                                            }
+                                                            else {
+                                                                Text("날짜 정보가 없습니다")
+                                                                    .font(.system(size: 15))
+                                                            }
+                                                            
+                                                        }
+                                                        HStack {
+                                                            Image(systemName: "house")
+                                                                .frame(width: 17, height: 17)
+                                                                .foregroundColor(.purple)
+                                                            Text(cafe.address ?? "주소 정보가 없습니다")
+                                                                .font(.system(size: 15))
+                                                                .lineLimit(1)
+                                                        }
                                                     }
-                                                    HStack {
-                                                        Image(systemName: "rectangle.and.pencil.and.ellipsis")
-                                                            .frame(width: 17, height: 17)
-                                                            .foregroundColor(.yellow)
-                                                        Text("\(cafe.start_date ?? "") ~ \(cafe.end_date ?? "")")
-                                                            .font(.system(size: 15))
-                                                    }
-                                                    HStack {
-                                                        Image(systemName: "house")
-                                                            .frame(width: 17, height: 17)
-                                                            .foregroundColor(.purple)
-                                                        Text(cafe.address ?? "")
-                                                            .font(.system(size: 15))
-                                                            .lineLimit(1)
-                                                    }
+                                                    .foregroundColor(.black)
                                                 }
-                                                .foregroundColor(.black)
                                             }
                                             Spacer()
                                         }
@@ -247,9 +251,15 @@ struct CafeView: View {
                                                 UIApplication.shared.open(url)
                                             }
                                         }
+                                        
                                     }
+                                    .id("cafefilterAndSortList")
                                 }
-                                
+                            }
+                            .onChange(of: showSearchSheet) { newValue in
+                                if !newValue {
+                                    scrollProxy.scrollTo("cafefilterAndSortList", anchor: .top)
+                                }
                             }
                         }
                     }
@@ -295,6 +305,7 @@ struct CafeView: View {
                                     showEndDatePicker = false
                                 }
                                 .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.pink)
                                 .padding()
                             }
                         }
@@ -304,25 +315,57 @@ struct CafeView: View {
                     .zIndex(1)
                 }
             }
-            .frame(width: geometry.size.width)
             .background(.p3LightGray)
             .onAppear {
                 Task {
-                    repeat {
-                        if let cafeData = await api.fetchData(for: ["Content": "cafe", "all": "_"]) {
+                    while cafeList.isEmpty {
+                        if let cafeData = await api.fetchData(for: ["Content": "cafe",
+                                                                    "startDate": dateToString(Date()),
+                                                                    "endDate": dateToString(Date())]) {
                             cafeList = cafeData.map { values in
                                 values.value.compactMap { $0.cafeData }
                             }
                             celebrities = Array(cafeData.keys)
                         }
                     }
-                    while cafeList.isEmpty
                     
-//                    celebrities = Array(cafeList.keys)
+                    if let celebrity = cafeList.first?.first?.celebrity, celebrity.isEmpty {
+                        cafeList.removeAll()
+                    }
+
                     isLoading = false
                 }
             }
+            .onChange(of: showStartDatePicker || showEndDatePicker) { newValue in
+                if !newValue {
+                    Task {
+                        isLoading = true
+                        cafeList.removeAll()
+                        while cafeList.isEmpty {
+                            if let cafeData = await api.fetchData(for: ["Content": "cafe",
+                                                                        "startDate": dateToString(startDate),
+                                                                        "endDate": dateToString(endDate)]) {
+                                cafeList = cafeData.map { values in
+                                    values.value.compactMap { $0.cafeData }
+                                }
+                                celebrities = Array(cafeData.keys)
+                            }
+                        }
+                        
+                        if let celebrity = cafeList.first?.first?.celebrity, celebrity.isEmpty {
+                            cafeList.removeAll()
+                        }
+                                
+                        isLoading = false
+                    }
+                }
+            }
         }
+    }
+    private func dateToString(_ date: Date, format: String = "yyyy-MM-dd") -> String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = format
+        return fmt.string(from: date)
     }
     
     private func stringToDate(string dateString: String) -> Date? {

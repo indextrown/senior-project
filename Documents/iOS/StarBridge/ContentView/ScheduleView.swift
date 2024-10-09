@@ -498,7 +498,8 @@ struct ScheduleView: View{
 }
 
 struct ScheduleDetailView: View {
-    var detail: Api.SnsData
+    private var detail: Api.SnsData
+    @State private var imageWidth = CGFloat.zero
     
     init(detail: Api.SnsData) {
         self.detail = detail
@@ -514,77 +515,85 @@ struct ScheduleDetailView: View {
     
     var body: some View {
         ScrollView {
-            VStack {
-                VStack(alignment: .leading) {
-                    Text(detail.title ?? "")
-                        .font(.system(size: 20))
-                        .foregroundColor(.black)
-                        .lineLimit(3)
-                        .padding()
-                    
-
-                                    
-                    HStack {
-                        VStack {
-                            Group {
-                                Text("날짜")
-                                Text("채널")
-                            }
-                            .foregroundColor(.gray)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Group {
-                                Text(detail.event_date ?? "")
-                                Text(detail.id ?? "")
-                            }
-                            .foregroundColor(.black)
-                        }
-                        Spacer()
-                    }
-                    .padding([.horizontal, .bottom])
-                }
-                .background(.white)
-                
-                VStack {
-                    Group {
-                        Text(detail.detail ?? "")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom)
+            VStack(alignment: .leading, spacing: 0) {
+                Text(detail.title ?? "")
+                    .font(.system(size: 20))
                     .foregroundColor(.black)
-
-                    Text("👇 보러 가기")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundColor(.black)
-                    
-                    if let link = detail.url {
-                        Link(destination: URL(string: link)!) {
-                            Text(link)
-                                .multilineTextAlignment(.leading)
-                                .foregroundColor(.blue)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.bottom)
+                    .lineLimit(3)
+                    .padding(.top)
+                
+                GeometryReader { geometry in
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(.gray).opacity(0.4)
+                        .padding(.top)
+                        .onAppear {
+                            imageWidth = geometry.size.width
                         }
+                }
+                
+                HStack {
+                    VStack {
+                        Group {
+                            Text("날짜")
+                            Text("채널")
+                        }
+                        .foregroundColor(.gray)
                     }
                     
-                    if let images = detail.photos {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 0) {
-                                ForEach(images, id: \.self) { imageString in
-                                    if let image = api.loadImage(from: imageString) {
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
+                    VStack(alignment: .leading) {
+                        Group {
+                            Text(detail.event_date ?? "")
+                            Text(detail.id ?? "")
+                        }
+                        .foregroundColor(.black)
+                    }
+                    Spacer()
+                }
+                .padding(.top)
+                
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(.gray).opacity(0.4)
+                    .padding(.top)
+                
+                Text(detail.detail ?? "")
+                    .foregroundColor(.black)
+                    .padding(.top)
+                
+                Text("👇 보러 가기")
+                    .foregroundColor(.black)
+                    .padding(.top)
+                
+                if let link = detail.url {
+                    Link(destination: URL(string: link)!) {
+                        Text(link)
+                            .multilineTextAlignment(.leading)
+                            .foregroundColor(.blue)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom)
+                    }
+                }
+                
+                if let images = detail.photos {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(images, id: \.self) { imageString in
+                                if let image = api.loadImage(from: imageString) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: imageWidth)
                                 }
                             }
                         }
                     }
+                    .padding(.top)
+                    .disabled(images.count == 1)
                 }
-                .padding()
             }
         }
+        .padding(.horizontal)
         .background(.white)
         .navigationBarTitleDisplayMode(.inline) // inline 모드로 설정하여 툴바와 내용이 간격 없이 붙도록 함
         .toolbar {
