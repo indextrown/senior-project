@@ -18,7 +18,10 @@ body {
     font-size: 24px;
     font-weight: bold;
 }
-
+.logo_link {
+    color: black;
+    text-decoration: none;
+}
 .logo img {
     width: 50px;
     height: 50px;
@@ -101,4 +104,39 @@ nav a {
 
 .schedule-item:last-child {
     border-bottom: none;
+}
+.sorted-events h2 {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    padding: 10px 0;
+    /*margin-bottom: 20px;*/
+    /*margin-top: 50px;*/
+    border-bottom: 2px solid black;
+    margin: 50px 20px 0px 0px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+/* 사용자 섹션 (닉네임 + 로그아웃 버튼) */
+.user-section {
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #ff0000;
 }

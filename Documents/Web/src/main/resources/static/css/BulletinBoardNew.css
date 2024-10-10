@@ -139,3 +139,7 @@ body {
     border-radius: 50%;
     object-fit: cover;
 }
+.logo_link {
+    color: black;
+    text-decoration: none;
+}

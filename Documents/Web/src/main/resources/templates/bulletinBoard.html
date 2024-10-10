@@ -10,7 +10,7 @@
 <div class="container">
     <header>
         <div class="logo">
-            StarBridge
+            <a href="/main" class="logo_link">StarBridge</a>
             <img src="/images/logo.png" alt="로고">
         </div>
         <nav>
@@ -19,7 +19,12 @@
             <a href="/birthdayCafe">Birthday Cafe</a>
             <a href="/bulletinBoard">Community</a>
         </nav>
-        <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+        <div class="user-section">
+            <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+            <form id="logoutForm" th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-button">로그아웃</button>
+            </form>
+        </div>
     </header>
     <div class="breadcrumb">StarBridge > Community</div>
     <main>
@@ -39,12 +44,23 @@
 
         <div class="board">
             <ul id="board-list">
-                <!-- 여기에 Thymeleaf를 이용해 게시글을 동적으로 렌더링 -->
-                <li th:each="post : ${posts}" th:data-artist="${post.artist}">
-                    <a th:href="@{/bulletinBoard/{number}(number=${post.number})}">
-                        <span th:text="|[${post.artist}] ${post.title}|"></span>
-                    </a>
-                    <span th:text="${post.postDate}"></span>
+                <li class="board-header">
+                    <div>가수명</div>
+                    <div>제목</div>
+                    <div>작성일자</div>
+                </li>
+                <li th:each="post : ${posts}" th:data-artist="${post.artist}" class="board-item">
+                    <div>
+                        <span th:text="${post.artist}"></span>
+                    </div>
+                    <div>
+                        <a th:href="@{/bulletinBoard/{number}(number=${post.number})}">
+                            <span th:text="${post.title}"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <span th:text="${post.postDate}"></span>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -56,7 +72,7 @@
 </div>
 
 <script>
-    document.getElementById('artist-filter').addEventListener('change', function() {
+    document.getElementById('artist-filter').addEventListener('change', function () {
         var filter = this.value;
         var boardList = document.getElementById('board-list');
         var posts = boardList.getElementsByTagName('li');

@@ -28,6 +28,11 @@ body {
     object-fit: cover;
 }
 
+.logo_link {
+    color: black;
+    text-decoration: none;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -96,6 +101,35 @@ p {
     padding: 0;
 }
 
+.board-header,
+.board-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.board-header div,
+.board-item div {
+    flex: 1;
+    text-align: center; /* 각 열의 내용을 중앙 정렬 */
+}
+
+.board-header {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+
+.board-item div a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.board-item div a:hover {
+    text-decoration: underline;
+}
+
 .board li {
     padding: 10px 0;
     border-bottom: 1px solid #eee;
@@ -128,4 +162,24 @@ p {
     border-radius: 5px;
     text-decoration: none;
     font-size: 16px;
+}
+/* 사용자 섹션 (닉네임 + 로그아웃 버튼) */
+.user-section {
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #ff0000;
 }

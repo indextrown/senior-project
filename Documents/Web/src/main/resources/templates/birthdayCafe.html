@@ -10,7 +10,7 @@
 <div class="container">
     <header>
         <div class="logo">
-            StarBridge
+            <a href="/main" class="logo_link">StarBridge</a>
             <img src="/images/logo.png" alt="로고">
         </div>
         <nav>
@@ -19,7 +19,12 @@
             <a href="/birthdayCafe">Birthday Cafe</a>
             <a href="/bulletinBoard">Community</a>
         </nav>
-        <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+        <div class="user-section">
+            <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+            <form id="logoutForm" th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-button">로그아웃</button>
+            </form>
+        </div>
     </header>
     <div class="breadcrumb">StarBridge > Birthday Cafe</div>
     <main>
@@ -44,11 +49,29 @@
         <!-- 게시판 리스트 -->
         <div class="board">
             <ul id="board-list">
-                <li th:each="cafe : ${cafes}" th:data-celebrity="${cafe.celebrity}">
-                    <!-- 날짜를 포맷팅하여 표시하는 부분 -->
-                    <span th:text="'[' + ${cafe.celebrity} + '] ' + ${#dates.format(cafe.startDate, 'yyyy-MM-dd')} + ' ~ ' + ${#dates.format(cafe.endDate, 'yyyy-MM-dd')}"></span>
-                    <span th:text="${cafe.place}"></span>
-                    <a th:href="${cafe.postUrl}" target="_blank">게시물로 이동</a>
+                <li class="board-header">
+                    <div>가수명</div>
+                    <div>날짜</div>
+                    <div>위치</div>
+                    <div>정확한 위치</div>
+                    <div>게시글로 이동</div>
+                </li>
+                <li th:each="cafe : ${cafes}" th:data-celebrity="${cafe.celebrity}" class="board-item">
+                    <div>
+                        <span th:text="${cafe.celebrity}"></span>
+                    </div>
+                    <div>
+                        <span th:text="'[' + ${#dates.format(cafe.startDate, 'yyyy-MM-dd')} + ' ~ ' + ${#dates.format(cafe.endDate, 'yyyy-MM-dd')} + ']'"></span>
+                    </div>
+                    <div>
+                        <span th:text="${cafe.place}"></span>
+                    </div>
+                    <div>
+                        <span th:text="${cafe.address}"></span>
+                    </div>
+                    <div>
+                        <a th:href="${cafe.postUrl}" target="_blank">게시물로 이동</a>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -58,7 +81,7 @@
 <!-- 필터 스크립트 -->
 <script>
     // 검색 기능
-    document.getElementById('celebrity-search').addEventListener('input', function() {
+    document.getElementById('celebrity-search').addEventListener('input', function () {
         var filter = this.value.toLowerCase();
         var boardList = document.getElementById('board-list');
         var posts = boardList.getElementsByTagName('li');
@@ -74,7 +97,7 @@
     });
 
     // 선택 기능
-    document.getElementById('celebrity-select').addEventListener('change', function() {
+    document.getElementById('celebrity-select').addEventListener('change', function () {
         var filter = this.value;
         var boardList = document.getElementById('board-list');
         var posts = boardList.getElementsByTagName('li');

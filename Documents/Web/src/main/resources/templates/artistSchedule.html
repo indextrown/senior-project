@@ -15,7 +15,8 @@
 <div class="container">
     <header>
         <div class="logo">
-            StarBridge<img src="/images/logo.png" alt="로고">
+            <a href="/main" class="logo_link">StarBridge</a>
+            <img src="/images/logo.png" alt="로고">
         </div>
         <nav>
             <a href="#">Artists</a>
@@ -23,7 +24,12 @@
             <a href="/birthdayCafe">Birthday Cafe</a>
             <a href="/bulletinBoard">Community</a>
         </nav>
-        <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+        <div class="user-section">
+            <h3 th:text="'안녕하세요, ' + ${nickname} + '님!'">안녕하세요, 사용자님!</h3>
+            <form id="logoutForm" th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-button">로그아웃</button>
+            </form>
+        </div>
     </header>
     <div class="subtitle">
         음악 방송, 예능, 앨범 발매, 기념일까지 컴백 시즌 모든 일정 한 눈에

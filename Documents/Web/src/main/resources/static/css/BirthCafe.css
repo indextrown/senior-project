@@ -20,6 +20,11 @@ body {
     font-weight: bold;
 }
 
+.logo_link {
+    color: black;
+    text-decoration: none;
+}
+
 .logo img {
     width: 50px;
     height: 50px;
@@ -101,6 +106,7 @@ p {
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* 수직 중앙 정렬 */
 }
 
 .board li:last-child {
@@ -117,6 +123,37 @@ p {
     color: #000000;
 }
 
+/* 수정된 CSS */
+.board-header,
+.board-item {
+    display: flex;
+    justify-content: space-between; /* 열 사이를 균등하게 배치 */
+    align-items: center; /* 항목들이 수직 가운데에 위치하도록 설정 */
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.board-header div,
+.board-item div {
+    flex: 1; /* 각 열이 동일한 너비를 가지도록 설정 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.board-header {
+    font-weight: bold; /* 제목을 굵게 표시 */
+    background-color: #f0f0f0; /* 배경 색상을 추가하여 구분 */
+}
+
+.board-item div a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.board-item div a:hover {
+    text-decoration: underline;
+}
+
+/* 글쓰기 버튼 스타일 */
 .board-write {
     text-align: right;
 }
@@ -128,4 +165,25 @@ p {
     border-radius: 5px;
     text-decoration: none;
     font-size: 16px;
+    display: inline-block;
+}
+/* 사용자 섹션 (닉네임 + 로그아웃 버튼) */
+.user-section {
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #ff0000;
 }
