@@ -33,41 +33,7 @@ struct CafeView: View {
         calendar.locale = Locale(identifier: "ko_KR")
         return calendar
     }
-    
-    private var cafefilterAndSortList: [Api.CafeData] {
-        return cafeList
-            .flatMap { $0 }
-            .filter {
-                return filterList.isEmpty || filterList.contains($0.celebrity ?? "")
-            }
-            .sorted {
-                let firstEndDate = stringToDate(string: $0.end_date ?? "")
-                let secondEndDate = stringToDate(string: $1.end_date ?? "")
-                
-                if let first = firstEndDate, let second = secondEndDate {
-                    if first < second {
-                        return false
-                    }
-                    else if first > second {
-                        return true
-                    }
-                }
-                else if firstEndDate != nil {
-                    return true
-                } else if secondEndDate != nil {
-                    return false
-                }
-                
-                let firstCelebrity = $0.celebrity ?? ""
-                let secondCelebrity = $1.celebrity ?? ""
-                
-                if firstCelebrity != secondCelebrity {
-                    return firstCelebrity < secondCelebrity
-                }
-                return firstCelebrity.count < secondCelebrity.count
-            }
-    }
-    
+
     var body: some View {
         ScrollViewReader { scrollProxy in
             ZStack {
@@ -98,14 +64,14 @@ struct CafeView: View {
 
                             if isLoading {
                                 Spacer()
-                            } 
+                            }
                             else {
                                 if filterList.isEmpty {
                                     Spacer()
                                     Text("연예인를 터치해주세요")
                                         .foregroundColor(.gray)
                                         .padding(.trailing)
-                                } 
+                                }
                                 else {
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         HStack(spacing: 10) {
@@ -182,7 +148,7 @@ struct CafeView: View {
                         }
                     }
                     else {
-                        if cafefilterAndSortList.isEmpty {
+                        if cafeList.isEmpty {
                             VStack {
                                 Spacer()
                                 Text("해당 날짜 범위에 포함되는 카페가 없습니다")
@@ -193,7 +159,15 @@ struct CafeView: View {
                         else {
                             ScrollView {
                                 LazyVStack {
-                                    ForEach(cafefilterAndSortList, id: \.self) { cafe in
+                                    ForEach(Array(cafeList
+                                        .flatMap { $0 }
+                                        .filter {
+                                            return filterList.isEmpty || filterList.contains($0.celebrity ?? "")
+                                        }
+                                        .sorted {
+                                            return $0.num ?? Int.max < $1.num ?? Int.max
+                                        }
+                                        .enumerated()), id: \.offset) { index, cafe in
                                         HStack {
                                             VStack(alignment: .leading) {
                                                 if let celebrity = cafe.celebrity {
@@ -214,17 +188,14 @@ struct CafeView: View {
                                                                 if startdate == enddate {
                                                                     Text(startdate)
                                                                         .font(.system(size: 15))
-                                                                }
-                                                                else {
+                                                                } else {
                                                                     Text("\(startdate) ~ \(enddate)")
                                                                         .font(.system(size: 15))
                                                                 }
-                                                            }
-                                                            else {
+                                                            } else {
                                                                 Text("날짜 정보가 없습니다")
                                                                     .font(.system(size: 15))
                                                             }
-                                                            
                                                         }
                                                         HStack {
                                                             Image(systemName: "house")
@@ -251,14 +222,13 @@ struct CafeView: View {
                                                 UIApplication.shared.open(url)
                                             }
                                         }
-                                        
                                     }
-                                    .id("cafefilterAndSortList")
+
                                 }
                             }
                             .onChange(of: showSearchSheet) { newValue in
                                 if !newValue {
-                                    scrollProxy.scrollTo("cafefilterAndSortList", anchor: .top)
+                                    scrollProxy.scrollTo(0, anchor: .top)
                                 }
                             }
                         }
@@ -267,41 +237,53 @@ struct CafeView: View {
                 
                 if showStartDatePicker || showEndDatePicker {
                     Color.black.opacity(0.3)
-                        .onTapGesture {
-                            showStartDatePicker = false
-                            showEndDatePicker = false
-                        }
                         .ignoresSafeArea()
-                    
+                }
+                
+                if showStartDatePicker {
                     HalfSheet(isPresented: $showStartDatePicker) {
                         VStack {
-                            if showStartDatePicker {
-                                DatePicker(
-                                    "시작날짜",
-                                    selection: $startDate,
-                                    displayedComponents: [.date]
-                                )
-                                .datePickerStyle(WheelDatePickerStyle())
-                                .colorInvert()
-                                .colorMultiply(.black)
-                                .environment(\.locale, Locale(identifier: "ko_KR"))
-                            }
-                            if showEndDatePicker {
-                                DatePicker(
-                                    "종료날짜",
-                                    selection: $endDate,
-                                    displayedComponents: [.date]
-                                )
-                                .datePickerStyle(WheelDatePickerStyle())
-                                .colorInvert()
-                                .colorMultiply(.black)
-                                .environment(\.locale, Locale(identifier: "ko_KR"))
-                            }
-
+                            DatePicker(
+                                "시작날짜",
+                                selection: $startDate,
+                                displayedComponents: [.date]
+                            )
+                            .datePickerStyle(WheelDatePickerStyle())
+                            .colorInvert()
+                            .colorMultiply(.black)
+                            .environment(\.locale, Locale(identifier: "ko_KR"))
+                            
                             HStack {
                                 Spacer()
                                 Button("완료") {
                                     showStartDatePicker = false
+                                }
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.pink)
+                                .padding()
+                            }
+                        }
+                        .padding()
+                    }
+                    .transition(.move(edge: .bottom))
+                    .zIndex(1)
+                }
+                if showEndDatePicker{
+                    HalfSheet(isPresented: $showEndDatePicker) {
+                        VStack {
+                            DatePicker(
+                                "종료날짜",
+                                selection: $endDate,
+                                displayedComponents: [.date]
+                            )
+                            .datePickerStyle(WheelDatePickerStyle())
+                            .colorInvert()
+                            .colorMultiply(.black)
+                            .environment(\.locale, Locale(identifier: "ko_KR"))
+                            
+                            HStack {
+                                Spacer()
+                                Button("완료") {
                                     showEndDatePicker = false
                                 }
                                 .font(.system(size: 16, weight: .bold))
@@ -317,51 +299,17 @@ struct CafeView: View {
             }
             .background(.p3LightGray)
             .onAppear {
-                Task {
-                    while cafeList.isEmpty {
-                        if let cafeData = await api.fetchData(for: ["Content": "cafe",
-                                                                    "startDate": dateToString(Date()),
-                                                                    "endDate": dateToString(Date())]) {
-                            cafeList = cafeData.map { values in
-                                values.value.compactMap { $0.cafeData }
-                            }
-                            celebrities = Array(cafeData.keys)
-                        }
-                    }
-                    
-                    if let celebrity = cafeList.first?.first?.celebrity, celebrity.isEmpty {
-                        cafeList.removeAll()
-                    }
-
-                    isLoading = false
-                }
+                fetchCafeList()
             }
-            .onChange(of: showStartDatePicker || showEndDatePicker) { newValue in
-                if !newValue {
-                    Task {
-                        isLoading = true
-                        cafeList.removeAll()
-                        while cafeList.isEmpty {
-                            if let cafeData = await api.fetchData(for: ["Content": "cafe",
-                                                                        "startDate": dateToString(startDate),
-                                                                        "endDate": dateToString(endDate)]) {
-                                cafeList = cafeData.map { values in
-                                    values.value.compactMap { $0.cafeData }
-                                }
-                                celebrities = Array(cafeData.keys)
-                            }
-                        }
-                        
-                        if let celebrity = cafeList.first?.first?.celebrity, celebrity.isEmpty {
-                            cafeList.removeAll()
-                        }
-                                
-                        isLoading = false
-                    }
-                }
+            .onChange(of: showStartDatePicker) { newValue in
+                fetchCafeList(value: newValue)
+            }
+            .onChange(of: showEndDatePicker) { newValue in
+                fetchCafeList(value: newValue)
             }
         }
     }
+    
     private func dateToString(_ date: Date, format: String = "yyyy-MM-dd") -> String {
         let fmt = DateFormatter()
         fmt.dateFormat = format
@@ -408,7 +356,32 @@ struct CafeView: View {
 
         return true
     }
-
+    
+    private func fetchCafeList(value: Bool = false) {
+        if !value {
+            Task {
+                isLoading = true
+                cafeList.removeAll()
+                var count = 0
+                while cafeList.isEmpty && count < 3{
+                    if let cafeData = await api.fetchData(for: ["Content": "cafe",
+                                                                "startDate": dateToString(startDate),
+                                                                "endDate": dateToString(endDate)]) {
+                        cafeList = cafeData.map { values in
+                            values.value.compactMap { $0.cafeData }
+                        }
+                        celebrities = Array(cafeData.keys)
+                    }
+                    count += 1
+                }
+                
+                if let celebrity = cafeList.first?.first?.celebrity, celebrity.isEmpty {
+                    cafeList.removeAll()
+                }
+                isLoading = false
+            }
+        }
+    }
 }
 
 struct SearchFullScreenView: View {

@@ -68,7 +68,6 @@
 		DF37BB362C633C2A00B8F976 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		DF37BB382C633D8D00B8F976 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		DF3907EC2C649E1700E17C40 /* iPhonePointRes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhonePointRes.swift; sourceTree = "<group>"; };
-		DF3907EE2C65199C00E17C40 /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		DF3CB33A2C96FBE100E75744 /* UIKitTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTextEditor.swift; sourceTree = "<group>"; };
 		DF6632742C309B87001B3D26 /* StarBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF6632772C309B87001B3D26 /* StarBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBridgeApp.swift; sourceTree = "<group>"; };
@@ -131,7 +130,6 @@
 		DF02CAC72C7A231600657AE1 /* ContentView */ = {
 			isa = PBXGroup;
 			children = (
-				DF3907EE2C65199C00E17C40 /* ArtistView.swift */,
 				DF02CAC52C78D64900657AE1 /* BulletinBoardView.swift */,
 				DF02CABC2C781D6400657AE1 /* CafeView.swift */,
 				DF02CABE2C781D7100657AE1 /* ProfileView.swift */,

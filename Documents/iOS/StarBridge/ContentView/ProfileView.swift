@@ -73,8 +73,8 @@ struct ProfileView: View {
                                 }
                                 
                                 Rectangle()
-                                    .fill(Color.p3LightGray)
-                                    .frame(height: 2)
+                                    .fill(Color.gray.opacity(0.4))
+                                    .frame(height: 1)
                                     .padding([.horizontal, .bottom])
                                 
                                 NavigationLink(destination: KeywordSettingView()) {
@@ -330,53 +330,68 @@ struct UserPostsView: View {
                     .frame(height: geometry.size.height)
                 }
                 else {
-                    ForEach(contents
-                        .sorted{
-                            if let key1 = Int($0.key), let key2 = Int($1.key) {
-                                return key1 > key2
-                            }
-                            return false
+                    if contents.isEmpty {
+                        VStack {
+                            Spacer()
+                            Text("작성한 글이 없습니다.")
+                                .foregroundColor(.gray)
+                            Spacer()
                         }
-                        .compactMap{$0.value}, id: \.self) { content in
-                            LazyVStack{
-                                NavigationLink(destination: BulletinBoardDetailView(detail: content)){
-                                    HStack{
-                                        VStack(alignment: .leading){
-                                            Text(content.title ?? "")
-                                                .lineLimit(2)
-                                                .multilineTextAlignment(.leading)
-                                            HStack {
-                                                Text(content.nickname ?? "")
-                                                Text(showDate(date: content.post_date))   //글쓴 날짜가 오늘과 같다면 쓴 시간만 표시하고 반대면 날짜만
-                                            }
-                                        }
-                                        .foregroundStyle(Color.black)
-                                        Spacer()
-                                    }
-                                    .padding(.horizontal)
-                                    .frame(height: 80)
-                                    .background(.white)
-                                    .cornerRadius(15)
-                                    .navigationTitle("")
+                        .frame(height: geometry.size.height)
+                    }
+                    else {
+                        ForEach(contents
+                            .sorted{
+                                if let key1 = Int($0.key), let key2 = Int($1.key) {
+                                    return key1 > key2
                                 }
-                                .navigationTitle(Text(""))
+                                return false
                             }
-                            .padding()
-                        }
+                            .compactMap{$0.value}, id: \.self) { content in
+                                LazyVStack{
+                                    NavigationLink(destination: BulletinBoardDetailView(detail: content)){
+                                        HStack{
+                                            VStack(alignment: .leading){
+                                                Text(content.title ?? "")
+                                                    .lineLimit(2)
+                                                    .multilineTextAlignment(.leading)
+                                                HStack {
+                                                    Text(content.nickname ?? "")
+                                                    Text(showDate(date: content.post_date))   //글쓴 날짜가 오늘과 같다면 쓴 시간만 표시하고 반대면 날짜만
+                                                }
+                                            }
+                                            .foregroundStyle(Color.black)
+                                            Spacer()
+                                        }
+                                        .padding(.horizontal)
+                                        .frame(height: 80)
+                                        .background(.white)
+                                        .cornerRadius(15)
+                                        .navigationTitle("")
+                                    }
+                                    .navigationTitle(Text(""))
+                                }
+                                .padding()
+                            }
+                    }
                 }
             }
             .frame(width: geometry.size.width)
             .background(.p3LightGray)
             .onAppear {
                 Task {
-                    repeat {
+                    var count = 0
+                    while contents.isEmpty && count < 3 {
                         if let data = await api.fetchData(for: ["Content": "bboard", "nickname": nickname]){
                             contents = data.compactMapValues { value in
                                 value.first?.bboardData
                             }
                         }
+                        count += 1
                     }
-                    while contents.isEmpty
+                    if let nickname = contents.values.first?.nickname, nickname.isEmpty {
+                        contents.removeAll()
+                    }
                     isLoading = false
                 }
             }

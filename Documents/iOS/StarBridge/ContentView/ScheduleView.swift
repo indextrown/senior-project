@@ -181,7 +181,8 @@ struct ScheduleView: View{
                     }
                     .onAppear{
                         Task{
-                            while schedules.isEmpty {
+                            var count = 0
+                            while schedules.isEmpty && count < 3 {
                                 let dates = calendarDates(date: Date())
                                 if let data = await api.fetchData(for: ["Content": "x",
                                                                         "startDate": dateToString(dates.first!.first!),
@@ -191,6 +192,7 @@ struct ScheduleView: View{
                                         values.compactMap {$0.snsData}
                                     }
                                 }
+                                count += 1
                             }
                             isLoading = false
                         }
@@ -198,8 +200,8 @@ struct ScheduleView: View{
                     .onChange(of: showDate) { newDate in
                         Task{
                             isLoading = true
-                            schedules.removeAll()
-                            repeat {
+                            var count = 0
+                            while schedules.isEmpty && count < 3 {
                                 let dates = calendarDates(date: newDate)
                                 if let data = await api.fetchData(for: ["Content": "x",
                                                                         "startDate": dateToString(dates.first!.first!),
@@ -209,8 +211,8 @@ struct ScheduleView: View{
                                         values.compactMap {$0.snsData}
                                     }
                                 }
+                                count += 1
                             }
-                            while schedules.isEmpty
                             isLoading = false
                         }
                     }
@@ -524,8 +526,8 @@ struct ScheduleDetailView: View {
                 
                 GeometryReader { geometry in
                     Rectangle()
+                        .fill(Color.gray.opacity(0.4))
                         .frame(height: 1)
-                        .foregroundColor(.gray).opacity(0.4)
                         .padding(.top)
                         .onAppear {
                             imageWidth = geometry.size.width
@@ -553,8 +555,8 @@ struct ScheduleDetailView: View {
                 .padding(.top)
                 
                 Rectangle()
+                    .fill(Color.gray.opacity(0.4))
                     .frame(height: 1)
-                    .foregroundColor(.gray).opacity(0.4)
                     .padding(.top)
                 
                 Text(detail.detail ?? "")

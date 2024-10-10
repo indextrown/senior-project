@@ -164,14 +164,15 @@ struct BulletinBoardView: View {
             .background(.p3LightGray)
             .onAppear{
                 Task{
-                    repeat {
+                    var count = 0
+                    while contents.isEmpty && count < 3 {
                         if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
                             contents = data.compactMapValues { value in
                                 value.first?.bboardData
                             }
                         }
+                        count += 1
                     }
-                    while contents.isEmpty
                     isLoading = false
                 }
             }
@@ -196,17 +197,18 @@ struct BulletinBoardView: View {
             .onChange(of: showFullScreen) { newValue in
                 if !newValue {
                     Task{
-                        contents.removeAll()
                         isLoading = true
+                        contents.removeAll()
                         try? await Task.sleep(nanoseconds: 1_000_000_000) // 딜레이가 꼭 있어야 함
-                        repeat {
+                        var count = 0
+                        while contents.isEmpty && count < 3 {
                             if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
                                 contents = data.compactMapValues { value in
                                     value.first?.bboardData
                                 }
                             }
+                            count += 1
                         }
-                        while contents.isEmpty
                         isLoading = false
                     }
                     scrollProxy.scrollTo("bulletinBoardList", anchor: .top)
@@ -302,8 +304,8 @@ struct BulletinBoardDetailView: View {
                 .padding([.horizontal, .bottom])
                 
                 Rectangle()
+                    .fill(Color.gray.opacity(0.4))
                     .frame(height: 1)
-                    .foregroundColor(.gray)
                     .padding([.horizontal, .bottom])
                 
                 HStack {
@@ -422,8 +424,8 @@ struct RegisterFullScreenView: View {
                     .focused($isFocusedOnTitleField)
                     
                     Rectangle()
+                        .fill(Color.gray.opacity(0.4))
                         .frame(height: 1)
-                        .foregroundColor(.gray).opacity(0.5)
                     
                     TextField("", text: $artist, prompt: Text("아티스트")
                         .foregroundColor(.gray)
@@ -442,8 +444,8 @@ struct RegisterFullScreenView: View {
                     .focused($isFocusedOnArtistField)
                     
                     Rectangle()
+                        .fill(Color.gray.opacity(0.4))
                         .frame(height: 1)
-                        .foregroundColor(.gray).opacity(0.5)
                     
                     UIKitTextEditor(text: $content,
                                     isFocused: $isFocusedOnTextEditor,

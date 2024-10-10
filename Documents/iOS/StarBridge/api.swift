@@ -116,6 +116,7 @@ class Api{
     }
     
     struct CafeData: Codable, Hashable {
+        let num: Int?
         let celebrity: String?
         let uploader: String?
         let start_date: String?
