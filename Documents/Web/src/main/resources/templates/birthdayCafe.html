@@ -84,7 +84,7 @@
     document.getElementById('celebrity-search').addEventListener('input', function () {
         var filter = this.value.toLowerCase();
         var boardList = document.getElementById('board-list');
-        var posts = boardList.getElementsByTagName('li');
+        var posts = boardList.getElementsByClassName('board-item');
 
         for (var i = 0; i < posts.length; i++) {
             var celebrity = posts[i].getAttribute('data-celebrity').toLowerCase();
@@ -100,7 +100,7 @@
     document.getElementById('celebrity-select').addEventListener('change', function () {
         var filter = this.value;
         var boardList = document.getElementById('board-list');
-        var posts = boardList.getElementsByTagName('li');
+        var posts = boardList.getElementsByClassName('board-item');
 
         for (var i = 0; i < posts.length; i++) {
             var celebrity = posts[i].getAttribute('data-celebrity');
