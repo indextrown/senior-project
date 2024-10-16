@@ -9,7 +9,6 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 <body>
 <div class="container">
@@ -31,9 +30,11 @@
             </form>
         </div>
     </header>
+
     <div class="subtitle">
         음악 방송, 예능, 앨범 발매, 기념일까지 컴백 시즌 모든 일정 한 눈에
     </div>
+
     <div class="calendar-container">
         <div class="calendar" id="calendar"></div>
         <div class="schedule">
@@ -54,7 +55,7 @@
 
     <!-- 추가된 부분: 날짜순 정렬된 이벤트 리스트 -->
     <div class="sorted-events">
-        <h2>o 날짜순 정렬 o</h2>
+        <h2 class="sorted-title">o 날짜순 정렬 o</h2>
         <div id="sorted-event-list" class="event-list">
             <!-- 정렬된 이벤트가 여기에 추가됩니다 -->
         </div>
@@ -67,21 +68,21 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'ko',
-            height: 600, // 달력의 전체 높이 고정
-            contentHeight: 500, // 이벤트가 표시되는 영역의 높이 조정
+            height: 600,
+            contentHeight: 500,
             events: function (fetchInfo, successCallback, failureCallback) {
                 $.ajax({
-                    url: '/api/schedules', // Controller 'endpoint'와 맞추기
+                    url: '/api/schedules',
                     dataType: 'json',
                     success: function (data) {
                         var events = [];
                         $(data).each(function () {
                             events.push({
-                                title: this.artist,  // 캘린더에서 제목으로 사용 (artist를 title로 설정)
-                                start: this.event_date,  // 이벤트 시작 날짜 (캘린더에서 날짜로 사용)
-                                detail: this.detail,  // 이벤트 세부 정보
-                                photo: this.photo, // 사진 경로
-                                backgroundColor: getColorByArtist(this.artist)  // 가수에 따라 색상 설정
+                                title: this.artist,
+                                start: this.event_date,
+                                detail: this.detail,
+                                photo: this.photo,
+                                backgroundColor: getColorByArtist(this.artist)
                             });
                         });
                         successCallback(events);
@@ -93,15 +94,10 @@
                     }
                 });
             },
-            eventDisplay: 'block', // 이벤트 제목만 표시
-            eventTimeFormat: { // 시간 포맷을 지정하지 않음
-                hour: undefined,
-                minute: undefined,
-                meridiem: false
-            },
+            eventDisplay: 'block',
             eventContent: function (arg) {
                 let customContent = document.createElement('div');
-                customContent.innerHTML = arg.event.title; // 오직 title만 출력
+                customContent.innerHTML = arg.event.title;
                 return {domNodes: [customContent]};
             },
             eventClick: function (info) {
@@ -113,13 +109,13 @@
         function getColorByArtist(artist) {
             switch (artist) {
                 case '아이브':
-                    return '#15326c'; // IVE의 색상
+                    return '#15326c';
                 case '뉴진스':
-                    return '#837f34'; // NewJeans의 색상
+                    return '#837f34';
                 case '방탄소년단':
-                    return '#3357FF'; // BTS의 색상
+                    return '#3357FF';
                 default:
-                    return '#888888'; // 기본 색상
+                    return '#888888';
             }
         }
 
@@ -137,7 +133,12 @@
             if (todaySchedule.length > 0) {
                 todaySchedule.forEach(event => {
                     const scheduleItem = document.createElement('div');
-                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;
+                    const formattedDate = new Date(event.start).toLocaleDateString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${formattedDate}</p>`;
                     todayScheduleContainer.appendChild(scheduleItem);
                 });
             } else {
@@ -147,7 +148,12 @@
             if (upcomingSchedule.length > 0) {
                 upcomingSchedule.forEach(event => {
                     const scheduleItem = document.createElement('div');
-                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${event.start}</p>`;
+                    const formattedDate = new Date(event.start).toLocaleDateString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    scheduleItem.innerHTML = `<p>${event.title}</p><p>${formattedDate}</p>`;
                     upcomingScheduleContainer.appendChild(scheduleItem);
                 });
             } else {
@@ -155,9 +161,8 @@
             }
         }
 
-        // 추가된 함수: 날짜순으로 이벤트를 정렬하여 표시
         function displaySortedEvents(events) {
-            const sortedEvents = events.sort((a, b) => new Date(a.start) - new Date(b.start));
+            const sortedEvents = events.sort((a, b) => new Date(b.start) - new Date(a.start));
             const sortedEventListContainer = document.getElementById('sorted-event-list');
 
             sortedEventListContainer.innerHTML = '';
@@ -166,15 +171,20 @@
                 const eventItem = document.createElement('div');
                 eventItem.className = 'sorted-event-item';
 
-                // LocalDateTime을 표시할 형식으로 변환
                 const eventDate = new Date(event.start);
-                const formattedDate = eventDate.toLocaleDateString(); // 날짜만 표시
-                const formattedTime = eventDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); // 시간과 분만 표시
+                const formattedDate = eventDate.toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });  // 년, 월, 일만 표시
 
                 eventItem.innerHTML = `
-                    <h3>${event.title} (${formattedDate} ${formattedTime})</h3>
-                    <p>${event.detail}</p>
-                    ${event.photo ? `<img src="/${event.photo}" alt="${event.title}" style="max-width: 200px;">` : ''}
+                    <div class="event-content">
+                        <h3>${event.title}</h3>
+                        <p>${formattedDate}</p>
+                        <p>${event.detail}</p>
+                        ${event.photo ? `<img src="/${event.photo}" alt="${event.title}" class="event-photo">` : ''}
+                    </div>
                 `;
                 sortedEventListContainer.appendChild(eventItem);
             });

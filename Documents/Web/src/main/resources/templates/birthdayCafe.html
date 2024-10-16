@@ -56,12 +56,12 @@
                     <div>정확한 위치</div>
                     <div>게시글로 이동</div>
                 </li>
-                <li th:each="cafe : ${cafes}" th:data-celebrity="${cafe.celebrity}" class="board-item">
+                <li th:each="cafe : ${cafes}" th:data-celebrity="${cafe.celebrity}" th:data-start-date="${cafe.startDate}" class="board-item">
                     <div>
                         <span th:text="${cafe.celebrity}"></span>
                     </div>
                     <div>
-                        <span th:text="'[' + ${#dates.format(cafe.startDate, 'yyyy-MM-dd')} + ' ~ ' + ${#dates.format(cafe.endDate, 'yyyy-MM-dd')} + ']'"></span>
+                        <span th:text="${#dates.format(cafe.startDate, 'yyyy-MM-dd')} + ' ~ ' + ${#dates.format(cafe.endDate, 'yyyy-MM-dd')}"></span>
                     </div>
                     <div>
                         <span th:text="${cafe.place}"></span>
@@ -78,7 +78,7 @@
     </main>
 </div>
 
-<!-- 필터 스크립트 -->
+<!-- 필터 및 정렬 스크립트 -->
 <script>
     // 검색 기능
     document.getElementById('celebrity-search').addEventListener('input', function () {
@@ -111,6 +111,25 @@
             }
         }
     });
+
+    // 게시판을 최신순으로 정렬하는 기능
+    function sortBoardByDate() {
+        var boardList = document.getElementById('board-list');
+        var posts = Array.from(boardList.getElementsByClassName('board-item'));
+
+        posts.sort(function (a, b) {
+            var dateA = new Date(a.getAttribute('data-start-date'));
+            var dateB = new Date(b.getAttribute('data-start-date'));
+            return dateB - dateA; // 최신 날짜가 위로 오도록 정렬
+        });
+
+        posts.forEach(function (post) {
+            boardList.appendChild(post); // 정렬된 게시글을 다시 추가
+        });
+    }
+
+    // 페이지 로드 시 정렬 기능 실행
+    document.addEventListener('DOMContentLoaded', sortBoardByDate);
 </script>
 </body>
 </html>

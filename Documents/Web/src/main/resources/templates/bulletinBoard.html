@@ -49,7 +49,7 @@
                     <div>제목</div>
                     <div>작성일자</div>
                 </li>
-                <li th:each="post : ${posts}" th:data-artist="${post.artist}" class="board-item">
+                <li th:each="post : ${posts}" th:data-artist="${post.artist}" th:data-post-date="${post.postDate}" class="board-item">
                     <div>
                         <span th:text="${post.artist}"></span>
                     </div>
@@ -59,8 +59,7 @@
                         </a>
                     </div>
                     <div>
-                        <span th:text="${post.postDate}"></span>
-                    </div>
+                        <span th:text="${#temporals.format(post.postDate, 'yyyy년 MM월 dd일')}"></span>                    </div>
                 </li>
             </ul>
         </div>
@@ -72,10 +71,11 @@
 </div>
 
 <script>
+    // 아티스트 필터링 기능
     document.getElementById('artist-filter').addEventListener('change', function () {
         var filter = this.value;
         var boardList = document.getElementById('board-list');
-        var posts = boardList.getElementsByTagName('li');
+        var posts = boardList.getElementsByClassName('board-item');
 
         for (var i = 0; i < posts.length; i++) {
             var artist = posts[i].getAttribute('data-artist');
@@ -86,6 +86,25 @@
             }
         }
     });
+
+    // 게시글을 최신순으로 정렬하는 기능
+    function sortBoardByDate() {
+        var boardList = document.getElementById('board-list');
+        var posts = Array.from(boardList.getElementsByClassName('board-item'));
+
+        posts.sort(function (a, b) {
+            var dateA = new Date(a.getAttribute('data-post-date'));
+            var dateB = new Date(b.getAttribute('data-post-date'));
+            return dateB - dateA; // 최신 날짜가 위로 오도록 정렬
+        });
+
+        posts.forEach(function (post) {
+            boardList.appendChild(post); // 정렬된 게시글을 다시 추가
+        });
+    }
+
+    // 페이지 로드 시 정렬 기능 실행
+    document.addEventListener('DOMContentLoaded', sortBoardByDate);
 </script>
 </body>
 </html>
