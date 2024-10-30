@@ -11,7 +11,6 @@ import Firebase
 struct ContentView: View {
     @State private var currentView: activeView = .CafeView
     @State private var showingBellView = false  // 새로운 상태 변수 추가
-   
     
     var body: some View {
         GeometryReader { geometry in
@@ -22,22 +21,18 @@ struct ContentView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 25)
-                            .onTapGesture { //  팔로우한 아티스트들을 sheet 방식으로 보여줌(상단에 검색창 포함해야함)
-                                
-                            }
-                            
                         Spacer()
                         
-                        // MARK: - 기존 emojiLogo 방식처럼 하려고 했으나 알림화면은 onTapGesture보다 아래 방식이 낫다고 판단하였음
-                        // 벨 아이콘을 누르면 NoticeView로 이동
                         NavigationLink(destination: BellView()) {
                             Image(systemName: "bell")
                                 .font(.system(size: 20))
                                 .foregroundColor(.black)
                         }
+                        .navigationTitle("")
                     }
+                    .frame(height: 40)
+                    .padding([.horizontal, .top])
                     .padding(.horizontal)
-                    .padding()
                     
                     Group {
                         switch currentView {
@@ -131,12 +126,9 @@ enum activeView {
     case  BulletinBoardView, CafeView, ProfileView, ScheduleView
 }
 
-
 #Preview {
     ContentView()
 }
-
-
 
 struct BellView: View {
     @State private var newKeyword = ""                  // 새 키워드를 입력받기 위한 상태 변수
@@ -154,12 +146,16 @@ struct BellView: View {
                         .font(.subheadline)
                 }
                 .onTapGesture {
-                    // 링크를 클릭 시 처리
                     if let url = URL(string: bell.link) {
                         UIApplication.shared.open(url)
+                        
+                        bellArray.removeAll { $0.id == bell.id }
+                        
+                        Task {
+                            await removeBellItemFromFirestore(bellItem: bell)
+                        }
                     }
                 }
-
                 .swipeActions {
                     Button(role: .destructive) {
                         bellArray.removeAll { $0.id == bell.id }

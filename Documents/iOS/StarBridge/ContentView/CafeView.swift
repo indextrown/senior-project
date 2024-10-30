@@ -16,8 +16,7 @@ struct CafeView: View {
     
     @State private var startDate = Date()
     @State private var endDate = Date()
-    @State private var showStartDatePicker: Bool = false
-    @State private var showEndDatePicker: Bool = false
+    @State private var showDatePicker: Bool = false
     @State private var showSearchSheet: Bool = false
     
     @State private var showCelebrity = ""
@@ -104,26 +103,28 @@ struct CafeView: View {
                                 Text(dateFormatter.string(from: startDate))
                                     .foregroundColor(.black)
                                     .frame(width: 100)
-                                    .onTapGesture {
-                                        showStartDatePicker.toggle()
-                                    }
+                                    
                                 Text("~")
                                     .foregroundColor(.black)
                                 Text(dateFormatter.string(from: endDate))
                                     .foregroundColor(.black)
                                     .frame(width: 100)
-                                    .onTapGesture {
-                                        showEndDatePicker.toggle()
-                                    }
+                            }
+                            .onAppear {
+//                                startDate = dateOfWeek(for: Date(), weekday: 1) ?? Date()
+                                endDate = dateOfWeek(for: Date(), weekday: 7) ?? Date()
+                            }
+                            .onTapGesture {
+                                showDatePicker.toggle()
                             }
                             .onChange(of: startDate) { newStartDate in
                                 if newStartDate >= endDate {
-                                    startDate = endDate
+                                    endDate = Calendar.current.date(byAdding: .day, value: 1, to: newStartDate) ?? Date()
                                 }
                             }
                             .onChange(of: endDate) { newEndDate in
                                 if newEndDate <= startDate {
-                                    endDate = startDate
+                                    startDate = Calendar.current.date(byAdding: .day, value: -1, to: newEndDate) ?? Date()
                                 }
                             }
                             Spacer()
@@ -235,65 +236,47 @@ struct CafeView: View {
                     }
                 }
                 
-                if showStartDatePicker || showEndDatePicker {
+                if showDatePicker {
                     Color.black.opacity(0.3)
                         .ignoresSafeArea()
-                }
-                
-                if showStartDatePicker {
-                    HalfSheet(isPresented: $showStartDatePicker) {
+                    
+                    QuaterSheet(isPresented: $showDatePicker) {
                         VStack {
-                            DatePicker(
-                                "시작날짜",
-                                selection: $startDate,
-                                displayedComponents: [.date]
-                            )
-                            .datePickerStyle(WheelDatePickerStyle())
-                            .colorInvert()
-                            .colorMultiply(.black)
-                            .environment(\.locale, Locale(identifier: "ko_KR"))
-                            
                             HStack {
                                 Spacer()
                                 Button("완료") {
-                                    showStartDatePicker = false
+                                    showDatePicker = false
                                 }
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.pink)
-                                .padding()
+                                .padding(.horizontal)
+                            }
+                            VStack {
+                                DatePicker(
+                                    "시작날짜",
+                                    selection: $startDate,
+                                    displayedComponents: [.date]
+                                )
+                                .datePickerStyle(CompactDatePickerStyle())
+                                .colorInvert()
+                                .colorMultiply(.black)
+                                .environment(\.locale, Locale(identifier: "ko_KR"))
+                            }
+                            VStack {
+                                DatePicker(
+                                    "종료날짜",
+                                    selection: $endDate,
+                                    displayedComponents: [.date]
+                                )
+                                .datePickerStyle(CompactDatePickerStyle())
+                                .colorInvert()
+                                .colorMultiply(.black)
+                                .environment(\.locale, Locale(identifier: "ko_KR"))
                             }
                         }
                         .padding()
                     }
-                    .transition(.move(edge: .bottom))
-                    .zIndex(1)
-                }
-                if showEndDatePicker{
-                    HalfSheet(isPresented: $showEndDatePicker) {
-                        VStack {
-                            DatePicker(
-                                "종료날짜",
-                                selection: $endDate,
-                                displayedComponents: [.date]
-                            )
-                            .datePickerStyle(WheelDatePickerStyle())
-                            .colorInvert()
-                            .colorMultiply(.black)
-                            .environment(\.locale, Locale(identifier: "ko_KR"))
-                            
-                            HStack {
-                                Spacer()
-                                Button("완료") {
-                                    showEndDatePicker = false
-                                }
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.pink)
-                                .padding()
-                            }
-                        }
-                        .padding()
-                    }
-                    .transition(.move(edge: .bottom))
+//                    .transition(.move(edge: .bottom))
                     .zIndex(1)
                 }
             }
@@ -301,10 +284,7 @@ struct CafeView: View {
             .onAppear {
                 fetchCafeList()
             }
-            .onChange(of: showStartDatePicker) { newValue in
-                fetchCafeList(value: newValue)
-            }
-            .onChange(of: showEndDatePicker) { newValue in
+            .onChange(of: showDatePicker) { newValue in
                 fetchCafeList(value: newValue)
             }
         }
@@ -355,6 +335,18 @@ struct CafeView: View {
         }
 
         return true
+    }
+    
+    private func dateOfWeek(for date: Date, weekday: Int) -> Date? {
+        guard (1...7).contains(weekday) else {
+            return nil
+        }
+        
+        let currentWeekday = calendar.component(.weekday, from: date)
+
+        let diff = weekday - currentWeekday
+
+        return calendar.date(byAdding: .day, value: diff, to: date)
     }
     
     private func fetchCafeList(value: Bool = false) {
@@ -490,6 +482,40 @@ struct SearchFullScreenView: View {
             withAnimation {
                 showCancelButton = focused
             }
+        }
+    }
+}
+
+struct QuaterSheet<Content: View>: View {
+    var content: Content
+    @Binding var isPresented: Bool
+
+    init(isPresented: Binding<Bool>, @ViewBuilder content: () -> Content) {
+        self._isPresented = isPresented
+        self.content = content()
+    }
+
+    var body: some View {
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                content
+                    .background(Color.white)
+                    .cornerRadius(16)
+                    .frame(height: geometry.size.height / 4)
+//                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        withAnimation(.easeInOut) {
+                            // 애니메이션이 나타날 때 실행되는 코드
+                        }
+                    }
+                    .onDisappear {
+                        withAnimation(.easeInOut) {
+                            // 애니메이션이 사라질 때 실행되는 코드
+                        }
+                    }
+            }
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
 }

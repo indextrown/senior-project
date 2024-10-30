@@ -80,6 +80,13 @@
         "ProfileView.swift": "사용자가 작성한 글이 없을 때 문구 추가, api 요청 최대 3회까지 시도하는 코드 추가",
         "ScheduleView.swift": "Rectangle() 색 변경, api 요청 최대 3회까지 시도하는 코드 추가",
         "api.swift": "CafeData에 서버에서 받아오는 순서를 저장하는 변수 추가"
+    },
+    "2024-10-30": {
+        "ContentView.swift": "사용하지 않는 .onTapGesture() 제거, .navigationTitle(), .padding() 수정, BellView에서 알람 리스트를 확인했을 때 본 알람들은 지워지도록 변경",
+        "BulletinBoardView.swift": ".navigationTitle() 수정, api 재호출 전 딜레이 증가, 게시글 내용 UI 수정",
+        "CafeView.swift": "DatePicker 형식 변경, 최초 뷰가 온그라운드일 시 날짜 범위를 오늘 ~ 그 주 토요일 범위로 수정",
+        "ProfileView.swift": ".navigationTitle() 수정, 키워드를 입력하고 추가하지 않았을 시 키워드가 그대로 남아있는 버그 수정",
+        "ScheduleView.swift": ".navigationTitle() 수정, 확장 후 다시 원복 했을 시 스크롤이 최상단으로 가도록 수정"
     }
 }
 

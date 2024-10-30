@@ -152,7 +152,7 @@ struct BulletinBoardView: View {
                                                 .background(.white)
                                                 .cornerRadius(15)
                                             }
-                                            .navigationTitle(Text(""))
+                                            .navigationTitle("")
                                         }
                                     }
                                 }
@@ -199,8 +199,8 @@ struct BulletinBoardView: View {
                     Task{
                         isLoading = true
                         contents.removeAll()
-                        try? await Task.sleep(nanoseconds: 1_000_000_000) // 딜레이가 꼭 있어야 함
                         var count = 0
+                        try? await Task.sleep(nanoseconds: 2_000_000_000) // 딜레이가 꼭 있어야 함
                         while contents.isEmpty && count < 3 {
                             if let data = await api.fetchData(for: ["Content": "bboard", "all": "_"]){
                                 contents = data.compactMapValues { value in
@@ -277,12 +277,25 @@ struct BulletinBoardDetailView: View {
             LazyVStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(detail.artist ?? "")
+                        HStack(spacing: 2) {
+                            Text(detail.artist ?? "")
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 10))
+                                
+                        }
+                            .foregroundColor(.pink)
                         Text(detail.title ?? "")
+                            .font(.system(size: 20, weight: .semibold))
+                            .lineLimit(2)
                     }
                     Spacer()
                 }
-                .padding([.horizontal, .bottom])
+                .padding()
+                
+                Rectangle()
+                    .fill(Color.gray.opacity(0.4))
+                    .frame(height: 1)
+                    .padding([.horizontal, .bottom])
                 
                 HStack {
                     Image(systemName: "questionmark.circle.fill")

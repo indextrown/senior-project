@@ -29,10 +29,9 @@ struct ScheduleView: View{
     @State private var isLoading = true
 
     var body: some View{
-        GeometryReader { geometry in
+        ScrollViewReader { scrollProxy in
             ScrollView {
                 VStack {
-                    TextView("음악 방송, 예능, 앨범, 기념일까지 컴백 시즌 모드 일정 한 눈에", size: 14.5, color: Color.gray)
                     VStack(spacing: 10){
                         HStack {
                             Text(showDate, formatter: DateFormatter.krFormatter)
@@ -122,7 +121,7 @@ struct ScheduleView: View{
                                                                     .frame(width: 50, height: 20)
                                                                     .border(dotColor(event.kind))
                                                             }
-                                                            .navigationTitle(Text(""))
+                                                            .navigationTitle("")
                                                         }
                                                     }
                                                     if events.count < Int(maxEventCountOnWeek){
@@ -176,6 +175,7 @@ struct ScheduleView: View{
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.25)){
                                 isExpanded.toggle()
+                                scrollProxy.scrollTo("calendar", anchor: .top)
                             }
                         }
                     }
@@ -218,7 +218,8 @@ struct ScheduleView: View{
                     }
                     .background(.white)
                     .cornerRadius(30)
-                    .padding()
+                    .padding([.horizontal, .bottom])
+                    .id("calendar")
                     
                     if isLoading {
                         VStack {
@@ -259,9 +260,8 @@ struct ScheduleView: View{
                                                 .frame(height: 100)
                                                 .background(.white)
                                                 .cornerRadius(15)
-                                                .navigationTitle("")
                                             }
-                                            .navigationTitle(Text(""))
+                                            .navigationTitle("")
                                         }
                                     }
                                     .padding([.horizontal, .bottom])
@@ -309,7 +309,7 @@ struct ScheduleView: View{
                                                     .background(.white)
                                                     .cornerRadius(15)
                                                 }
-                                                .navigationTitle(Text(""))
+                                                .navigationTitle("")
                                             }
                                             .onAppear{
                                                 noEventsComing = false
@@ -339,7 +339,6 @@ struct ScheduleView: View{
                         }
                     }
                 }
-                .frame(width: geometry.size.width)
             }
             .background(.p3LightGray)
         }

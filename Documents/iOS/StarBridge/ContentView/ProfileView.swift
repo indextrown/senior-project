@@ -23,7 +23,6 @@ struct ProfileView: View {
                 ScrollView{
                     if !isLoading {
                         LazyVStack{
-//                            NavigationLink(destination: ()) {
                                 HStack {
                                     Text("로그인 정보")
                                         .foregroundColor(.black)
@@ -36,8 +35,6 @@ struct ProfileView: View {
                                     RoundedRectangle(cornerRadius: 15)
                                         .fill(.white)
                                 )
-//                            }
-//                                .navigationTitle(Text(""))
                                 .padding([.horizontal, .bottom])
                             
                             VStack(spacing: 0) {
@@ -89,7 +86,7 @@ struct ProfileView: View {
                                         .foregroundColor(.black)
                                     }
                                 }
-                                .navigationTitle(Text(""))
+                                .navigationTitle("")
                                 .padding([.horizontal, .bottom])
                             }
                             .background(
@@ -108,13 +105,13 @@ struct ProfileView: View {
                                     .foregroundColor(.black)
                                 }
                             }
-                            .navigationTitle(Text(""))
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 15)
                                     .fill(.white)
                             )
                             .padding([.horizontal, .bottom])
+                            .navigationTitle("")
  
                             Text("로그아웃")
                                 .foregroundColor(.pink)
@@ -249,7 +246,7 @@ struct KeywordSettingView: View {
                 }
             })
 
-            Button("취소", role: .cancel, action: {})
+            Button("취소", role: .cancel, action: { newKeyword = "" })
         }, message: {
             Text("원하는 키워드를 입력해주세요")
         })
@@ -367,9 +364,8 @@ struct UserPostsView: View {
                                         .frame(height: 80)
                                         .background(.white)
                                         .cornerRadius(15)
-                                        .navigationTitle("")
                                     }
-                                    .navigationTitle(Text(""))
+                                    .navigationTitle("")
                                 }
                                 .padding()
                             }
