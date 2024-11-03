@@ -160,3 +160,39 @@ nav a {
 .logout-button:hover {
     background-color: #ff0000;
 }
+
+.fc .fc-toolbar-title {
+    color: #000000;
+}
+
+.fc .fc-toolbar button {
+    background-color: #ff6a88; /* '오늘' 버튼의 배경색 */
+    color: #fff; /* 버튼 텍스트 색상 */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* '오늘' 버튼 색상 */
+.fc .fc-toolbar .fc-today-button {
+    background-color: #ff6a88;
+}
+
+/* '<', '>' 버튼 색상 */
+.fc .fc-toolbar .fc-prev-button,
+.fc .fc-toolbar .fc-next-button {
+    background-color: #ff2956;
+}
+
+/* 호버 효과 */
+.fc .fc-toolbar button:hover {
+    opacity: 0.8;
+}
+/* '오늘' 버튼이 비활성화되지 않도록 스타일을 강제 적용 */
+.fc .fc-toolbar .fc-today-button:disabled {
+    opacity: 1; /* 비활성화 상태에서도 동일한 불투명도 */
+    background-color: #ff6a88; /* 활성화된 버튼과 같은 배경색 */
+    color: #fff; /* 텍스트 색상 유지 */
+    cursor: pointer; /* 비활성화되지 않은 것처럼 보이게 함 */
+}
